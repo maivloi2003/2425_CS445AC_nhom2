@@ -50,7 +50,6 @@ public class AuthServer implements IAuthServer {
         if (accountsRepository.findAccountsByUsername(authenticationRequest.getUsername()) == null)
             throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
         Accounts accounts = accountsRepository.findAccountsByUsername(authenticationRequest.getUsername());
-
         var valid = passwordEncoder.matches(authenticationRequest.getPassword(), accounts.getPassword());
         if (!valid) throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
         String token = generateToken(accounts);
@@ -138,7 +137,7 @@ public class AuthServer implements IAuthServer {
 
 
     String generateToken(Accounts account) {
-        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.ES256);
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(account.getUsername())
                 .issuer("forum")

@@ -68,15 +68,16 @@ public class MailService implements IMailService {
         simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
                 "Link is only valid for 5 minutes \n" +
                 "http://localhost:8080/mail/verify?token=" + token);
+        if (mailSenderRepository.existsById(accounts.getId())){
+            mailSenderRepository.deleteById(accounts.getId());
+        }
         Mail_sender mailSender = Mail_sender.builder()
                 .id(accounts.getId())
                 .date_created(LocalDate.now())
                 .email(users.getEmail())
                 .token(token)
                 .build();
-        if (mailSenderRepository.existsById(accounts.getId())){
-            mailSenderRepository.deleteById(accounts.getId());
-        }
+
         mailSenderRepository.save(mailSender);
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());
@@ -91,10 +92,9 @@ public class MailService implements IMailService {
 
     @Override
     public MailResponse sendMailResetPassword(MailRequest mailRequest) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-        Users users = usersRepository.findUserByUsername(username);
-        Accounts accounts = accountsRepository.findAccountsByUsername(username);
+        Users users = usersRepository.findUserByEmail(mailRequest.getEmail());
+        if (users == null) throw new WebException(ErrorCode.EMAIL_NOT_FOUND);
+        Accounts accounts = accountsRepository.findAccountsById(users.getAccounts().getId());
         String token = generateTokenReset(accounts);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(users.getEmail());
@@ -103,15 +103,16 @@ public class MailService implements IMailService {
         simpleMailMessage.setText("Please click on the following link to change your password.\n" +
                 "Link is only valid for 5 minutes \n" +
                 "http://localhost:8080/mail/change?token=" + token);
+        if (mailSenderRepository.existsById(accounts.getId())){
+            mailSenderRepository.deleteById(accounts.getId());
+        }
         Mail_sender mailSender = Mail_sender.builder()
                 .id(accounts.getId())
                 .date_created(LocalDate.now())
                 .email(users.getEmail())
                 .token(token)
                 .build();
-        if (mailSenderRepository.existsById(accounts.getId())){
-            mailSenderRepository.deleteById(accounts.getId());
-        }
+
         mailSenderRepository.save(mailSender);
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());

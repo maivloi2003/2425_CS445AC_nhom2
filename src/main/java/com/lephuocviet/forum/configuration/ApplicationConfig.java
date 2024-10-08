@@ -10,10 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class ApplicationConfig {
-    @Bean
-    public JavaMailSender javaMailSender() {
-        return new JavaMailSenderImpl();
-    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

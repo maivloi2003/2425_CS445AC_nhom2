@@ -18,7 +18,6 @@ import java.util.Date;
 public class Mail_sender {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String email;
     String token;

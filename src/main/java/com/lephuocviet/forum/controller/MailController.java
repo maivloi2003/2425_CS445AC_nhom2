@@ -30,7 +30,7 @@ public class MailController {
     }
 
     @PostMapping("/reset")
-    public ResponseEntity<ApiResponses<MailResponse>> reset(MailRequest mailRequest) {
+    public ResponseEntity<ApiResponses<MailResponse>> reset(@RequestBody MailRequest mailRequest) {
         return ResponseEntity.ok(ApiResponses.<MailResponse>builder()
                 .result(iMailService.sendMailResetPassword(mailRequest))
                 .build());
