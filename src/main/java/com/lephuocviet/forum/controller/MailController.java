@@ -37,10 +37,17 @@ public class MailController {
     }
 
 
-    @PostMapping("/verify")
+    @PostMapping("/change")
     public ResponseEntity<ApiResponses<MailResponse>> active(@RequestParam String token, @RequestBody PasswordRequest passwordRequest) throws ParseException, JOSEException {
         return ResponseEntity.ok(ApiResponses.<MailResponse>builder()
                 .result(iMailService.resetPassword(token,passwordRequest))
+                .build());
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<ApiResponses<MailResponse>> active(@RequestParam String token) throws ParseException, JOSEException {
+        return ResponseEntity.ok(ApiResponses.<MailResponse>builder()
+                .result(iMailService.checkMailActive(token))
                 .build());
     }
 }
