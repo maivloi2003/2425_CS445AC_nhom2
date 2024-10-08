@@ -9,11 +9,15 @@ public enum ErrorCode {
     // 400 BAD REQUEST
     USERNAME_IS_EXISTS(40001, "Username is exists", HttpStatus.BAD_REQUEST),
     EMAIL_IS_EXISTS(40002, "Email is exists", HttpStatus.BAD_REQUEST),
+    ACCOUNT_IS_ACTIVE(40003, "Account is active", HttpStatus.BAD_REQUEST),
 
     //401 AUTHENTICATION
+
     PASSWORD_NOT_MATCH(40101,"Password not match", HttpStatus.UNAUTHORIZED),
     TOKEN_INVALID(40102,"Token invalid", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(40103, "Unauthorized", HttpStatus.UNAUTHORIZED),
+    PASSWORD_IS_WRONG(40104, "Password is wrong", HttpStatus.UNAUTHORIZED),
+
     //403 FORBIDDEN
     FORBIDDEN(40301, "Forbidden",HttpStatus.FORBIDDEN),
     // 404 NOT FOUND

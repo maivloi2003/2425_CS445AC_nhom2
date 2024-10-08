@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -20,7 +21,7 @@ public class Notices {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String message;
-    Date date_created;
+    LocalDate date_created;
     boolean status;
     @ManyToOne
     @JoinColumn(name = "user_id")

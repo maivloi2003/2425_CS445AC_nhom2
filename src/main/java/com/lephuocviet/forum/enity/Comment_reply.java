@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -18,7 +19,7 @@ public class Comment_reply {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    Date date_created;
+    LocalDate date_created;
     String content;
 
     @ManyToOne

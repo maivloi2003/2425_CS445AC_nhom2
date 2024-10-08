@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -18,8 +19,8 @@ public class Vips {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    Date date_created;
-    Date date_expired;
+    LocalDate date_created;
+    LocalDate date_expired;
 
     @OneToOne
     @JoinColumn(name = "account_id")

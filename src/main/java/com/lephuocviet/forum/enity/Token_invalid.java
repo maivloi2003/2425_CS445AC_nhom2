@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -21,5 +22,5 @@ public class Token_invalid {
     @Id
     String idToken;
     String token;
-    Date date_created;
+    LocalDate date_created;
 }

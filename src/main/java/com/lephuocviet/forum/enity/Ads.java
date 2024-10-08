@@ -17,8 +17,8 @@ public class Ads {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    int desired_views;
-    int views;
+    Integer desired_views;
+    Integer views;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
