@@ -39,29 +39,28 @@ public class UserService implements IUserService {
     UserMapper userMapper;
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-//        if (accountsRepository.existsByUsername(userRequest.getUsername()))
-//            throw new WebException(ErrorCode.USERNAME_IS_EXISTS);
-//        if (usersRepository.existsByEmail(userRequest.getEmail()))
-//            throw new WebException(ErrorCode.EMAIL_IS_EXISTS);
-//        if (!userRequest.getPassword().equals(userRequest.getRepassword()))
-//            throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
-//        Set<Roles> set = new HashSet<>();
-//        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString()));
-//        Accounts accounts = Accounts.builder()
-//                .username(userRequest.getUsername())
-//                .password(passwordEncoder.encode(userRequest.getPassword()))
-//                .active(false)
-//                .status(true)
-//                .roles(set)
-//                .build();
-//        accountsRepository.save(accounts);
-//
-//        Users user = userMapper.toUser(userRequest);
-//        user.setAccounts(accounts);
-//        usersRepository.save(user);
-//
-//        return  userMapper.toUserResponses(user);
-        return null;
+        if (accountsRepository.existsByUsername(userRequest.getUsername()))
+            throw new WebException(ErrorCode.USERNAME_IS_EXISTS);
+        if (usersRepository.existsByEmail(userRequest.getEmail()))
+            throw new WebException(ErrorCode.EMAIL_IS_EXISTS);
+        if (!userRequest.getPassword().equals(userRequest.getRepassword()))
+            throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
+        Set<Roles> set = new HashSet<>();
+        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString()));
+        Accounts accounts = Accounts.builder()
+                .username(userRequest.getUsername())
+                .password(passwordEncoder.encode(userRequest.getPassword()))
+                .active(false)
+                .status(true)
+                .roles(set)
+                .build();
+        accountsRepository.save(accounts);
+
+        Users user = userMapper.toUser(userRequest);
+        user.setAccounts(accounts);
+        usersRepository.save(user);
+
+        return  userMapper.toUserResponses(user);
     }
 
     @Override
