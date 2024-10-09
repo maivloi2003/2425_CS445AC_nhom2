@@ -1,5 +1,5 @@
 FROM maven:3.8.5-openjdk-17 AS builder
-COPY . .
+COPY src/main/java/com/lephuocviet/forum .
 RUN mvn clean package -DskipTests
 
 FROM openjdk:17.0.1-jdk-slim
