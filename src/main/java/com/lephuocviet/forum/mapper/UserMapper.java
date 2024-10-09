@@ -14,7 +14,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(target = "img",ignore = true)
+
     Users toUser(UserRequest userRequest);
 
 
