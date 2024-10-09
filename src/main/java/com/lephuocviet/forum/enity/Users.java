@@ -28,6 +28,7 @@ public class Users {
     @OneToOne
     @JoinColumn(name = "account_id")
     Accounts accounts;
+
     @OneToMany(mappedBy = "users")
     List<Notices> notices;
     @OneToMany(mappedBy = "users")

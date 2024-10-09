@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, String> {
 
@@ -16,6 +18,14 @@ public interface UsersRepository extends JpaRepository<Users, String> {
     Users findUserByUsername(@Param("username") String username);
 
     Users findUserByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    Users findUsersById(String id);
+
+    @Query("SELECT u FROM Users u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Users> findUsersByName(@Param("name") String name);
+
 
 
 }

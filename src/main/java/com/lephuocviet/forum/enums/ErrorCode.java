@@ -1,10 +1,14 @@
 package com.lephuocviet.forum.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
-
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public enum ErrorCode {
     // 400 BAD REQUEST
     USERNAME_IS_EXISTS(40001, "Username is exists", HttpStatus.BAD_REQUEST),
@@ -39,33 +43,6 @@ public enum ErrorCode {
     private String message;
     HttpStatus httpStatus;
 
-    ErrorCode(int code, String message, HttpStatus httpStatus) {
-        this.code = code;
-        this.message = message;
-        this.httpStatus = httpStatus;
-    }
 
-    public int getCode() {
-        return code;
-    }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
-    }
-
-    public void setHttpStatus(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
-    }
 }

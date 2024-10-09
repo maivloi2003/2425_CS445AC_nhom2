@@ -15,8 +15,6 @@ public interface IMailService {
 
     MailResponse checkMailActive(String token) throws ParseException, JOSEException;
 
-
-
     MailResponse resetPassword(String token, PasswordRequest passwordRequest);
 
 }
