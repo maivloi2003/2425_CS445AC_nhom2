@@ -67,7 +67,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "http://localhost:8080/mail/verify?token=" + token);
+                "lephuocviet.io.vn/mail/verify?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())){
             mailSenderRepository.deleteById(accounts.getId());
         }
@@ -102,7 +102,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to change your password.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "http://localhost:8080/mail/change?token=" + token);
+                "lephuocviet.io.vn/mail/change?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())){
             mailSenderRepository.deleteById(accounts.getId());
         }
