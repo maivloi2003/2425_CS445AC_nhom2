@@ -22,7 +22,7 @@ public interface UserMapper {
     Users toUser(UserRequest userRequest);
 
 
-    UserResponse toUserResponses(Users users);
+//    UserResponse toUserResponses(Users users);
 
 //    @Mapping(source = "name", target = "name")
 //    @Mapping(source = "language", target = "language")
@@ -31,6 +31,6 @@ public interface UserMapper {
 //    @Mapping(source = "email", target = "email")
 //    Users toUpdate(@MappingTarget Users users, UserRequest userRequest);
 
-    List<UserResponse> toListUserResponses(List<Users> users);
+//    List<UserResponse> toListUserResponses(List<Users> users);
 
 }

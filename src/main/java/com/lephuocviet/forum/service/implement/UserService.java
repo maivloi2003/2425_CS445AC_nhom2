@@ -39,28 +39,29 @@ public class UserService implements IUserService {
     UserMapper userMapper;
     @Override
     public UserResponse createUser(UserRequest userRequest) {
-        if (accountsRepository.existsByUsername(userRequest.getUsername()))
-            throw new WebException(ErrorCode.USERNAME_IS_EXISTS);
-        if (usersRepository.existsByEmail(userRequest.getEmail()))
-            throw new WebException(ErrorCode.EMAIL_IS_EXISTS);
-        if (!userRequest.getPassword().equals(userRequest.getRepassword()))
-            throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
-        Set<Roles> set = new HashSet<>();
-        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString()));
-        Accounts accounts = Accounts.builder()
-                .username(userRequest.getUsername())
-                .password(passwordEncoder.encode(userRequest.getPassword()))
-                .active(false)
-                .status(true)
-                .roles(set)
-                .build();
-        accountsRepository.save(accounts);
-
-        Users user = userMapper.toUser(userRequest);
-        user.setAccounts(accounts);
-        usersRepository.save(user);
-
-        return  userMapper.toUserResponses(user);
+//        if (accountsRepository.existsByUsername(userRequest.getUsername()))
+//            throw new WebException(ErrorCode.USERNAME_IS_EXISTS);
+//        if (usersRepository.existsByEmail(userRequest.getEmail()))
+//            throw new WebException(ErrorCode.EMAIL_IS_EXISTS);
+//        if (!userRequest.getPassword().equals(userRequest.getRepassword()))
+//            throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
+//        Set<Roles> set = new HashSet<>();
+//        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString()));
+//        Accounts accounts = Accounts.builder()
+//                .username(userRequest.getUsername())
+//                .password(passwordEncoder.encode(userRequest.getPassword()))
+//                .active(false)
+//                .status(true)
+//                .roles(set)
+//                .build();
+//        accountsRepository.save(accounts);
+//
+//        Users user = userMapper.toUser(userRequest);
+//        user.setAccounts(accounts);
+//        usersRepository.save(user);
+//
+//        return  userMapper.toUserResponses(user);
+        return null;
     }
 
     @Override
@@ -78,26 +79,29 @@ public class UserService implements IUserService {
 
     @Override
     public boolean deleteUser(String userId) {
-        Users user = usersRepository.findUsersById(userId);
-        if (user == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
-        usersRepository.delete(user);
-        return true;
+//        Users user = usersRepository.findUsersById(userId);
+//        if (user == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
+//        usersRepository.delete(user);
+//        return true;
+        return false;
     }
 
     @Override
     public UserResponse getUserById(String userId) {
-        Users user = usersRepository.findUsersById(userId);
-        if (user == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
-        return userMapper.toUserResponses(user);
+//        Users user = usersRepository.findUsersById(userId);
+//        if (user == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
+//        return userMapper.toUserResponses(user);
+        return null;
     }
 
     @Override
     public List<UserResponse> findUser(String name) {
-        if (name.isEmpty())
-            return userMapper.toListUserResponses(usersRepository.findAll());
-        String textname = name.toLowerCase().trim();
-        List<Users> users = usersRepository.findUsersByName(textname);
-        if (users == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
-        return userMapper.toListUserResponses(users);
+//        if (name.isEmpty())
+//            return userMapper.toListUserResponses(usersRepository.findAll());
+//        String textname = name.toLowerCase().trim();
+//        List<Users> users = usersRepository.findUsersByName(textname);
+//        if (users == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
+//        return userMapper.toListUserResponses(users);
+        return null;
     }
 }
