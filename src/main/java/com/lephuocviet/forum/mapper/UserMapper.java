@@ -14,11 +14,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "language", target = "language")
-    @Mapping(source = "sex", target = "sex")
-    @Mapping(target = "img", source = "img")
-    @Mapping(source = "email", target = "email")
+    @Mapping(target = "img", ignore = true)
     Users toUser(UserRequest userRequest);
 
 
