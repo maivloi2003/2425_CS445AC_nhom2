@@ -18,7 +18,7 @@ import java.text.ParseException;
 @AllArgsConstructor
 @RequestMapping("/mail")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class MailController {
 
     IMailService iMailService;

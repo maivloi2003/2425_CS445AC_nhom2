@@ -4,6 +4,7 @@ import com.lephuocviet.forum.dto.requests.UserRequest;
 import com.lephuocviet.forum.dto.responses.UserResponse;
 import com.lephuocviet.forum.exception.ApiResponses;
 import com.lephuocviet.forum.service.IUserService;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RequestMapping("/users")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class UserController {
 
     IUserService userService;
