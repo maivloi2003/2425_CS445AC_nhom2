@@ -46,7 +46,7 @@ public class UserService implements IUserService {
         if (!userRequest.getPassword().equals(userRequest.getRepassword()))
             throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
         Set<Roles> set = new HashSet<>();
-        set.add(rolesRepository.findByRole(RolesCode.USER.toString()));
+        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString()));
         Accounts accounts = Accounts.builder()
                 .username(userRequest.getUsername())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
