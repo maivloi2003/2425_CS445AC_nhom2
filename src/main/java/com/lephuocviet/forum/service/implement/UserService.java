@@ -65,14 +65,15 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse updateUser(UserRequest userRequest) throws IOException {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if(!accountsRepository.existsByUsername(username))
-            throw new WebException(ErrorCode.USER_NOT_FOUND);
-        Users user = usersRepository.findUserByUsername(username);
-        userMapper.toUpdate(user,userRequest);
-        user.setImg(userRequest.getImg().getBytes());
-        usersRepository.save(user);
-        return userMapper.toUserResponses(user);
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//        if(!accountsRepository.existsByUsername(username))
+//            throw new WebException(ErrorCode.USER_NOT_FOUND);
+//        Users user = usersRepository.findUserByUsername(username);
+//        userMapper.toUpdate(user,userRequest);
+//        user.setImg(userRequest.getImg().getBytes());
+//        usersRepository.save(user);
+//        return userMapper.toUserResponses(user);
+        return null;
     }
 
     @Override
