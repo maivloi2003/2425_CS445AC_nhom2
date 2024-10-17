@@ -22,8 +22,7 @@ public class Users {
     String name;
     String language;
     String sex;
-    @Lob
-    byte[] img;
+    String img;
     String email;
     @OneToOne
     @JoinColumn(name = "account_id")

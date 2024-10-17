@@ -10,7 +10,7 @@ import com.lephuocviet.forum.enums.ErrorCode;
 import com.lephuocviet.forum.exception.WebException;
 import com.lephuocviet.forum.repository.AccountsRepository;
 import com.lephuocviet.forum.repository.Token_InvalidRepository;
-import com.lephuocviet.forum.service.IAuthServer;
+import com.lephuocviet.forum.service.IAuthService;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -37,7 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthServer implements IAuthServer {
+public class AuthService implements IAuthService {
 
     final AccountsRepository accountsRepository;
     final Token_InvalidRepository tokenInvalidRepository;

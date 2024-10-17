@@ -1,8 +1,6 @@
 package com.lephuocviet.forum.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lephuocviet.forum.enity.Accounts;
-import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,10 +10,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
-    String id;
-    String name;
-    String language;
-    String sex;
-    String img;
+public class ActiveResponse {
+
+    boolean active;
+    String message;
+
 }

@@ -8,7 +8,7 @@ import com.nimbusds.jose.JOSEException;
 
 import java.text.ParseException;
 
-public interface IAuthServer {
+public interface IAuthService {
 
     AuthenticationResponse authentication(AuthenticationRequest authenticationRequest);
 

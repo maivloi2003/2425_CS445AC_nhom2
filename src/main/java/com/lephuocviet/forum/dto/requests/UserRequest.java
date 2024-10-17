@@ -14,7 +14,7 @@ public class UserRequest {
     String name;
     String language;
     String sex;
-    byte[] img;
+    String img;
     String email;
     String username;
     String password;
