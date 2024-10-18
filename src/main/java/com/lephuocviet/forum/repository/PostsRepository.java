@@ -16,7 +16,7 @@ import java.util.List;
 public interface PostsRepository extends JpaRepository<Posts, String> {
     @Query("SELECT NEW com.lephuocviet.forum.dto.responses.PostPageResponse(" +
             " p.id, p.title, p.content, p.date_created, p.img, l.name , u.name, " +
-            " COUNT(DISTINCT li.id) ) " +
+            " COUNT(DISTINCT li.id),COUNT(DISTINCT c.id)) " +
             "FROM Posts p " +
             "LEFT JOIN p.language l " +
             "LEFT JOIN p.likes li " +

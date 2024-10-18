@@ -22,5 +22,6 @@ public class PostPageResponse {
     String language;
     String name;
     long likes;
+    long comments;
 
 }
