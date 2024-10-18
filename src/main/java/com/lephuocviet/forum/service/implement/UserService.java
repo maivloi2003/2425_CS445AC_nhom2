@@ -16,6 +16,7 @@ import com.lephuocviet.forum.service.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.catalina.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -100,5 +101,14 @@ public class UserService implements IUserService {
 //        if (users == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
 //        return userMapper.toListUserResponses(users);
         return null;
+    }
+
+    @Override
+    public UserResponse getMyInformation() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!accountsRepository.existsByUsername(username))
+            throw new WebException(ErrorCode.USER_NOT_FOUND);
+        Users users = usersRepository.findUserByUsername(username);
+        return userMapper.toUserResponses(users);
     }
 }

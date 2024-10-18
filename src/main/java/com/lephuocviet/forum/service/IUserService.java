@@ -23,4 +23,6 @@ public interface IUserService {
     UserResponse getUserById(String userId);
 
     List<UserResponse> findUser(String name);
+
+    UserResponse getMyInformation();
 }

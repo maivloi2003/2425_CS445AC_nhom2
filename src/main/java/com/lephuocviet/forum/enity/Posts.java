@@ -24,8 +24,7 @@ public class Posts {
     String title;
     String content;
     LocalDate date_created;
-    @Lob
-    byte[] img;
+    String img;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
