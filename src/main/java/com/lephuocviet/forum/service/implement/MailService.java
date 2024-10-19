@@ -55,39 +55,40 @@ public class MailService implements IMailService {
 
     @Override
     public MailResponse sendMailActive() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-        Users users = usersRepository.findUserByUsername(username);
-        Accounts accounts = accountsRepository.findAccountsByUsername(username);
-        if (accounts.isActive()) throw new WebException(ErrorCode.ACCOUNT_IS_ACTIVE);
-        String token = generateTokenActive(accounts);
-        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(users.getEmail());
-        simpleMailMessage.setSubject("Forum Language");
-        simpleMailMessage.setFrom("vietyts2003@gmail.com");
-        simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
-                "Link is only valid for 5 minutes \n" +
-                "lephuocviet.io.vn/mail/verify?token=" + token);
-        if (mailSenderRepository.existsById(accounts.getId())){
-            mailSenderRepository.deleteById(accounts.getId());
-        }
-        Mail_sender mailSender = Mail_sender.builder()
-                .id(accounts.getId())
-                .date_created(LocalDate.now())
-                .email(users.getEmail())
-                .token(token)
-                .build();
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
+            Users users = usersRepository.findUserByUsername(username);
+            Accounts accounts = accountsRepository.findAccountsByUsername(username);
+            if (accounts.isActive()) throw new WebException(ErrorCode.ACCOUNT_IS_ACTIVE);
+            String token = generateTokenActive(accounts);
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setTo(users.getEmail());
+            simpleMailMessage.setSubject("Forum Language");
+            simpleMailMessage.setFrom("vietyts2003@gmail.com");
+            simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
+                    "Link is only valid for 5 minutes \n" +
+                    "https://maivanloi1.github.io/ForumLanguages/pages/confirm-email.html?token=" + token);
+            if (mailSenderRepository.existsById(accounts.getId())) {
+                mailSenderRepository.deleteById(accounts.getId());
+            }
+            Mail_sender mailSender = Mail_sender.builder()
+                    .id(accounts.getId())
+                    .date_created(LocalDate.now())
+                    .email(users.getEmail())
+                    .token(token)
+                    .build();
 
-        mailSenderRepository.save(mailSender);
-        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-        Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());
-        scheduledExecutorService.schedule(deletedMail, 6, java.util.concurrent.TimeUnit.MINUTES);
-        scheduledExecutorService.shutdown();
-        javaMailSender.send(simpleMailMessage);
-        return MailResponse.builder()
-                .token(token)
-                .success(true)
-                .build();
+            mailSenderRepository.save(mailSender);
+            ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+            Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());
+            scheduledExecutorService.schedule(deletedMail, 6, java.util.concurrent.TimeUnit.MINUTES);
+            scheduledExecutorService.shutdown();
+            javaMailSender.send(simpleMailMessage);
+            return MailResponse.builder()
+                    .token(token)
+                    .success(true)
+                    .build();
+
     }
 
     @Override
@@ -102,7 +103,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to change your password.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "lephuocviet.io.vn/mail/change?token=" + token);
+                "https://maivanloi1.github.io/ForumLanguages/pages/reset-password.html?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())){
             mailSenderRepository.deleteById(accounts.getId());
         }
@@ -137,6 +138,7 @@ public class MailService implements IMailService {
            if (!mailSenderRepository.existsById(accounts.getId())) throw new WebException(ErrorCode.TOKEN_INVALID);
            accounts.setActive(true);
            accountsRepository.save(accounts);
+           mailSenderRepository.deleteById(accounts.getId());
            return MailResponse.builder()
                    .message("Active successfully")
                    .success(true)
@@ -161,8 +163,10 @@ public class MailService implements IMailService {
             Accounts accounts = accountsRepository.findAccountsByUsername(username);
             if (!passwordRequest.getPassword().equals(passwordRequest.getRepassword()))
             throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
+            if (!mailSenderRepository.existsById(accounts.getId())) throw new WebException(ErrorCode.TOKEN_INVALID);
             accounts.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
             accountsRepository.save(accounts);
+            mailSenderRepository.deleteById(accounts.getId());
             return MailResponse.builder()
                     .message("Reset successfully")
                     .success(true)

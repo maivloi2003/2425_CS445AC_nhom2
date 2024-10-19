@@ -4,6 +4,7 @@ import com.lephuocviet.forum.dto.requests.IntrospectionRequest;
 import com.lephuocviet.forum.enums.ErrorCode;
 import com.lephuocviet.forum.exception.WebException;
 import com.lephuocviet.forum.service.IAuthService;
+import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.text.ParseException;
 
 
 @Component
@@ -33,9 +35,9 @@ public class JwtDecoderCustom implements JwtDecoder {
     public Jwt decode(String token) throws JwtException {
         try {
             var introspect = iauthService.introspection(new IntrospectionRequest(token));
-            if (!introspect.isAuthenticated()) throw new WebException(ErrorCode.TOKEN_INVALID);
-        } catch (Exception e) {
-            throw new WebException(ErrorCode.TOKEN_INVALID);
+            if (!introspect.isAuthenticated())  throw new JwtException("Token invalid");
+        }  catch (JOSEException | ParseException e) {
+            throw new JwtException(e.getMessage());
         }
 
 
