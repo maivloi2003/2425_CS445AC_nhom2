@@ -1,10 +1,10 @@
 package com.lephuocviet.forum.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lephuocviet.forum.enity.Accounts;
-import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -12,12 +12,14 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
+public class NoticeResponse {
+
     String id;
-    String name;
-    String language;
-    String sex;
-    String img;
-    String email;
-    boolean isUser;
+    String message;
+    LocalDate date_created;
+    boolean status;
+    String idPost;
+    String comments_id;
+
+
 }

@@ -23,6 +23,8 @@ public class Notices {
     String message;
     LocalDate date_created;
     boolean status;
+    String idPost;
+    String idComment;
     @ManyToOne
     @JoinColumn(name = "user_id")
     Users users;

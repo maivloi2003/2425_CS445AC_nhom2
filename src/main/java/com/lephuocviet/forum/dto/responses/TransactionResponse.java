@@ -2,9 +2,13 @@ package com.lephuocviet.forum.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lephuocviet.forum.enity.Accounts;
-import jakarta.persistence.Lob;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -12,12 +16,14 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserResponse {
+public class TransactionResponse {
+
     String id;
-    String name;
-    String language;
-    String sex;
-    String img;
-    String email;
-    boolean isUser;
+    LocalDate date_created;
+    BigDecimal amount;
+    String unit;
+    String content;
+    String type;
+    boolean status;
+
 }

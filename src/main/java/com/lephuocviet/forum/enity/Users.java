@@ -28,14 +28,14 @@ public class Users {
     @JoinColumn(name = "account_id")
     Accounts accounts;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Notices> notices;
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Posts> posts;
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Likes> likes;
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Comments> comments;
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Comment_reply> commentReplies;
 }

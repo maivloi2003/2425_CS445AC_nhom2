@@ -18,5 +18,6 @@ public interface IAuthService {
 
     AuthenticationResponse logout(IntrospectionRequest introspectionRequest) throws ParseException, JOSEException;
 
+    boolean checkActive(IntrospectionRequest introspectionRequest) throws ParseException, JOSEException;
 
 }

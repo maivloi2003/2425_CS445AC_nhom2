@@ -3,6 +3,7 @@ package com.lephuocviet.forum.configuration;
 import com.lephuocviet.forum.dto.requests.IntrospectionRequest;
 import com.lephuocviet.forum.enums.ErrorCode;
 import com.lephuocviet.forum.exception.WebException;
+import com.lephuocviet.forum.service.IAccountService;
 import com.lephuocviet.forum.service.IAuthService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -40,7 +41,14 @@ public class JwtDecoderCustom implements JwtDecoder {
             throw new JwtException(e.getMessage());
         }
 
-
+        try{
+            boolean checkActive = iauthService.checkActive(new IntrospectionRequest(token));
+            if (!checkActive) throw new JwtException("Token invalid");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (JOSEException e) {
+            throw new RuntimeException(e);
+        }
         if (nimbusJwtDecoder == null) {
             SecretKeySpec secretKey = new SecretKeySpec(SIGNER_KEY.getBytes(),"HS256");
             nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKey)

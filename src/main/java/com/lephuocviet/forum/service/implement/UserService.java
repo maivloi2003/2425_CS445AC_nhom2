@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -47,7 +48,8 @@ public class UserService implements IUserService {
         if (!userRequest.getPassword().equals(userRequest.getRepassword()))
             throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
         Set<Roles> set = new HashSet<>();
-        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString()));
+        set.add(rolesRepository.findRolesByName(RolesCode.USER.toString())
+                .orElseThrow(() -> new WebException(ErrorCode.ROLE_NOT_FOUND)));
         Accounts accounts = Accounts.builder()
                 .username(userRequest.getUsername())
                 .password(passwordEncoder.encode(userRequest.getPassword()))
@@ -64,32 +66,36 @@ public class UserService implements IUserService {
 
     @Override
     public UserResponse updateUser(UserRequest userRequest) throws IOException {
-//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//        if(!accountsRepository.existsByUsername(username))
-//            throw new WebException(ErrorCode.USER_NOT_FOUND);
-//        Users user = usersRepository.findUserByUsername(username);
-//        userMapper.toUpdate(user,userRequest);
-//        user.setImg(userRequest.getImg().getBytes());
-//        usersRepository.save(user);
-//        return userMapper.toUserResponses(user);
-        return null;
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users myUser = usersRepository.findUserByUsername(username)
+                .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
+        userMapper.toUpdate(myUser,userRequest);
+        usersRepository.save(myUser);
+        return userMapper.toUserResponses(myUser);
+
     }
 
     @Override
-    public boolean deleteUser(String userId) {
-//        Users user = usersRepository.findUsersById(userId);
-//        if (user == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
-//        usersRepository.delete(user);
-//        return true;
-        return false;
+    public void deleteUser(String userId) {
+        Users user = usersRepository.findUsersById(userId)
+                .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
+        usersRepository.delete(user);
+
     }
 
     @Override
     public UserResponse getUserById(String userId) {
-//        Users user = usersRepository.findUsersById(userId);
-//        if (user == null) throw new WebException(ErrorCode.USER_NOT_FOUND);
-//        return userMapper.toUserResponses(user);
-        return null;
+       Users user = usersRepository.findUsersById(userId)
+               .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
+       String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+       UserResponse userResponse = userMapper.toUserResponses(user);
+       if (user.getAccounts().getUsername().equals(username)){
+           userResponse.setUser(true);
+       }else userResponse.setUser(false);
+
+        return userResponse;
+
     }
 
     @Override
@@ -106,9 +112,8 @@ public class UserService implements IUserService {
     @Override
     public UserResponse getMyInformation() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!accountsRepository.existsByUsername(username))
-            throw new WebException(ErrorCode.USER_NOT_FOUND);
-        Users users = usersRepository.findUserByUsername(username);
+        Users users = usersRepository.findUserByUsername(username)
+                .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
         return userMapper.toUserResponses(users);
     }
 }

@@ -12,16 +12,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostPageResponse {
+public class LikeResponse {
 
     String id;
-    String title;
-    String content;
     LocalDate date_created;
-    String img;
-    String language;
-    String name;
-    long likes;
-    long comments;
+    String user_id;
+    String post_id;
+    boolean liked;
 
 }

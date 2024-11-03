@@ -47,9 +47,8 @@ public class AuthService implements IAuthService {
 
     @Override
     public AuthenticationResponse authentication(AuthenticationRequest authenticationRequest) {
-        if (accountsRepository.findAccountsByUsername(authenticationRequest.getUsername()) == null)
-            throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-        Accounts accounts = accountsRepository.findAccountsByUsername(authenticationRequest.getUsername());
+        Accounts accounts = accountsRepository.findAccountsByUsername(authenticationRequest.getUsername())
+                .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
         var valid = passwordEncoder.matches(authenticationRequest.getPassword(), accounts.getPassword());
         if (!valid) throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
         String token = generateToken(accounts);
@@ -94,12 +93,23 @@ public class AuthService implements IAuthService {
         }
     }
 
+    @Override
+    public boolean checkActive(IntrospectionRequest introspectionRequest) throws ParseException, JOSEException {
+        SignedJWT signedJWT = SignedJWT.parse(introspectionRequest.getToken());
+        String username = signedJWT.getJWTClaimsSet().getSubject();
+        Accounts accounts = accountsRepository.findAccountsByUsername(username)
+                .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
+        if (accounts.isActive()) return true;
+        return false;
+    }
+
     public AuthenticationResponse refreshToken(IntrospectionRequest introspectionRequest) throws ParseException, JOSEException {
         try {
             SignedJWT signedJWT = verify(introspectionRequest.getToken());
             String jid = signedJWT.getJWTClaimsSet().getJWTID();
             String username = signedJWT.getJWTClaimsSet().getSubject();
-            Accounts accounts = accountsRepository.findAccountsByUsername(username);
+            Accounts accounts = accountsRepository.findAccountsByUsername(username)
+                    .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
             String token = generateToken(accounts);
             Token_invalid tokenInvalid = Token_invalid.builder()
                     .idToken(jid)

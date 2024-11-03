@@ -24,8 +24,10 @@ public class Transaction {
     String id;
     LocalDate date_created;
     BigDecimal amount;
-    String status;
-
+    String unit;
+    String content;
+    String type;
+    boolean status;
     @ManyToOne
     @JoinColumn(name = "account_id")
     Accounts accounts;

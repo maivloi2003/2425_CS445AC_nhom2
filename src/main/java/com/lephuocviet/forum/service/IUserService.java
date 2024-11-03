@@ -18,7 +18,7 @@ public interface IUserService {
 
     UserResponse updateUser(UserRequest userRequest) throws IOException;
 
-    boolean deleteUser(String userId);
+    void deleteUser(String userId);
 
     UserResponse getUserById(String userId);
 

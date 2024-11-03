@@ -14,6 +14,11 @@ public enum ErrorCode {
     USERNAME_IS_EXISTS(40001, "Username is exists", HttpStatus.BAD_REQUEST),
     EMAIL_IS_EXISTS(40002, "Email is exists", HttpStatus.BAD_REQUEST),
     ACCOUNT_IS_ACTIVE(40003, "Account is active", HttpStatus.BAD_REQUEST),
+    FILE_TO_LARGE(40004, "File to large", HttpStatus.BAD_REQUEST),
+    LIKE_IS_EXISTS(40005, "Like is exists", HttpStatus.BAD_REQUEST),
+    NOT_USER_POST(40006, "Not user post", HttpStatus.BAD_REQUEST),
+    TYPE_ORDER_IS_WRONG(40007, "Type order is wrong", HttpStatus.BAD_REQUEST),
+
 
     //401 AUTHENTICATION
 
@@ -25,6 +30,7 @@ public enum ErrorCode {
     //403 FORBIDDEN
     FORBIDDEN(40301, "Forbidden",HttpStatus.FORBIDDEN),
     // 404 NOT FOUND
+    FILE_NOT_FOUND(40005, "File not found", HttpStatus.NOT_FOUND),
     USERNAME_NOT_FOUND(40401,"Username not found", HttpStatus.NOT_FOUND),
     EMAIL_NOT_FOUND(40402,"Email not found", HttpStatus.NOT_FOUND),
     ROLE_NOT_FOUND(40403, "Role not found", HttpStatus.NOT_FOUND),
@@ -37,7 +43,8 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(40410, "Comment not found", HttpStatus.NOT_FOUND),
     LIKE_NOT_FOUND(40411, "Like not found", HttpStatus.NOT_FOUND),
     COMMENT_REPLY_NOT_FOUND(40412, "Comment reply not found", HttpStatus.NOT_FOUND),
-    USER_NOT_FOUND(40413, "User not found", HttpStatus.NOT_FOUND);
+    USER_NOT_FOUND(40413, "User not found", HttpStatus.NOT_FOUND),
+    LIKES_NOT_FOUND(40414, "Likes not found", HttpStatus.NOT_FOUND),;
     ;
     private int code;
     private String message;

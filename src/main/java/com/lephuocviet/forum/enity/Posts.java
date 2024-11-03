@@ -38,10 +38,10 @@ public class Posts {
     @OneToMany(mappedBy = "posts")
     List<Ads> ads;
 
-    @OneToMany(mappedBy = "posts")
+    @OneToMany(mappedBy = "posts",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Likes> likes;
 
-    @OneToMany(mappedBy = "posts")
+    @OneToMany(mappedBy = "posts",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Comments> comments;
 
 

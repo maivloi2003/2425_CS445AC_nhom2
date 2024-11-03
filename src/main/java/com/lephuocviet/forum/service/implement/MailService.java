@@ -55,47 +55,49 @@ public class MailService implements IMailService {
 
     @Override
     public MailResponse sendMailActive() {
-            String username = SecurityContextHolder.getContext().getAuthentication().getName();
-            if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-            Users users = usersRepository.findUserByUsername(username);
-            Accounts accounts = accountsRepository.findAccountsByUsername(username);
-            if (accounts.isActive()) throw new WebException(ErrorCode.ACCOUNT_IS_ACTIVE);
-            String token = generateTokenActive(accounts);
-            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-            simpleMailMessage.setTo(users.getEmail());
-            simpleMailMessage.setSubject("Forum Language");
-            simpleMailMessage.setFrom("vietyts2003@gmail.com");
-            simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
-                    "Link is only valid for 5 minutes \n" +
-                    "https://maivanloi1.github.io/ForumLanguages/pages/confirm-email.html?token=" + token);
-            if (mailSenderRepository.existsById(accounts.getId())) {
-                mailSenderRepository.deleteById(accounts.getId());
-            }
-            Mail_sender mailSender = Mail_sender.builder()
-                    .id(accounts.getId())
-                    .date_created(LocalDate.now())
-                    .email(users.getEmail())
-                    .token(token)
-                    .build();
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Users users = usersRepository.findUserByUsername(username)
+                .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
+        Accounts accounts = accountsRepository.findAccountsByUsername(username)
+                .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
+        if (accounts.isActive()) throw new WebException(ErrorCode.ACCOUNT_IS_ACTIVE);
+        String token = generateTokenActive(accounts);
+        SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+        simpleMailMessage.setTo(users.getEmail());
+        simpleMailMessage.setSubject("Forum Language");
+        simpleMailMessage.setFrom("vietyts2003@gmail.com");
+        simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
+                "Link is only valid for 5 minutes \n" +
+                "https://maivanloi1.github.io/ForumLanguages/pages/confirm-email.html?token=" + token);
+        if (mailSenderRepository.existsById(accounts.getId())) {
+            mailSenderRepository.deleteById(accounts.getId());
+        }
+        Mail_sender mailSender = Mail_sender.builder()
+                .id(accounts.getId())
+                .date_created(LocalDate.now())
+                .email(users.getEmail())
+                .token(token)
+                .build();
 
-            mailSenderRepository.save(mailSender);
-            ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-            Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());
-            scheduledExecutorService.schedule(deletedMail, 6, java.util.concurrent.TimeUnit.MINUTES);
-            scheduledExecutorService.shutdown();
-            javaMailSender.send(simpleMailMessage);
-            return MailResponse.builder()
-                    .token(token)
-                    .success(true)
-                    .build();
+        mailSenderRepository.save(mailSender);
+        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());
+        scheduledExecutorService.schedule(deletedMail, 6, java.util.concurrent.TimeUnit.MINUTES);
+        scheduledExecutorService.shutdown();
+        javaMailSender.send(simpleMailMessage);
+        return MailResponse.builder()
+                .token(token)
+                .success(true)
+                .build();
 
     }
 
     @Override
     public MailResponse sendMailResetPassword(MailRequest mailRequest) {
-        Users users = usersRepository.findUserByEmail(mailRequest.getEmail());
-        if (users == null) throw new WebException(ErrorCode.EMAIL_NOT_FOUND);
-        Accounts accounts = accountsRepository.findAccountsById(users.getAccounts().getId());
+        Users users = usersRepository.findUserByEmail(mailRequest.getEmail())
+                .orElseThrow(()-> new WebException(ErrorCode.USER_NOT_FOUND));
+        Accounts accounts = accountsRepository.findAccountsById(users.getAccounts().getId())
+                .orElseThrow(() -> new WebException(ErrorCode.ACCOUNT_NOT_FOUND));
         String token = generateTokenReset(accounts);
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setTo(users.getEmail());
@@ -104,7 +106,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setText("Please click on the following link to change your password.\n" +
                 "Link is only valid for 5 minutes \n" +
                 "https://maivanloi1.github.io/ForumLanguages/pages/reset-password.html?token=" + token);
-        if (mailSenderRepository.existsById(accounts.getId())){
+        if (mailSenderRepository.existsById(accounts.getId())) {
             mailSenderRepository.deleteById(accounts.getId());
         }
         Mail_sender mailSender = Mail_sender.builder()
@@ -128,41 +130,39 @@ public class MailService implements IMailService {
 
     @Override
     public MailResponse checkMailActive(String token) throws ParseException, JOSEException {
-       try{
-           SignedJWT signedJWT = verifyToken(token);
-           String username = signedJWT.getJWTClaimsSet().getSubject();
-           String name = signedJWT.getJWTClaimsSet().getClaim("active").toString();
-           if (!name.equals("active")) throw new WebException(ErrorCode.TOKEN_INVALID);
-           if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-           Accounts accounts = accountsRepository.findAccountsByUsername(username);
-           if (!mailSenderRepository.existsById(accounts.getId())) throw new WebException(ErrorCode.TOKEN_INVALID);
-           accounts.setActive(true);
-           accountsRepository.save(accounts);
-           mailSenderRepository.deleteById(accounts.getId());
-           return MailResponse.builder()
-                   .message("Active successfully")
-                   .success(true)
-                   .build();
-       }catch (Exception e){
-           throw new WebException(ErrorCode.TOKEN_INVALID);
-       }
+        try {
+            SignedJWT signedJWT = verifyToken(token);
+            String username = signedJWT.getJWTClaimsSet().getSubject();
+            String name = signedJWT.getJWTClaimsSet().getClaim("active").toString();
+            if (!name.equals("active")) throw new WebException(ErrorCode.TOKEN_INVALID);
+            Accounts accounts = accountsRepository.findAccountsByUsername(username)
+                    .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
+            if (!mailSenderRepository.existsById(accounts.getId())) throw new WebException(ErrorCode.TOKEN_INVALID);
+            accounts.setActive(true);
+            accountsRepository.save(accounts);
+            mailSenderRepository.deleteById(accounts.getId());
+            return MailResponse.builder()
+                    .message("Active successfully")
+                    .success(true)
+                    .build();
+        } catch (Exception e) {
+            throw new WebException(ErrorCode.TOKEN_INVALID);
+        }
 
     }
 
 
-
-
     @Override
-    public MailResponse resetPassword(String token,PasswordRequest passwordRequest) {
+    public MailResponse resetPassword(String token, PasswordRequest passwordRequest) {
         try {
             SignedJWT signedJWT = verifyToken(token);
             String username = signedJWT.getJWTClaimsSet().getSubject();
             String name = signedJWT.getJWTClaimsSet().getClaim("reset").toString();
             if (!name.equals("reset")) throw new WebException(ErrorCode.TOKEN_INVALID);
-            if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-            Accounts accounts = accountsRepository.findAccountsByUsername(username);
+            Accounts accounts = accountsRepository.findAccountsByUsername(username)
+                    .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
             if (!passwordRequest.getPassword().equals(passwordRequest.getRepassword()))
-            throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
+                throw new WebException(ErrorCode.PASSWORD_NOT_MATCH);
             if (!mailSenderRepository.existsById(accounts.getId())) throw new WebException(ErrorCode.TOKEN_INVALID);
             accounts.setPassword(passwordEncoder.encode(passwordRequest.getPassword()));
             accountsRepository.save(accounts);
@@ -171,7 +171,7 @@ public class MailService implements IMailService {
                     .message("Reset successfully")
                     .success(true)
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new WebException(ErrorCode.TOKEN_INVALID);
         }
 

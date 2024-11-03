@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AccountService implements IAccountService {
 
     AccountsRepository accountsRepository;
@@ -23,8 +23,8 @@ public class AccountService implements IAccountService {
     @Override
     public ActiveResponse checkActive() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        if (!accountsRepository.existsByUsername(username)) throw new WebException(ErrorCode.USERNAME_NOT_FOUND);
-        Accounts accounts = accountsRepository.findAccountsByUsername(username);
+        Accounts accounts = accountsRepository.findAccountsByUsername(username)
+                .orElseThrow(() -> new WebException(ErrorCode.USERNAME_NOT_FOUND));
         if (accounts.isActive()) return ActiveResponse.builder()
                 .active(true)
                 .message("Account is active")

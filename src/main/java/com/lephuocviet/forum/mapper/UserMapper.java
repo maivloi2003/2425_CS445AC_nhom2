@@ -20,12 +20,8 @@ public interface UserMapper {
 
     UserResponse toUserResponses(Users users);
 
-//    @Mapping(source = "name", target = "name")
-//    @Mapping(source = "language", target = "language")
-//    @Mapping(source = "sex", target = "sex")
-//    @Mapping(target = "img", ignore = true)
-//    @Mapping(source = "email", target = "email")
-//    Users toUpdate(@MappingTarget Users users, UserRequest userRequest);
+    @Mapping(target = "email", ignore = true)
+    Users toUpdate(@MappingTarget Users users, UserRequest userRequest);
 
 //    List<UserResponse> toListUserResponses(List<Users> users);
 
