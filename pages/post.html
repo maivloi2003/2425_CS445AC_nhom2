@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/post.css">
+    <link rel="stylesheet" href="../assets/font/fontawesome-free-6.6.0-web/css/all.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-logo">
+                <a href="../index.html" class="header-logo__link"><img src="../assets/images/logo.png" alt="Logo"
+                        class="header-logo__link-img"></a>
+            </div>
+
+            <div class="header-banner">
+                <h4 class="header-banner-heading">
+                    Forum Languages
+                </h4>
+            </div>
+
+            <div class="header-search">
+                <input type="text" class="header-search__input" name="search" placeholder="Tìm kiếm bài viết..." />
+                <button class="header-search__btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <div class="header-create">
+                <a href="#" class="header-create__link">
+                    <i class="fa-solid fa-plus"></i>
+                    create
+                </a>
+            </div>
+            <div class="header-notify">
+                <span class="header-notify__icon">
+                    <i class="fa-regular fa-bell"></i>
+                </span>
+            </div>
+            <div class="header-account">
+                <img src="" alt="" class="header-account__img">
+                <ul class="header-account__list">
+                    <a href="../pages/profile.html" class="header-account__username"></a>
+                    <li class="header-account__list-item"><a href="../pages/setting.html" class="header-account__item-link">Setting</a></li>
+                    <li class="header-account__list-item"><a href="#" class="header-account__item-link">Support</a></li>
+                    <li class="header-account__list-item"><a href="#" class="header-account__item-link">Logout</a></li>
+                </ul>
+            </div>
+            <div class="header-auth">
+                <a href="../pages/register.html" class="header-auth__register-link">Register</a>
+                <span>/</span>
+                <a href="../pages/login.html" class="header-auth__login-link">Login</a>
+            </div>
+        </div>
+        <div class="body-post">
+            <div class="frame-post">
+                <div class="header-post">
+                    <h4 class="header-post__heading">Create a Post</h4>
+                </div>
+                <hr class="header-post__hr">
+                <form class="post-form">
+                    <div class="kind-post">
+                        <span class="kind-post__title">Language:</span>
+                        <select name="language" class="kind-post__select">
+                            <option value="" disabled selected>Select your kind</option>
+                            <option value="English">English</option>
+                            <option value="China">China</option>
+                            <option value="Japan">Japan</option>
+                        </select>
+                    </div>
+                    <div class="create-post">
+                        <div class="post-title">
+                            <input type="text" class="post-title__input" name="title" placeholder="Title">
+                        </div>
+
+                        <div class="content-create">
+                            <div class="content-create__header"></div>
+                            <textarea name="content" class="content-create__text" placeholder="Text"></textarea>
+                        </div>
+
+                        <div class="post-file">
+                            <label for="post-file__input" class="post-file__label">
+                                <div class="icon">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <i class="fa-solid fa-image"></i>
+                                </div>
+                            </label>
+                            <img class="post-file__img" alt="Preview Image">
+                            <input type="file" name="image" id="post-file__input" accept=".jpg,.png">
+                        </div>
+                        <hr class="post-hr">
+                        <div class="post-up">
+                            <button class="post-up__btn" type="button">Post</button>
+                        </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="../assets/js/common.js"></script>
+    <script src="../assets/js/shared.js"></script>
+    <script src="../assets/js/post.js"></script>
+</body>
+
+</html>
