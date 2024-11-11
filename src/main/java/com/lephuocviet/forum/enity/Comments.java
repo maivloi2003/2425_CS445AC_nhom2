@@ -31,7 +31,7 @@ public class Comments {
     @JoinColumn(name = "post_id")
     Posts posts;
 
-    @OneToMany(mappedBy = "comments")
+    @OneToMany(mappedBy = "comments",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Comment_reply> commentReplies;
 
 }

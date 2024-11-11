@@ -35,8 +35,8 @@ public class Posts {
     Language language;
 
 
-    @OneToMany(mappedBy = "posts")
-    List<Ads> ads;
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<AdsPost> adsPosts;
 
     @OneToMany(mappedBy = "posts",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Likes> likes;

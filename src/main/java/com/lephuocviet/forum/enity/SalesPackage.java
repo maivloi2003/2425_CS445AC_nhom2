@@ -4,25 +4,25 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "vips")
-public class Vips {
+@Table(name = "sales_package")
+public class SalesPackage {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    LocalDate date_created;
-    LocalDate date_expired;
+    String name;
+    Integer price_usd;
+    Integer price_vnd;
+    Integer description;
 
-    @OneToOne
-    @JoinColumn(name = "account_id")
-    Accounts accounts;
+    @OneToMany(mappedBy = "salesPackage")
+    List<Transaction> transaction;
 }

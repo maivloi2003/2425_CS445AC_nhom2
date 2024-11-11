@@ -27,12 +27,9 @@ public class Accounts {
     @ManyToMany
     Set<Roles> roles;
 
-    @OneToOne(mappedBy = "accounts")
-    Vips vips;
-
-    @OneToMany(mappedBy = "accounts")
+    @OneToMany(mappedBy = "accounts",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Transaction> transactions;
 
-    @OneToOne(mappedBy = "accounts")
+    @OneToOne(mappedBy = "accounts",cascade = CascadeType.ALL, orphanRemoval = true)
     Users users;
 }

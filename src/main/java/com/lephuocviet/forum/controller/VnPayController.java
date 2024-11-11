@@ -23,15 +23,20 @@ public class VnPayController {
     @GetMapping("/submitOrder")
     public ResponseEntity<ApiResponses<VnPayResponse>> create(HttpServletRequest request,
                                                               @RequestParam String location,
-                                                              @RequestParam int amount,
                                                               @RequestParam String type,
-                                                              @RequestParam String idHandler) {
+                                                              @RequestParam String idHandler,
+                                                              @RequestParam String sales_package) {
         return ResponseEntity.ok(ApiResponses.<VnPayResponse>builder()
-                .result(vnPayService.createOrder(request,amount, location,type,idHandler))
+                .result(vnPayService.createOrder(request, location,type,idHandler,sales_package))
                 .build());
     }
-//
-//    @GetMapping("/orderReturn")
-//    public
+
+    @GetMapping("/orderReturn")
+    public ResponseEntity<ApiResponses<VnPayResponse>> orderReturn(HttpServletRequest request) {
+        VnPayResponse response = vnPayService.orderReturn(request);
+        return ResponseEntity.ok(ApiResponses.<VnPayResponse>builder()
+                .result(response)
+                .build());
+    }
 
 }

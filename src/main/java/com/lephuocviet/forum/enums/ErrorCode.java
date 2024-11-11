@@ -18,6 +18,7 @@ public enum ErrorCode {
     LIKE_IS_EXISTS(40005, "Like is exists", HttpStatus.BAD_REQUEST),
     NOT_USER_POST(40006, "Not user post", HttpStatus.BAD_REQUEST),
     TYPE_ORDER_IS_WRONG(40007, "Type order is wrong", HttpStatus.BAD_REQUEST),
+    PACKAGE_NOT_FOUND(40008, "Package not found", HttpStatus.BAD_REQUEST),
 
 
     //401 AUTHENTICATION

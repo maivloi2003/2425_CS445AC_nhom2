@@ -22,7 +22,7 @@ public class Language {
     String name;
     String description;
 
-    @OneToMany(mappedBy = "language")
+    @OneToMany(mappedBy = "language",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Posts> posts;
 
 }

@@ -1,6 +1,5 @@
 package com.lephuocviet.forum.enity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -12,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "ads")
-public class Ads {
+@Table(name = "adsPost")
+public class AdsPost {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
@@ -21,6 +20,6 @@ public class Ads {
     Integer views;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    Posts posts;
+    @JoinColumn(name = "posts_id")
+    Posts post;
 }
