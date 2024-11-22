@@ -1,4 +1,6 @@
+
 const btnUpPost = $('.post-up__btn')
+
 const apiUpPost = `${api}posts`
 const apiUpImage = `${api}upload/post`
 
@@ -53,7 +55,7 @@ function callApiUpPost(language, title, content, img) {
         .then((data) => {
             if (data.result) {
                 alert("Up Post Success")
-                window.location.href = '../index.html?content=' + content
+                window.location.href = './post-detail.html?id=' + data.result.id
             } else {
                 alert(data.message)
             }
@@ -64,7 +66,7 @@ function callApiUpPost(language, title, content, img) {
 }
 
 function callApiUpImage(language, title, content) {
-    let resultImage = ""
+    let resultImage = null
     let img = document.getElementById('post-file__input').files[0]
 
     if (img) {
@@ -87,6 +89,8 @@ function callApiUpImage(language, title, content) {
             .catch((error) => {
                 console.log(error)
             })
+    }else{
+        callApiUpPost(language, title, content, resultImage)
     }
 }
 
