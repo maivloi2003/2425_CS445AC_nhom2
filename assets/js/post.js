@@ -1,6 +1,4 @@
-
 const btnUpPost = $('.post-up__btn')
-
 const apiUpPost = `${api}posts`
 const apiUpImage = `${api}upload/post`
 
