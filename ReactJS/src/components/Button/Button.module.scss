@@ -1,0 +1,44 @@
+.wrapper {
+    border: 1.5px solid transparent;
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    background-color: transparent;
+    cursor: pointer;
+
+    + .wrapper {
+        margin-left: 16px;
+    }
+}
+
+.icon + .title,
+.title + .icon {
+    margin-left: 2px;
+}
+
+// Styles Button
+.primary {
+    border-color: var(--primary);
+
+    &:hover {
+        background-color: rgba(29, 191, 175, 0.3);
+    }
+}
+
+.round {
+    border-radius: 9999px;
+}
+
+.iconText {
+    border: none;
+    padding: 16px 10px;
+    border-radius: 10px;
+    font-size: 2rem;
+
+    &:hover {
+        background-color: #f1f1f1;
+    }
+}
