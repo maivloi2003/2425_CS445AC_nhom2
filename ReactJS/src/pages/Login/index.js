@@ -26,10 +26,11 @@ function Login() {
     const fetchApiCheckActive = async (token) => {
         const res = await checkActiveService(token)
         if (res.result) {
-            if (res.result.active === false) {
-                return false
-            } else {
+            console.log(res.result)
+            if (res.result.active) {
                 return true
+            } else {
+                return false
             }
         }
     }
@@ -49,6 +50,8 @@ function Login() {
             if (await fetchApiCheckActive(token)) {
                 localStorage.setItem('authToken', token)
                 navigate('/')
+            }else{
+                navigate('/activeAccount')
             }
         }
     }
