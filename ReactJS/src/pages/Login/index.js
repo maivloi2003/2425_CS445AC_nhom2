@@ -47,8 +47,9 @@ function Login() {
         }
         else {
             const token = res.result.token
+            localStorage.setItem('authToken', token)
+            
             if (await fetchApiCheckActive(token)) {
-                localStorage.setItem('authToken', token)
                 navigate('/')
             }else{
                 navigate('/activeAccount')

@@ -8,9 +8,15 @@
     font-weight: 500;
     background-color: transparent;
     cursor: pointer;
+    user-select: none;
 
     + .wrapper {
         margin-left: 16px;
+    }
+
+    &.disable {
+        opacity: 0.5;
+        pointer-events: none
     }
 }
 

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const cx = classNames.bind(styles)
 
-function Button({ className, children, to, href, onClick, iconText = false, primary = false, round = false, leftIcon = false, rightIcon = false, ...passProps }, ref) {
+function Button({ className, children, to, href, onClick,disable = false, iconText = false, primary = false, round = false, leftIcon = false, rightIcon = false, ...passProps }, ref) {
     let Comp = 'button'
     const props = {
         onClick,
@@ -20,6 +20,7 @@ function Button({ className, children, to, href, onClick, iconText = false, prim
         round,
         primary,
         iconText,
+        disable,
     })
 
     if (to) {
@@ -29,6 +30,16 @@ function Button({ className, children, to, href, onClick, iconText = false, prim
         Comp = 'a'
         props.href = href
     }
+
+    // Disable
+    if (disable) {
+        Object.keys(props).forEach(key => {
+            if (key.startsWith('on') && typeof props[key] === 'function') {
+                delete props[key];
+            }
+        })
+    }
+
     return (
         <Comp ref={ref} className={classes} {...props}>
             {leftIcon && <FontAwesomeIcon className={cx('icon')} icon={leftIcon} />}

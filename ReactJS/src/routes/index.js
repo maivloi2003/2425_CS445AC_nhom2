@@ -13,6 +13,7 @@ import ForgotPassword from '~/pages/ForgotPassword';
 import SendEmail from '~/pages/SendEmail';
 import ConfirmEmail from '~/pages/ConfirmEmail';
 import PostDetail from '~/pages/PostDetail';
+import ResetPassword from '~/pages/ResetPassword';
 
 const publicRoutes = [
     { path: '/', component: Home },
@@ -29,6 +30,7 @@ const privateRoutes = [
     { path: '/sendEmail', component: SendEmail, layout: null },
     { path: '/confirmEmail', component: ConfirmEmail, layout: null },
     { path: '/posts/:id_post', component: PostDetail },
+    { path: '/resetPassword', component: ResetPassword, layout: null },
 ];
 
 export { publicRoutes, privateRoutes };
