@@ -5,7 +5,7 @@
     padding: 6px 12px;
     border-radius: 4px;
     font-size: 1.6rem;
-    font-weight: 500;
+    font-family: inherit;
     background-color: transparent;
     cursor: pointer;
     user-select: none;
@@ -16,35 +16,53 @@
 
     &.disable {
         opacity: 0.5;
-        pointer-events: none
+        pointer-events: none;
     }
 }
 
 .icon + .title,
 .title + .icon {
-    margin-left: 2px;
+    margin-left: 8px;
 }
 
 // Styles Button
-.primary {
-    border-color: var(--primary);
+.wrapper {
+    &.normal {
+        border-color: var(--primary);
 
-    &:hover {
-        background-color: rgba(29, 191, 175, 0.3);
+        &:hover {
+            background-color: rgba(29, 191, 175, 0.3);
+        }
     }
-}
 
-.round {
-    border-radius: 9999px;
-}
+    &.primary {
+        color: var(--white);
+        font-weight: 600;
+        border: none;
+        background-color: var(--primary);
+    }
 
-.iconText {
-    border: none;
-    padding: 16px 10px;
-    border-radius: 10px;
-    font-size: 2rem;
+    &.round {
+        border-radius: 9999px;
+    }
 
-    &:hover {
-        background-color: #f1f1f1;
+    &.deleted {
+        color: red;
+        border-color: var(--primary);
+
+        :hover {
+            opacity: 0.8;
+        }
+    }
+
+    &.iconText {
+        border: none;
+        padding: 16px 10px;
+        border-radius: 10px;
+        font-size: 2rem;
+
+        &:hover {
+            background-color: #f1f1f1;
+        }
     }
 }

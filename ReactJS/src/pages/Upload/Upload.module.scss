@@ -1,0 +1,123 @@
+.wrapper {
+    width: 56%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: #e4e4e4;
+    margin: 50px auto 0;
+    padding: 20px 40px;
+    border-radius: 14px;
+}
+.header-heading {
+    font-size: 2.2rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.kind {
+    display: flex;
+    align-items: flex-end;
+}
+
+.kind-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.kind-select {
+    width: 200px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 1.6rem;
+    margin-left: 20px;
+}
+
+.body {
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px 20px;
+}
+
+.form {
+    margin: 20px;
+}
+.title {
+    margin: 10px 0;
+}
+.title-input {
+    width: 100%;
+    height: 36px;
+    font-size: 1.6rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #777;
+}
+.content {
+    border-radius: 8px;
+    overflow: hidden;
+}
+.content-header {
+    background-color: #f1f1f1;
+    height: 40px;
+}
+.content-text {
+    height: 400px;
+    width: 100%;
+    font-size: 1.6rem;
+    padding: 4px 6px;
+    border-top: none;
+    border-right: 2px solid #d3d2d2;
+    border-left: 2px solid #d3d2d2;
+    border-bottom: 2px solid #d3d2d2;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    resize: none;
+}
+.file {
+    padding: 5px 8px;
+    width: 100%;
+    cursor: pointer;
+    color: #666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+.file-label {
+    width: 80px;
+    height: 80px;
+    border: 1px solid #999;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+}
+
+.file-img {
+    display: none;
+    width: 400px;
+    max-height: 400px;
+    border-radius: 8px;
+}
+
+.file-input {
+    display: none;
+}
+.upload {
+    display: flex;
+    padding: 10px 0;
+    justify-content: end;
+}
+.upload-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #5e5e5e;
+    cursor: pointer;
+}

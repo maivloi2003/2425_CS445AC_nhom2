@@ -1,13 +1,15 @@
 import * as request from '~/utils/request'
 
-const resetPassword = async (email) => {
+const resetPassword = async (data, token) => {
     try {
-        const res = request.post('mail/reset', {
-            email,
+        const res = await request.post('mail/change', data, {
+            params: {
+                token
+            }
         })
         return res
     } catch (error) {
-        return error        
+        return error
     }
 }
 

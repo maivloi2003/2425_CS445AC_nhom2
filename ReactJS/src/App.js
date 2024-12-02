@@ -1,9 +1,8 @@
-import { Fragment } from 'react';
+import { Fragment, } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layouts';
 
-const token = !!localStorage.getItem('authToken')
 
 function App() {
 
@@ -11,6 +10,7 @@ function App() {
         <Router>
             <div className="App">
                 <Routes>
+                    {/* Public Routes */}
                     {publicRoutes.map((route, index) => {
                         const Page = route.component;
 
@@ -35,6 +35,7 @@ function App() {
                         );
                     })}
 
+                    {/* Private Routes */}
                     {privateRoutes.map((route, index) => {
                         const Page = route.component;
 
@@ -50,12 +51,12 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    token ? (
+                                    !!localStorage.getItem('authToken') ? (
                                         <Layout>
                                             <Page />
                                         </Layout>
                                     ) : (
-                                        <Navigate to="/login" replace />
+                                        <Navigate to="/login" />
                                     )
                                 }
                             />

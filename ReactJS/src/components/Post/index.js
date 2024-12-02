@@ -41,13 +41,13 @@ function Post({ data }) {
             )}
             <div className={cx('interact')}>
                 <div className={cx('like')}>
-                    <Button className={cx('like-btn')} round primary rightIcon={faHeart}><span>{data.likes}</span></Button>
+                    <Button className={cx('like-btn')} round normal rightIcon={faHeart}><span>{data.likes}</span></Button>
                 </div>
                 <div className={cx('comment')}>
-                    <Button className={cx('comment-btn')} round primary rightIcon={faComment}><span>{data.comments}</span></Button>
+                    <Button className={cx('comment-btn')} round normal rightIcon={faComment}><span>{data.comments}</span></Button>
                 </div>
                 <div className={cx('share')}>
-                    <Button className={cx('share-btn')} round primary rightIcon={faShare} />
+                    <Button className={cx('share-btn')} round normal rightIcon={faShare} />
                 </div>
             </div>
         </div>

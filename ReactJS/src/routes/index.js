@@ -20,6 +20,8 @@ const publicRoutes = [
     { path: '/login', component: Login, layout: null },
     { path: '/register', component: Register, layout: null },
     { path: '/forgotPassword', component: ForgotPassword, layout: null },
+    { path: '/resetPassword', component: ResetPassword, layout: null },
+    { path: '/confirmEmail', component: ConfirmEmail, layout: null },
 ];
 
 const privateRoutes = [
@@ -28,9 +30,7 @@ const privateRoutes = [
     { path: '/upload', component: Upload, layout: HeaderOnly },
     { path: '/activeAccount', component: ActiveAccount, layout: null },
     { path: '/sendEmail', component: SendEmail, layout: null },
-    { path: '/confirmEmail', component: ConfirmEmail, layout: null },
     { path: '/posts/:id_post', component: PostDetail },
-    { path: '/resetPassword', component: ResetPassword, layout: null },
 ];
 
 export { publicRoutes, privateRoutes };

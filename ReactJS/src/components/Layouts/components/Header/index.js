@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import classNames from 'classnames/bind';
 import { faCircleInfo, faUser, faGear, faPlus, faSignOut, faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,38 +12,45 @@ import Button from '~/components/Button';
 import Image from '~/components/Image';
 import { Link } from 'react-router-dom';
 import Menu from '~/components/Popper/Menu';
+import { infoUserCurrentService } from '~/apiServices';
 
 const cx = classNames.bind(styles);
 
-const MENU_ITEMS = [
-
-    {
-        icon: faUser,
-        title: 'Mai Văn Lợi',
-        to: '/vloi03',
-        separate: true
-    },
-    {
-        icon: faGear,
-        title: 'Setting',
-        to: '/setting'
-    },
-    {
-        icon: faCircleInfo,
-        title: 'Support',
-        to: '/support'
-    },
-    {
-        icon: faSignOut,
-        title: 'Logout',
-        onClick: () => { localStorage.removeItem('authToken') },
-        to: '/login',
-    }
-]
 
 function Header() {
+
     const [searchValue, setSearchValue] = useState('');
     const [currentUser, setCurrentUser] = useState(localStorage.getItem('authToken'));
+    const [infoCurrentUser, setInfoCurrentUser] = useState({
+        id: '',
+        name: '',
+        img: '',
+    });
+
+    const [menuItems, setMenuItems] = useState([
+        {
+            icon: faUser,
+            title: '',
+            to: '',
+            separate: true,
+        },
+        {
+            icon: faGear,
+            title: 'Setting',
+            to: '/setting',
+        },
+        {
+            icon: faCircleInfo,
+            title: 'Support',
+            to: '/support',
+        },
+        {
+            icon: faSignOut,
+            title: 'Logout',
+            to: '/login',
+        },
+    ]);
+
     const inputRef = useRef()
 
     useEffect(() => {
@@ -53,18 +60,45 @@ function Header() {
 
         window.addEventListener('storage', handleStorageChange);
         return () => window.removeEventListener('storage', handleStorageChange);
-    }, [localStorage.getItem('authToken')]);
+    }, []);
+
+    const handleShowUserCurrent = useCallback(async (token) => {
+        if (!token) return;
+        const res = await infoUserCurrentService(token);
+
+        if (res?.result) {
+            const user = res.result;
+
+            setInfoCurrentUser({
+                id: user.id,
+                name: user.name,
+                img: user.img || null,
+            });
+
+            setMenuItems((prevItems) =>
+                prevItems.map((item) =>
+                    item.icon === faUser
+                        ? { ...item, title: user.name, to: `/users/${user.id}` }
+                        : item
+                )
+            );
+        }
+    }, []);
+
+    useEffect(() => {
+        handleShowUserCurrent(currentUser);
+    }, [currentUser, handleShowUserCurrent]);
 
     const handleClear = () => {
         setSearchValue('')
         inputRef.current.focus()
     }
 
-    const handleKeyUp = e => {
-        if (e.target.code === 13) {
-            alert('Enter')
+    const handleKeyUp = (e) => {
+        if (e.code === 'Enter') {
+            alert('Enter');
         }
-    }
+    };
 
     const handleSearch = () => {
         alert('Search')
@@ -103,17 +137,17 @@ function Header() {
                         currentUser ? (
                             <>
                                 <Tippy content="Create new post" placement='bottom'>
-                                    <Button to={'/upload'} primary round leftIcon={faPlus}>Create</Button>
+                                    <Button to={'/upload'} normal round leftIcon={faPlus}>Create</Button>
                                 </Tippy>
                                 <Button iconText leftIcon={faBell} />
-                                <Menu items={MENU_ITEMS}>
-                                    <Image className={cx('user-avatar')} src='https://fullstack.edu.vn/assets/images/f8_avatar.png' />
+                                <Menu items={menuItems}>
+                                    <Image className={cx('user-avatar')} src={infoCurrentUser.img} alt={infoCurrentUser.name} />
                                 </Menu>
                             </>
                         ) : (
                             <>
-                                <Button to={'/login'} primary round >Login</Button>
-                                <Button to={'/register'} primary round >Register</Button>
+                                <Button to={'/login'} normal round >Login</Button>
+                                <Button to={'/register'} normal round >Register</Button>
                             </>
                         )
                     }

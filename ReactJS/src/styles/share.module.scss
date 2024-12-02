@@ -8,6 +8,8 @@
 .register,
 .login {
     display: flex;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .registerLogo,
@@ -100,6 +102,27 @@
     padding: 4px 0 0;
 }
 
+.link {
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+
+    .link-forgot,
+    .link-register,
+    .link-login {
+        font-weight: 400;
+        font-size: 1.4rem;
+        text-decoration: none;
+        color: var(--text-color);
+    }
+
+    :hover {
+        color: var(--primary);
+        cursor: pointer;
+        opacity: 0.8;
+    }
+}
+
 .formSubmit {
     outline: none;
     background-color: var(--primary);
@@ -115,7 +138,7 @@
 }
 
 .formSubmit:hover {
-    background-color: #1ac7b6;
+    opacity: 0.8;
 }
 
 .spacer {

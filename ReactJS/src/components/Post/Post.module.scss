@@ -92,7 +92,7 @@
         padding: 10px 12px;
     }
 
-    .span {
+    span {
         min-width: 14px;
     }
 }
@@ -101,4 +101,11 @@
 .comment,
 .share {
     margin: 0 4px;
+
+    .like-btn,
+    .comment-btn {
+        svg {
+            margin-left: 2px;
+        }
+    }
 }

@@ -1,0 +1,41 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    background-color: #e4e4e4;
+    border-radius: 20px;
+    padding: 20px 40px;
+    margin: 50px auto;
+}
+
+.header,
+.body {
+    width: 100%;
+}
+
+.header {
+    border-bottom: 3px solid #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-src {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    padding: 1px;
+    border: 4px solid #888;
+}
+
+.fullname {
+    font-size: 2rem;
+    font-weight: 600;
+    padding: 16px 0;
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

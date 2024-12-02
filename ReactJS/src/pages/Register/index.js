@@ -1,12 +1,16 @@
+import { Link, useNavigate } from 'react-router-dom';
+import classNames from 'classnames/bind';
 import { useState } from 'react';
+
 import stylesGrid from '~/styles/grid.module.scss';
 import styles from '~/styles/share.module.scss';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import { useValidator } from '~/hooks';
 import { registerService } from '~/apiServices'
-import { useNavigate } from 'react-router-dom';
 import FormGroup from '~/components/FormGroup';
+
+const cx = classNames.bind(styles)
 
 function Register() {
 
@@ -71,27 +75,27 @@ function Register() {
     };
 
     return (
-        <div className={styles.wrapper}>
-            <div className={`${stylesGrid.grid} ${styles.register}`}>
-                <div className={`${stylesGrid['grid__row-6']} ${styles.registerLogo}`}>
-                    <Image className={styles.img} src={images.logo} />
+        <div className={cx('wrapper')}>
+            <div className={cx(stylesGrid.grid, 'register')}>
+                <div className={cx(stylesGrid['grid__row-6'], 'registerLogo')}>
+                    <Image className={cx('img')} src={images.logo} alt="Logo" />
                 </div>
-                <div className={`${stylesGrid['grid__row-6']} ${styles.registerContent}`}>
-                    <form className={styles.form} id="form-1">
-                        <h3 className={styles.heading}>Register</h3>
-                        <p className={styles.desc}>Welcome To Forum Language</p>
+                <div className={cx(stylesGrid['grid__row-6'], 'registerContent')}>
+                    <form className={cx('form')} id="form-register" onSubmit={handleSubmit}>
+                        <h3 className={cx('heading')}>Login</h3>
+                        <p className={cx('desc')}>Welcome To Forum Language</p>
 
-                        <div className={styles.spacer}></div>
+                        <div className={cx('spacer')}></div>
 
                         <FormGroup
                             name="fullname"
                             text='Full Name'
                             placeholder='Ex: Nguyen Van A'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.fullname}
@@ -102,11 +106,11 @@ function Register() {
                             name="email"
                             text='Email'
                             placeholder='Ex: outlook@domain.com'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.email}
@@ -154,11 +158,11 @@ function Register() {
                             name="username"
                             text='Username'
                             placeholder='Ex: maivanloi'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.username}
@@ -171,11 +175,11 @@ function Register() {
                             type='password'
                             text='Password'
                             placeholder='Password'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.password}
@@ -187,18 +191,18 @@ function Register() {
                             type='password'
                             text='Password Confirm'
                             placeholder='Password Confirm'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.repassword}
                             valid={errors.repassword}
                         />
-
-                        <button onClick={handleSubmit} className={styles.formSubmit}>Register</button>
+                        <div className={cx('link')}><Link className={cx('link-login')} to='/login'>Has Account?</Link></div>
+                        <button className={cx('formSubmit')} type="submit">Register</button>
                     </form>
                 </div>
             </div>

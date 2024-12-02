@@ -1,5 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+
 import stylesGrid from '~/styles/grid.module.scss'
 import styles from '~/styles/share.module.scss'
 import images from "~/assets/images";
@@ -7,6 +9,8 @@ import Image from "~/components/Image";
 import { useValidator } from '~/hooks';
 import FormGroup from '~/components/FormGroup';
 import { loginService, checkActiveService } from '~/apiServices'
+
+const cx = classNames.bind(styles)
 
 function Login() {
     const navigate = useNavigate()
@@ -16,6 +20,10 @@ function Login() {
         password: '',
     });
 
+    useEffect(() => {
+        localStorage.removeItem('authToken')
+    }, [])
+
     const { errors, validateField, clearError, validateAll } = useValidator({
         rules: [
             useValidator.isRequired('username', 'This field is required'),
@@ -23,39 +31,31 @@ function Login() {
         ],
     });
 
-    const fetchApiCheckActive = async (token) => {
-        const res = await checkActiveService(token)
-        if (res.result) {
-            console.log(res.result)
-            if (res.result.active) {
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-
     const fetchApiLogin = async (data) => {
         const res = await loginService(data);
         if (!res.result) {
-            const { code, message } = res.response.data
-            if (code === 40401) {
-                setMessageError({ username: message });
-            } else if (code === 40101) {
-                setMessageError({ password: message });
+            const { code, message } = res.response.data;
+            setMessageError((prev) => ({
+                ...prev,
+                [code === 40401 ? 'username' : 'password']: message,
+            }));
+            return;
+        }
+
+        const token = res.result.token;
+        localStorage.setItem('authToken', token);
+
+        if (token) {
+            const activeRes = await checkActiveService(token);
+            if (activeRes.result?.active) {
+                navigate('/');
+            } else {
+                navigate('/activeAccount');
             }
         }
-        else {
-            const token = res.result.token
-            localStorage.setItem('authToken', token)
-            
-            if (await fetchApiCheckActive(token)) {
-                navigate('/')
-            }else{
-                navigate('/activeAccount')
-            }
-        }
-    }
+
+    };
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -77,27 +77,27 @@ function Login() {
     };
 
     return (
-        <div className={styles.wrapper}>
-            <div className={`${stylesGrid.grid} ${styles.register}`}>
-                <div className={`${stylesGrid['grid__row-6']} ${styles.registerLogo}`}>
-                    <Image className={styles.img} src={images.logo} />
+        <div className={cx('wrapper')}>
+            <div className={cx(stylesGrid.grid, 'register')}>
+                <div className={cx(stylesGrid['grid__row-6'], 'registerLogo')}>
+                    <Image className={cx('img')} src={images.logo} alt="Logo" />
                 </div>
-                <div className={`${stylesGrid['grid__row-6']} ${styles.registerContent}`}>
-                    <form className={styles.form} id="form-2">
-                        <h3 className={styles.heading}>Login</h3>
-                        <p className={styles.desc}>Welcome To Forum Language</p>
+                <div className={cx(stylesGrid['grid__row-6'], 'registerContent')}>
+                    <form className={cx('form')} id="form-login" onSubmit={handleSubmit}>
+                        <h3 className={cx('heading')}>Login</h3>
+                        <p className={cx('desc')}>Welcome To Forum Language</p>
 
-                        <div className={styles.spacer}></div>
+                        <div className={cx('spacer')}></div>
 
                         <FormGroup
                             name="username"
-                            text='Username'
-                            placeholder='Ex: maivanloi'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            text="Username"
+                            placeholder="Ex: maivanloi"
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.username}
@@ -107,22 +107,25 @@ function Login() {
 
                         <FormGroup
                             name="password"
-                            text='Password'
-                            type='password'
-                            placeholder='Password'
-                            classNameFormGroup={styles.formGroup}
-                            classNameLabel={styles.formLabel}
-                            classNameInput={styles.formControl}
-                            classNameError={styles.formMessage}
-                            classNameInvalid={styles.invalid}
+                            text="Password"
+                            type="password"
+                            placeholder="Password"
+                            classNameFormGroup={cx('formGroup')}
+                            classNameLabel={cx('formLabel')}
+                            classNameInput={cx('formControl')}
+                            classNameError={cx('formMessage')}
+                            classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             value={formData.password}
                             valid={errors.password}
                             error={messageError.password}
                         />
-
-                        <button onClick={handleSubmit} className={styles.formSubmit}>Login</button>
+                        <div className={cx('link')}>
+                            <Link className={cx('link-forgot')} to='/forgotPassword' >Forgot Password ?</Link>
+                            <Link className={cx('link-register')} to='/register' >Register</Link>
+                        </div>
+                        <button className={cx('formSubmit')} type="submit">Login</button>
                     </form>
                 </div>
             </div>
