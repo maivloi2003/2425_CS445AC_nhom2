@@ -1,8 +1,10 @@
 package com.lephuocviet.forum.configuration;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,27 +14,55 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @EnableWebSecurity
 @Configuration
 @EnableMethodSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 
-    JwtDecoderCustom jwtDecoderCustom;
-
+    final JwtDecoderCustom jwtDecoderCustom;
+    String GET_ENDPOINT = "*";
+    String POST_ENDPOINT = "*";
+    String GET_USER_ENDPOINT = "*";
     @Bean
     SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests(requests ->
-                requests.anyRequest().permitAll());
+                requests
+//                        .requestMatchers(HttpMethod.GET, "/users/my-infor").hasAnyRole("USER", "ADMIN")
+//                        .requestMatchers(HttpMethod.GET, "/posts/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/comments").hasAnyRole("USER", "MODERATOR")
+//                        .requestMatchers(HttpMethod.GET, "/notices/**").hasRole("USER")
+//                        .requestMatchers(HttpMethod.GET, "/vnpay/submitOrder").authenticated()
+//
+//                        // Phân quyền POST
+//                        .requestMatchers(HttpMethod.POST, "/auth/**").permitAll() // Auth không cần xác thực
+//                        .requestMatchers(HttpMethod.POST, "/mail/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/posts").hasRole("USER")
+//                        .requestMatchers(HttpMethod.POST, "/comments").hasRole("USER")
+//                        .requestMatchers(HttpMethod.POST, "/likes").hasRole("USER")
+//                        .requestMatchers(HttpMethod.POST, "/accounts/check").authenticated()
+//
+//                        // Phân quyền PUT
+//                        .requestMatchers(HttpMethod.PUT, "/users").hasRole("USER")
+//                        .requestMatchers(HttpMethod.PUT, "/notices/**").hasRole("ADMIN")
+//
+//                        // Phân quyền DELETE
+//                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/posts/**").hasRole("ADMIN")
+//                        .requestMatchers(HttpMethod.DELETE, "/upload/**").hasRole("USER")
+
+                        // Mặc định các endpoint còn lại
+                        .anyRequest().permitAll());
         httpSecurity.oauth2ResourceServer(oauth2 ->
                 oauth2.jwt(jwtConfigurer ->
-                        jwtConfigurer.decoder(jwtDecoderCustom)
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
-
-                        )
+                                jwtConfigurer.decoder(jwtDecoderCustom)
+                                        .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new JwtEntryPoint()));
         httpSecurity.csrf(http -> http.disable());
         return httpSecurity.build();
@@ -47,18 +77,18 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
 
     }
-
-//    @Bean
-//    public CorsFilter corsFilter(){
-//        CorsConfiguration corsConfiguration = new CorsConfiguration();
 //
-//        corsConfiguration.addAllowedOrigin("*");
-//        corsConfiguration.addAllowedMethod("*");
-//        corsConfiguration.addAllowedHeader("*");
-//
-//        UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
-//        urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
-//        CorsFilter corsFilter = new CorsFilter(urlBasedCorsConfigurationSource);
-//        return corsFilter;
+//      @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**") // Cho phép tất cả endpoint
+//                        .allowedOrigins("http://127.0.0.1:5500") // Origin cho phép
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Các phương thức cho phép
+//                        .allowedHeaders("*") // Cho phép tất cả header
+//                        .allowCredentials(true); // Cho phép gửi cookie nếu cần
+//            }
+//        };
 //    }
 }

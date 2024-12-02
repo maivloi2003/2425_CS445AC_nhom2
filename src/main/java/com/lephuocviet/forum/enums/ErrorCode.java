@@ -19,6 +19,7 @@ public enum ErrorCode {
     NOT_USER_POST(40006, "Not user post", HttpStatus.BAD_REQUEST),
     TYPE_ORDER_IS_WRONG(40007, "Type order is wrong", HttpStatus.BAD_REQUEST),
     PACKAGE_NOT_FOUND(40008, "Package not found", HttpStatus.BAD_REQUEST),
+    EMAIL_INVALID(40009,"Email InValid",HttpStatus.BAD_REQUEST),
 
 
     //401 AUTHENTICATION

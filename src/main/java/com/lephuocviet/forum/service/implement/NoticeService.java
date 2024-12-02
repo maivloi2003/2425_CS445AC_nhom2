@@ -42,7 +42,7 @@ public class NoticeService implements INoticeService {
     }
 
     @Override
-    public List<NoticeResponse> getAllNoticeByIdUser(String idUser) {
+    public List<NoticeResponse> getAllNoticeByIdUser(String idUser) {   
         List<NoticeResponse> list = noticesRepository.findNoticesByUsers_Id(idUser);
         return list;
     }

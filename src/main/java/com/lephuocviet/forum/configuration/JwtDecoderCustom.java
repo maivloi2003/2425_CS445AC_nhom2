@@ -1,9 +1,7 @@
 package com.lephuocviet.forum.configuration;
 
 import com.lephuocviet.forum.dto.requests.IntrospectionRequest;
-import com.lephuocviet.forum.enums.ErrorCode;
-import com.lephuocviet.forum.exception.WebException;
-import com.lephuocviet.forum.service.IAccountService;
+
 import com.lephuocviet.forum.service.IAuthService;
 import com.nimbusds.jose.JOSEException;
 import lombok.AccessLevel;
@@ -13,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
@@ -36,19 +35,21 @@ public class JwtDecoderCustom implements JwtDecoder {
     public Jwt decode(String token) throws JwtException {
         try {
             var introspect = iauthService.introspection(new IntrospectionRequest(token));
-            if (!introspect.isAuthenticated())  throw new JwtException("Token invalid");
+            if (!introspect.isAuthenticated()) {
+                throw new JwtException("Token invalid");
+            }
         }  catch (JOSEException | ParseException e) {
             throw new JwtException(e.getMessage());
         }
 
-        try{
-            boolean checkActive = iauthService.checkActive(new IntrospectionRequest(token));
-            if (!checkActive) throw new JwtException("Token invalid");
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (JOSEException e) {
-            throw new RuntimeException(e);
-        }
+//        try{
+//            boolean checkActive = iauthService.checkActive(new IntrospectionRequest(token));
+//            if (!checkActive) {
+//                throw new JwtException("Token invalid");
+//            }
+//        } catch (JOSEException | ParseException e) {
+//            throw new JwtException(e.getMessage());
+//        }
         if (nimbusJwtDecoder == null) {
             SecretKeySpec secretKey = new SecretKeySpec(SIGNER_KEY.getBytes(),"HS256");
             nimbusJwtDecoder = NimbusJwtDecoder.withSecretKey(secretKey)

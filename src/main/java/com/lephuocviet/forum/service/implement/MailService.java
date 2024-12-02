@@ -68,7 +68,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "https://maivanloi1.github.io/ForumLanguages/pages/confirm-email.html?token=" + token);
+                "https://maivloi2003.github.io/ForumLanguages/pages/confirm-email.html?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())) {
             mailSenderRepository.deleteById(accounts.getId());
         }
@@ -84,7 +84,11 @@ public class MailService implements IMailService {
         Runnable deletedMail = () -> mailSenderRepository.deleteById(accounts.getId());
         scheduledExecutorService.schedule(deletedMail, 6, java.util.concurrent.TimeUnit.MINUTES);
         scheduledExecutorService.shutdown();
-        javaMailSender.send(simpleMailMessage);
+        try {
+            javaMailSender.send(simpleMailMessage);
+        }catch (Exception e){
+            throw new WebException(ErrorCode.EMAIL_INVALID);
+        }
         return MailResponse.builder()
                 .token(token)
                 .success(true)
@@ -105,7 +109,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to change your password.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "https://maivanloi1.github.io/ForumLanguages/pages/reset-password.html?token=" + token);
+                "https://maivloi2003.github.io/ForumLanguages/pages/reset-password.html?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())) {
             mailSenderRepository.deleteById(accounts.getId());
         }
