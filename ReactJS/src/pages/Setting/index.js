@@ -1,19 +1,50 @@
 import classNames from "classnames/bind";
 import styles from './Setting.module.scss'
 import Button from "~/components/Button";
+import { infoUserCurrentService } from "~/apiServices";
+import { useEffect, useState } from "react";
 
 const cx = classNames.bind(styles)
 
 function Setting() {
+    const [info, setInfo] = useState({
+        id: '',
+        email: '',
+        language: '',
+        gender: '',
+    })
+
+    const handleGetInfo = async (token) => {
+        const res = await infoUserCurrentService(token)
+
+        if (res?.result) {
+            const user = res.result
+            setInfo({
+                id: user.id,
+                email: user.email,
+                language: user.language,
+                gender: user.sex,
+            })
+        }
+    }
+
+    useEffect(() => {
+        const token = localStorage.getItem('authToken')
+        if (token) {
+            handleGetInfo(token)
+        }
+    }, [])
+
     return (
         <div className={cx('wrapper')}>
             <h1 className={cx('heading')}>Setting</h1>
 
             <ul className={cx('category')}>
                 <li className={cx('item')} >Account</li>
-                <li className={cx('item')} >Notify</li>
+                <li className={cx('item')} >Profile</li>
                 <li className={cx('item')} >Privacy</li>
-                <li className={cx('item')} >Theme</li>
+                <li className={cx('item')} >Preferences</li>
+                <li className={cx('item')} >Notifications</li>
                 <li className={cx('item')} >Advance</li>
             </ul>
 
@@ -26,6 +57,7 @@ function Setting() {
                     Email Address
                 </span>
                 <span className={cx('email-content')}>
+                    {info.email}
                 </span>
             </div>
 
@@ -38,11 +70,15 @@ function Setting() {
                         This information may be used to improve your recommendations
                     </span>
                 </div>
-                <select className={cx('gender-btn')}>
-                    <option value="" disabled>Select your gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                <select
+                    className={cx('gender-btn')}
+                    value={info.gender || ''}
+                    onChange={(e) => setInfo(prev => ({ ...prev, gender: e.target.value }))}
+                >
+                    <option value='' disabled>Gender</option>
+                    <option value='Male'>Male</option>
+                    <option value='Female'>Female</option>
+                    <option value='Other'>Other</option>
                 </select>
             </div>
 
@@ -55,11 +91,15 @@ function Setting() {
                         Select the language you'd like to experience the Forum interface in
                     </span>
                 </div>
-                <select className={cx('language-btn')}>
-                    <option value="" disabled>Select your language</option>
-                    <option value="English">English</option>
-                    <option value="China">China</option>
-                    <option value="Japan">Japan</option>
+                <select
+                    className={cx('language-btn')}
+                    value={info.gender || ''}
+                    onChange={(e) => setInfo(prev => ({ ...prev, language: e.target.value }))}
+                >
+                    <option value='' disabled>Language</option>
+                    <option value='English'>English</option>
+                    <option value='China'>China</option>
+                    <option value='Japan'>Japan</option>
                 </select>
             </div>
 
@@ -78,7 +118,7 @@ function Setting() {
             <div className={cx('save')}>
                 <Button className={cx('save-btn')} round normal>Save</Button>
             </div>
-        </div>
+        </div >
     );
 }
 

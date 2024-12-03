@@ -28,7 +28,7 @@ function Home({ contentRef }) {
 
     return (
         <div className={cx('wrapper')}>
-            {posts.map((post, index) => (
+            {posts && posts.map((post, index) => (
                 <Post data={post} key={index} />
             ))}
         </div>

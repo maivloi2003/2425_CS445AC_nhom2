@@ -23,9 +23,9 @@
 
 .item {
     flex: 1;
-    margin: 0 50px;
+    margin: 0 30px;
     padding: 12px 0 0;
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 700;
     text-align: center;
     cursor: pointer;
@@ -37,20 +37,21 @@
     }
 
     &:hover {
+        border-color: rgba(29, 191, 175, 0.5);
         background-color: rgba(0, 0, 0, 0.07);
     }
 }
 
 .account-heading {
-    font-size: 2.2rem;
+    font-size: 2rem;
     font-weight: 700;
-    margin: 12px 24px;
+    margin: 12px 18px;
 }
 
 .email {
     display: flex;
     flex-direction: column;
-    padding: 14px;
+    padding: 10px 20px;
 }
 
 .gender-title,
@@ -81,7 +82,7 @@
 .gender,
 .language,
 .delete {
-    padding: 14px 0 14px 14px;
+    padding: 10px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -90,7 +91,7 @@
 .gender-btn,
 .language-btn {
     min-width: 50px;
-    max-width: 90px;
+    width: 100px;
     border-radius: 20px;
     padding: 10px 2px;
     margin-right: 32px;

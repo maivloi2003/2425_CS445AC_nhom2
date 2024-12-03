@@ -37,9 +37,9 @@
         display: block;
         text-align: center;
         font-size: 2rem;
-    }
-}
 
-.link:hover {
-    opacity: 0.5;
+        &:hover {
+            opacity: 0.5;
+        }
+    }
 }

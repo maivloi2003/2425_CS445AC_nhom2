@@ -40,6 +40,10 @@
         font-weight: 600;
         border: none;
         background-color: var(--primary);
+
+        &:hover {
+            opacity: 0.8;
+        }
     }
 
     &.round {
@@ -50,7 +54,7 @@
         color: red;
         border-color: var(--primary);
 
-        :hover {
+        &:hover {
             opacity: 0.8;
         }
     }
@@ -63,6 +67,31 @@
 
         &:hover {
             background-color: #f1f1f1;
+        }
+    }
+
+    &.iconNav {
+        min-width: 24px;
+        height: 100%;
+        margin-left: 4px;
+        font-size: 1.6rem;
+        margin-right: 4px;
+        display: inline-block;
+        cursor: pointer;
+        text-align: center;
+        color: #757575;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:hover {
+            color: #000;
+            background-color: rgba(0, 0, 0, 0.07);
         }
     }
 }

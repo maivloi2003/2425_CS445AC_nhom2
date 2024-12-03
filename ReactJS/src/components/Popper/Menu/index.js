@@ -57,8 +57,4 @@ function Menu({ children, items = [] }) {
     );
 }
 
-Menu.defaultProps = {
-    items: [],
-};
-
 export default Menu;

@@ -30,7 +30,7 @@ const privateRoutes = [
     { path: '/upload', component: Upload, layout: HeaderOnly },
     { path: '/activeAccount', component: ActiveAccount, layout: null },
     { path: '/sendEmail', component: SendEmail, layout: null },
-    { path: '/posts/:id_post', component: PostDetail },
+    { path: '/post/:id_post', component: PostDetail },
 ];
 
 export { publicRoutes, privateRoutes };

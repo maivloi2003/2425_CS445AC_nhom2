@@ -51,9 +51,10 @@
         display: block;
         text-align: center;
         font-size: 2rem;
+
+        &:hover{
+            opacity: 0.5;
+        }
     }
 }
 
-.link:hover {
-    opacity: 0.5;
-}

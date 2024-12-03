@@ -26,9 +26,9 @@
 }
 
 .kind-select {
-    width: 200px;
-    padding: 8px 10px;
-    border-radius: 6px;
+    width: 160px;
+    padding: 8px;
+    border-radius: 8px;
     font-size: 1.6rem;
     margin-left: 20px;
 }
@@ -38,6 +38,7 @@
     background-color: #fff;
     border-radius: 10px;
     padding: 10px 20px;
+    border: 1px solid var(--text-color);
 }
 
 .form {
@@ -48,76 +49,57 @@
 }
 .title-input {
     width: 100%;
-    height: 36px;
-    font-size: 1.6rem;
-    padding: 2px 6px;
-    border-radius: 4px;
+    height: 40px;
+    font-size: 1.9rem;
+    padding: 4px 8px;
+    border-radius: 12px;
     border: 1px solid #777;
 }
-.content {
-    border-radius: 8px;
-    overflow: hidden;
-}
+
 .content-header {
+    display: flex;
+    align-items: center;
     background-color: #f1f1f1;
     height: 40px;
+    border-radius: 6px;
+    padding: 0 8px;
 }
 .content-text {
-    height: 400px;
+    display: block;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
     width: 100%;
-    font-size: 1.6rem;
-    padding: 4px 6px;
-    border-top: none;
-    border-right: 2px solid #d3d2d2;
-    border-left: 2px solid #d3d2d2;
-    border-bottom: 2px solid #d3d2d2;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+    min-height: 200px;
+    border: none;
     resize: none;
+    outline: none;
+    background-color: var(--white);
+    padding: 10px 15px;
+    color: var(--text-color);
+    font-size: 1.7rem;
 }
 .file {
-    padding: 5px 8px;
+    padding: 12px 8px;
     width: 100%;
-    cursor: pointer;
-    color: #666;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
-    margin: 10px 0;
-}
-
-.file-label {
-    width: 80px;
-    height: 80px;
-    border: 1px solid #999;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 6px;
 }
 
 .file-img {
-    display: none;
-    width: 400px;
-    max-height: 400px;
+    max-height: max(50px, 400px);
+    max-width: max(50px, 600px);
     border-radius: 8px;
 }
 
-.file-input {
-    display: none;
-}
 .upload {
     display: flex;
     padding: 10px 0;
-    justify-content: end;
+    justify-content: flex-end;
 }
 .upload-btn {
     padding: 12px 24px;
-    border: none;
     border-radius: 8px;
+    font-size: 1.8rem;
     font-weight: 600;
-    color: #5e5e5e;
-    cursor: pointer;
 }
