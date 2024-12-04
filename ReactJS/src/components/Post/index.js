@@ -10,6 +10,7 @@ import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
 const cx = classNames.bind(styles)
 
 function Post({ data, profile = false }) {
+
     return (
         <div className={cx('wrapper', { profile })}>
             <div className={cx('header')}>
@@ -30,7 +31,7 @@ function Post({ data, profile = false }) {
                 <Link className={cx('text-title')} to={`/post/${data.id}`}>{data.title}</Link>
             </div>
             <div className={cx('content')}>
-                <Link className={cx('text-content')} to={`/post/${data.id}`}>{data.content.split('\n').map((item, index) => (
+                <Link className={cx('text-content')} to={`/post/${data.id}`}>{data.content?.split('\n').map((item, index) => (
                     <span key={index}>
                         {item}
                         <br />

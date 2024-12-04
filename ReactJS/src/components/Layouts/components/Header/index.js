@@ -50,7 +50,6 @@ function Header() {
             to: '/login',
         },
     ]);
-
     const inputRef = useRef()
 
     useEffect(() => {
@@ -96,12 +95,13 @@ function Header() {
 
     const handleKeyUp = (e) => {
         if (e.code === 'Enter') {
-            alert('Enter');
+            window.location.href = `?content="${searchValue}"`
         }
     };
 
     const handleSearch = () => {
-        alert('Search')
+        window.location.href = `?content="${searchValue}"`
+
     }
 
     return (

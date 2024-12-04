@@ -1,6 +1,6 @@
 import * as request from '~/utils/request'
 
-const search = async (page, size = 4, content = '', language = '') => {
+const search = async (page, size, content, language) => {
     try {
         const res = await request.get('posts', {
             params: {

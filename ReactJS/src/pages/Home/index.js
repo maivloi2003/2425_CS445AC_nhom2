@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import classNames from 'classnames/bind';
 
-import searchService from '~/apiServices/searchServices'
+import { searchService } from '~/apiServices'
 import Post from '~/components/Post';
 import styles from './Home.module.scss'
 import { useScroll } from '~/hooks'
@@ -12,14 +12,22 @@ function Home({ contentRef }) {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
 
-    const fetchPosts = async (page) => {
-        const res = await searchService(page)
+    const fetchPosts = async (page, size, content, language) => {
+        const res = await searchService(page, size, content, language)
 
         setPosts((prev) => [...prev, ...res]);
     }
 
     useEffect(() => {
-        fetchPosts(currentPage);
+        const url = document.URL
+        const params = url.substring(url.lastIndexOf('/') + 2) || undefined
+
+        if (params === undefined) {
+            fetchPosts(currentPage, 5, '', '')
+        } else {
+            const param = params.substring(params.indexOf('%22') + 3, params.lastIndexOf('%22'))
+            fetchPosts(currentPage, 5, param, '')
+        }
     }, [currentPage])
 
     useScroll(contentRef, () => {

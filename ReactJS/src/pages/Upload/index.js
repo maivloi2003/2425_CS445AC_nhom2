@@ -42,6 +42,7 @@ function Upload() {
     const handleImageUpload = () => fileInputRef.current.click();
 
     const handleFileChange = (e) => {
+        e.preventDefault()
         const imgFile = e.target.files[0];
         if (imgFile) {
             const reader = new FileReader();
