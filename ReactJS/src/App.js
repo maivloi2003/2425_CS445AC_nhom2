@@ -4,11 +4,9 @@ import { publicRoutes, privateRoutes } from '~/routes';
 import { DefaultLayout } from '~/components/Layouts';
 
 const isAuthenticated = () => {
-    // Hàm này kiểm tra trạng thái đăng nhập (VD: kiểm tra token từ localStorage)
     return !!localStorage.getItem('authToken');
 };
 
-// PrivateRoute component để bảo vệ route
 const PrivateRoute = ({ children }) => {
     return isAuthenticated() ? children : <Navigate to="/login" />;
 };
