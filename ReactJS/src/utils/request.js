@@ -17,7 +17,7 @@ export const post = async (path, data, options = {}) => {
 }
 
 export const deleted = async (path, options = {}) => {
-    const response = await request.post(path, options)
+    const response = await request.delete(path, options)
 
-    return response.data;
+    return response;
 }

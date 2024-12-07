@@ -8,7 +8,7 @@ const getPostByIdUser = async (id, page, size, token) => {
                 size,
             },
             headers: {
-                'Authorizaion': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`
             }
         })
         return res

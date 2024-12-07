@@ -31,7 +31,7 @@ function Header() {
             separate: true,
         },
         { icon: faGear, title: 'Setting', to: '/setting' },
-        { icon: faCircleInfo, title: 'Support', to: '/support' },
+        { icon: faCircleInfo, title: 'Support' },
         { icon: faSignOut, title: 'Logout', to: '/login' },
     ], [infoUser]);
 
