@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useContext } from 'react';
+import { useState, useRef, useMemo, useContext } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo, faUser, faGear, faPlus, faSignOut, faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
