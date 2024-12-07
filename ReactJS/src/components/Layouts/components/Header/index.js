@@ -18,7 +18,7 @@ const cx = classNames.bind(styles);
 
 function Header() {
     const [searchValue, setSearchValue] = useState('');
-    const infoUser = useContext(UserContext);
+    const { infoUser } = useContext(UserContext);
     const navigate = useNavigate();
 
     const inputRef = useRef();
@@ -93,7 +93,7 @@ function Header() {
                             <Menu items={menuItems}>
                                 <Image
                                     className={cx('user-avatar')}
-                                    src={infoUser?.img || '/path/to/default-avatar.png'}
+                                    src={infoUser?.img}
                                     alt={infoUser?.name || 'User Avatar'}
                                 />
                             </Menu>

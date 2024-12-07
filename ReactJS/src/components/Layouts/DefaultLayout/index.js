@@ -13,12 +13,11 @@ function DefaultLayout({ children }) {
     return (
         <div className={cx('wrapper')}>
             <Header />
-            {!!Header && (
-                <div className={cx('contain')}>
-                    <Sidebar />
-                    <div ref={contentRef} className={cx('content')}>{children && React.cloneElement(children, { contentRef })}</div>
-                </div>
-            )}
+            <div className={cx('contain')}>
+                <Sidebar />
+                <div ref={contentRef} className={cx('content')}>{children && React.cloneElement(children, { contentRef })}</div>
+            </div>
+
         </div>
     );
 }
