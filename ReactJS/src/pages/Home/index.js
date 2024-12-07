@@ -29,7 +29,7 @@ function Home({ contentRef }) {
             const data = res.result.content;
             setPosts((prev) => (page === 0 ? data : [...prev, ...data]));
         } else {
-            console.error(res);
+            console.log(res);
         }
     };
 
