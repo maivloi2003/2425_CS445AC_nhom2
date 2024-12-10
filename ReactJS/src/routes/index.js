@@ -1,3 +1,6 @@
+// Routes Config
+import routesConfig from '~/config/routes'
+
 // Layouts
 import HeaderOnly from '~/components/Layouts/HeaderOnly';
 
@@ -16,21 +19,21 @@ import PostDetail from '~/pages/PostDetail';
 import ResetPassword from '~/pages/ResetPassword';
 
 const publicRoutes = [
-    { path: '/', component: Home },
-    { path: '/login', component: Login, layout: null },
-    { path: '/register', component: Register, layout: null },
-    { path: '/forgotPassword', component: ForgotPassword, layout: null },
-    { path: '/resetPassword', component: ResetPassword, layout: null },
-    { path: '/confirmEmail', component: ConfirmEmail, layout: null },
+    { path: routesConfig.home, component: Home },
+    { path: routesConfig.login, component: Login, layout: null },
+    { path: routesConfig.register, component: Register, layout: null },
+    { path: routesConfig.forgotPassword, component: ForgotPassword, layout: null },
+    { path: routesConfig.resetPassword, component: ResetPassword, layout: null },
+    { path: routesConfig.confirmEmail, component: ConfirmEmail, layout: null },
 ];
 
 const privateRoutes = [
-    { path: '/setting', component: Setting, layout: HeaderOnly },
-    { path: '/users/:id_user', component: Profile, layout: HeaderOnly },
-    { path: '/upload', component: Upload, layout: HeaderOnly },
-    { path: '/activeAccount', component: ActiveAccount, layout: null },
-    { path: '/sendEmail', component: SendEmail, layout: null },
-    { path: '/post/:id_post', component: PostDetail },
+    { path: routesConfig.setting, component: Setting, layout: HeaderOnly },
+    { path: routesConfig.profile, component: Profile, layout: HeaderOnly },
+    { path: routesConfig.upload, component: Upload, layout: HeaderOnly },
+    { path: routesConfig.activeAccount, component: ActiveAccount, layout: null },
+    { path: routesConfig.sendEmail, component: SendEmail, layout: null },
+    { path: routesConfig.postDetail, component: PostDetail },
 ];
 
 export { publicRoutes, privateRoutes };

@@ -9,6 +9,7 @@ import Image from '~/components/Image';
 import { useValidator } from '~/hooks';
 import { registerService } from '~/apiServices'
 import FormGroup from '~/components/FormGroup';
+import routesConfig from '~/config/routes'
 
 const cx = classNames.bind(styles)
 
@@ -47,7 +48,7 @@ function Register() {
 
         if (res.result) {
             alert('Register Success!!')
-            navigate('/login');
+            navigate(routesConfig.login);
         } else {
             const { code, message } = res.response.data
             if (code === 40001) {
@@ -201,7 +202,7 @@ function Register() {
                             value={formData.repassword}
                             valid={errors.repassword}
                         />
-                        <div className={cx('link')}><Link className={cx('link-login')} to='/login'>Has Account?</Link></div>
+                        <div className={cx('link')}><Link className={cx('link-login')} to={routesConfig.login}>Has Account?</Link></div>
                         <button className={cx('formSubmit')} type="submit">Register</button>
                     </form>
                 </div>

@@ -104,7 +104,7 @@ function Post({ data, profile = false }) {
                     <div className={cx('more-btn')}>
 
                         {token ? (
-                            <Menu post={true} items={getMenuItems()}>
+                            <Menu hideOnClick={true} post={true} items={getMenuItems()}>
                                 <Button iconText leftIcon={faEllipsisVertical} />
                             </Menu>
                         ) : (

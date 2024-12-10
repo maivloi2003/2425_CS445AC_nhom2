@@ -12,7 +12,9 @@ import images from '~/assets/images';
 import Button from '~/components/Button';
 import Image from '~/components/Image';
 import Menu from '~/components/Popper/Menu';
+import History from '~/components/Popper/History';
 import { UserContext } from '~/context/UserContext';
+import routesConfig from '~/config/routes'
 
 const cx = classNames.bind(styles);
 
@@ -35,6 +37,94 @@ function Header() {
         { icon: faSignOut, title: 'Logout', to: '/login' },
     ], [infoUser]);
 
+    const menuNotify = [
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+        {
+            img: infoUser?.img,
+            content: 'Bài học Tham gia cộng đồng F8 trên Discord mới được thêm vào.',
+            createdTime: '8 tháng trước'
+        },
+    ]
+
     const handlers = {
         clearSearch: () => {
             setSearchValue('');
@@ -50,12 +140,19 @@ function Header() {
         },
     };
 
+    const handleChange = (e) => {
+        const valueSearch = e.target.value
+        if (!valueSearch.startsWith(' ')) {
+            setSearchValue(e.target.value)
+        }
+    }
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
                 {/* Logo */}
                 <div className={cx('logo')}>
-                    <Link to="/">
+                    <Link to={routesConfig.home}>
                         <img src={images.logo} alt="Forum" />
                         <h4 className={cx('logo-title')}>ForumLanguages</h4>
                     </Link>
@@ -66,7 +163,7 @@ function Header() {
                     <input
                         ref={inputRef}
                         value={searchValue}
-                        onChange={(e) => setSearchValue(e.target.value)}
+                        onChange={handleChange}
                         onKeyUp={handlers.handleKeyUp}
                         placeholder="Search posts with content..."
                     />
@@ -75,7 +172,7 @@ function Header() {
                             <FontAwesomeIcon icon={faClose} />
                         </button>
                     )}
-                    <button onClick={handlers.search} className={cx('search-btn')}>
+                    <button onMouseDown={e => e.preventDefault()} onClick={handlers.search} className={cx('search-btn')}>
                         <FontAwesomeIcon icon={faSearch} />
                     </button>
                 </div>
@@ -85,11 +182,13 @@ function Header() {
                     {!!infoUser ? (
                         <>
                             <Tippy content="Create new post" placement="bottom">
-                                <Button to="/upload" normal round leftIcon={faPlus}>
+                                <Button to={routesConfig.upload} normal round leftIcon={faPlus}>
                                     Create
                                 </Button>
                             </Tippy>
-                            <Button iconText leftIcon={faBell} />
+                            <History items={menuNotify} header title='Thông báo' textBtn='Đánh dấu đã đọc'>
+                                <Button className={cx('notify-btn')} iconText leftIcon={faBell} />
+                            </History>
                             <Menu items={menuItems}>
                                 <Image
                                     className={cx('user-avatar')}
@@ -100,17 +199,17 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button to="/login" normal round>
+                            <Button to={routesConfig.login} normal round>
                                 Login
                             </Button>
-                            <Button to="/register" normal round>
+                            <Button to={routesConfig.register} normal round>
                                 Register
                             </Button>
                         </>
                     )}
                 </div>
             </div>
-        </header>
+        </header >
     );
 }
 

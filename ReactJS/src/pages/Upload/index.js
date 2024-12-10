@@ -1,5 +1,4 @@
 import classNames from "classnames/bind";
-import styles from './Upload.module.scss';
 import {
     faBold,
     faImage,
@@ -7,11 +6,13 @@ import {
     faTrashCan,
     faUnderline
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+
+import styles from './Upload.module.scss';
 import Button from "~/components/Button";
 import Image from "~/components/Image";
-import { useEffect, useRef, useState } from "react";
 import { upImagePostService, uploadPostService } from "~/apiServices";
-import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
