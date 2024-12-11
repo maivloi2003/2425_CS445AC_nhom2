@@ -17,6 +17,7 @@
     max-height: 68vh;
     overflow-y: auto;
     overscroll-behavior: contain;
+    padding-left: 6px;
 }
 
 // History item
@@ -26,7 +27,7 @@
     align-items: center;
     padding: 8px 24px 8px 12px;
     cursor: default;
-    background-color: var(--white-color);
+    background-color: rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
     margin: 0 8px;
     border-radius: 10px;
@@ -38,7 +39,7 @@
 }
 
 .history-item + .history-item {
-    margin-bottom: 8px;
+    margin-top: 8px;
 }
 
 .avatar {
@@ -58,8 +59,9 @@
     word-break: break-word;
 
     .createdTime {
+        font-size: 1.3rem;
         color: var(--primary);
-        font-weight: 600;
+        font-weight: 400;
     }
 }
 

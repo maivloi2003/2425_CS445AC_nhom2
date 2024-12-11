@@ -6,8 +6,8 @@ import { faBell } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { Link, useNavigate } from 'react-router-dom';
-// import SockJS from 'sockjs-client';
-// import { Client } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 
 import styles from './Header.module.scss';
 import images from '~/assets/images';
@@ -18,6 +18,7 @@ import History from '~/components/Popper/History';
 import { UserContext } from '~/context/UserContext';
 import routesConfig from '~/config/routes'
 import { notifyService } from '~/apiServices';
+import Notifications from '~/components/Notifications';
 
 const cx = classNames.bind(styles);
 
@@ -25,7 +26,9 @@ function Header() {
     const [searchValue, setSearchValue] = useState('');
     const { infoUser } = useContext(UserContext);
     const [notifications, setNotifications] = useState([]);
+    const [notify, setNotify] = useState({})
     const navigate = useNavigate();
+    const timeoutRef = useRef(null);
 
     const inputRef = useRef();
 
@@ -41,71 +44,61 @@ function Header() {
         { icon: faSignOut, title: 'Logout', to: '/login' },
     ], [infoUser]);
 
+    const fetchNotifications = async (id_user) => {
+        const res = await notifyService(id_user);
+
+        if (res?.result) {
+            setNotifications(res.result)
+        }
+    }
+
+    const initializeWebSocket = (userId) => {
+        const socket = new SockJS('https://moonlit-poetry-438713-c2.uc.r.appspot.com/ws');
+        const stompClient = new Client({
+            webSocketFactory: () => socket,
+            reconnectDelay: 5000,
+        });
+
+        stompClient.onConnect = () => {
+            stompClient.subscribe(`/topic/user/${userId}`, (message) => {
+                try {
+                    const res = JSON.parse(message.body)
+                    setNotify({
+                        display: true,
+                        message: res.message
+                    })
+                    if (timeoutRef.current) {
+                        clearTimeout(timeoutRef.current);
+                    }
+
+                    timeoutRef.current = setTimeout(() => {
+                        setNotify({});
+                    }, 3000);
+                } catch (error) {
+                    console.log(error)
+                }
+            });
+        };
+
+        stompClient.activate();
+
+        return stompClient;
+    };
 
     useEffect(() => {
         if (!infoUser?.id) return;
-        const handleNotify = async (id_user) => {
-            const res = await notifyService(id_user);
 
-            if (res?.result) {
-                setNotifications(res.result)
+
+        const stompClient = initializeWebSocket(infoUser.id);
+        fetchNotifications(infoUser.id, setNotifications);
+
+        return () => {
+            stompClient.deactivate();
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
             }
-        }
-
-        handleNotify(infoUser.id)
-    }, [infoUser])
-
-    // useEffect(() => {
-    //     if (!infoUser?.id) return; // Chờ infoUser có dữ liệu
-
-    //     const socket = new SockJS('https://moonlit-poetry-438713-c2.uc.r.appspot.com/ws');
-    //     const stompClient = new Client({
-    //         webSocketFactory: () => socket,
-    //         debug: (str) => console.log(str),
-    //         reconnectDelay: 5000, // Tự động kết nối lại sau 5 giây nếu mất kết nối
-    //     });
-
-    //     stompClient.onConnect = () => {
-    //         console.log('Connected to WebSocket');
-    //         stompClient.subscribe(`/topic/user/${infoUser.id}`, (message) => {
-    //             try {
-    //                 const res = message.body;
-    //                 const result = res.substring(res.indexOf('(') + 1, res.lastIndexOf(')'));
-    //                 const keyValuePairs = result.split(', ').map((pair) => {
-    //                     const [key, value] = pair.split('=');
-    //                     return { key, value };
-    //                 });
-    //                 const jsonObject = keyValuePairs.reduce((obj, { key, value }) => {
-    //                     const formattedValue =
-    //                         value === 'null'
-    //                             ? null
-    //                             : value === 'true'
-    //                                 ? true
-    //                                 : value === 'false'
-    //                                     ? false
-    //                                     : /^[\d-]+$/.test(value) ||
-    //                                         value.includes('@') ||
-    //                                         key === 'users'
-    //                                         ? value
-    //                                         : value.startsWith('"') && value.endsWith('"')
-    //                                             ? value.slice(1, -1)
-    //                                             : value;
-    //                     obj[key] = formattedValue;
-    //                     return obj;
-    //                 }, {});
-    //                 // setNotifications((prev) => [jsonObject, ...prev]);
-    //             } catch (err) {
-    //                 console.error('Error parsing message body:', err);
-    //             }
-    //         });
-    //     };
-
-    //     stompClient.activate();
-
-    //     return () => {
-    //         stompClient.deactivate(); // Đảm bảo đóng kết nối khi component unmount
-    //     };
-    // }, [infoUser]);
+        };
+    }, [infoUser]);
 
     const handlers = {
         clearSearch: () => {
@@ -191,6 +184,8 @@ function Header() {
                     )}
                 </div>
             </div>
+
+            {notify.display && <Notifications message={notify.message} onClose={() => setNotify({})} />}
         </header >
     );
 }

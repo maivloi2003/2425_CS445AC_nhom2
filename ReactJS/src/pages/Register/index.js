@@ -17,7 +17,7 @@ function Register() {
 
     const [messageError, setMessageError] = useState({});
     const [formData, setFormData] = useState({
-        fullname: '',
+        name: '',
         email: '',
         language: '',
         sex: '',
@@ -30,7 +30,7 @@ function Register() {
 
     const { errors, validateField, clearError, validateAll } = useValidator({
         rules: [
-            useValidator.isRequired('fullname', 'This field is required'),
+            useValidator.isRequired('name', 'This field is required'),
             useValidator.isRequired('email', 'This field is required'),
             useValidator.isEmail('email', 'Email address is not valid'),
             useValidator.isRequired('language', 'This field is required'),
@@ -89,7 +89,7 @@ function Register() {
                         <div className={cx('spacer')}></div>
 
                         <FormGroup
-                            name="fullname"
+                            name="name"
                             text='Full Name'
                             placeholder='Ex: Nguyen Van A'
                             classNameFormGroup={cx('formGroup')}
@@ -99,8 +99,8 @@ function Register() {
                             classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
-                            value={formData.fullname}
-                            valid={errors.fullname}
+                            value={formData.name}
+                            valid={errors.name}
                         />
 
                         <FormGroup

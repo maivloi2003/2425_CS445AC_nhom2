@@ -10,7 +10,7 @@ function HistoryItem({ data, avatar }) {
 
 
     return (
-        <Link to='/' className={cx('history-item')}>
+        <Link to={`/post/${data.idPost}`} className={cx('history-item')}>
             <Image src={avatar} className={cx('avatar')} />
             <div className={cx('message')}>
                 <div className={cx('content')}>{data.message}</div>
