@@ -5,16 +5,16 @@ import Image from "~/components/Image";
 
 const cx = classNames.bind(styles);
 
-function HistoryItem({ data }) {
+function HistoryItem({ data, avatar }) {
 
 
 
     return (
         <Link to='/' className={cx('history-item')}>
-            <Image src={data.img} className={cx('avatar')}/>
+            <Image src={avatar} className={cx('avatar')} />
             <div className={cx('message')}>
-                <div className={cx('content')}>{data.content}</div>
-                <div className={cx('createdTime')}>{data.createdTime}</div>
+                <div className={cx('content')}>{data.message}</div>
+                <div className={cx('createdTime')}>{data.date_created}</div>
             </div>
         </Link>
     );

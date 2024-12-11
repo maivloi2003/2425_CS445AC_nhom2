@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 function Home({ contentRef }) {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const { infoUser } = useContext(UserContext)
+    const { infoUser } = useContext(UserContext);
 
     const location = useLocation();
 
@@ -34,22 +34,25 @@ function Home({ contentRef }) {
     };
 
     useEffect(() => {
-        const content = getParamsFromURL();
-        const token = infoUser ? localStorage.getItem('authToken') : undefined;
-        const data = {
-            page: 0,
-            size: 5,
-            content,
-            language: '',
-            token,
+        const fetchData = async () => {
+            const content = getParamsFromURL();
+            const token = infoUser ? localStorage.getItem('authToken') : undefined;
+            const data = {
+                page: 0,
+                size: 5,
+                content,
+                language: '',
+                token,
+            };
+
+            setCurrentPage(0);
+            setPosts([]);
+            await fetchPosts(data);
         };
 
-        setCurrentPage(0);
-        setPosts([]);
-        fetchPosts(data);
+        fetchData();
         // eslint-disable-next-line
-    }, [location.search, infoUser]);
-
+    }, [infoUser, location.search]);
 
     useScroll(contentRef, () => {
         const content = getParamsFromURL();
@@ -58,7 +61,7 @@ function Home({ contentRef }) {
             size: 5,
             content,
             language: '',
-            token: localStorage.getItem('authToken') || undefined,
+            token: infoUser ? localStorage.getItem('authToken') : undefined,
         };
 
         setCurrentPage((prev) => prev + 1);
@@ -67,9 +70,8 @@ function Home({ contentRef }) {
 
     return (
         <div className={cx('wrapper')}>
-            {posts.length > 0 && (
-                posts.map((post, index) => <Post data={post} key={index} />)
-            )}
+            {posts.length > 0 &&
+                posts.map((post, index) => <Post data={post} key={index} />)}
         </div>
     );
 }

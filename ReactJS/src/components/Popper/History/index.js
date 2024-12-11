@@ -2,30 +2,20 @@ import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
 import styles from './History.module.scss';
 import { Wrapper as PopperWrapper } from '~/components/Popper';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import HistoryItem from './HistoryItem';
 import Header from './Header';
 
 const cx = classNames.bind(styles);
 
-function History({ children, items = [], title, textBtn }) {
-    const [history, setHistory] = useState([{ data: items }]);
-    const current = history[history.length - 1];
-
-    const handleItemClick = (item) => {
-        if (item.onClick) {
-            item.onClick();
-        } else if (item.children) {
-            setHistory((prev) => [...prev, item.children]);
-        }
-    };
+function History({ children, items = [], title, textBtn, avatar }) {
 
     const renderItems = useMemo(
         () =>
-            current.data.map((item, index) => (
-                <HistoryItem key={index} data={item} onClick={() => handleItemClick(item)} />
+            items.map((item, index) => (
+                <HistoryItem avatar={avatar} key={index} data={item} />
             )),
-        [current.data]
+        [items, avatar]
     );
 
     return (
