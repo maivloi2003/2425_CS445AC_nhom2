@@ -19,6 +19,9 @@ const cx = classNames.bind(styles);
 function Upload() {
     const [showImg, setShowImg] = useState(false);
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [isBold, setIsBold] = useState(false);
+    const [isItalic, setIsItalic] = useState(false);
+    const [isUnderline, setIsUnderline] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
         content: '',
@@ -63,6 +66,26 @@ function Upload() {
         return '';
     };
 
+    const handleDeleteContent = () => {
+        setFormData(prev => ({ ...prev, content: '' }))
+    }
+
+    const handleToggleBold = (e) => {
+        e.preventDefault()
+        setIsBold(prev => !prev)
+
+    }
+
+    const handleToggleItalic = (e) => {
+        e.preventDefault()
+        setIsItalic(prev => !prev)
+    }
+
+    const handleToggleUnderline = (e) => {
+        e.preventDefault()
+        setIsUnderline(prev => !prev)
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const imgLink = await uploadImage(fileInputRef.current.files[0]);
@@ -76,6 +99,7 @@ function Upload() {
         }
 
     };
+
 
     return (
         <div className={cx('wrapper')}>
@@ -109,9 +133,9 @@ function Upload() {
                     </div>
                     <div className={cx('content')}>
                         <div className={cx('content-header')}>
-                            <Button iconNav leftIcon={faBold} />
-                            <Button iconNav leftIcon={faItalic} />
-                            <Button iconNav leftIcon={faUnderline} />
+                            <Button className={isBold ? `${cx('selected')}` : ''} iconNav leftIcon={faBold} onClick={handleToggleBold} />
+                            <Button className={isItalic ? `${cx('selected')}` : ''} iconNav leftIcon={faItalic} onClick={handleToggleItalic} />
+                            <Button className={isUnderline ? `${cx('selected')}` : ''} iconNav leftIcon={faUnderline} onClick={handleToggleUnderline} />
                             <Button iconNav leftIcon={faImage} onClick={handleImageUpload}>
                                 <input
                                     type="file"
@@ -121,13 +145,13 @@ function Upload() {
                                     onChange={handleFileChange}
                                 />
                             </Button>
-                            <Button iconNav leftIcon={faTrashCan} />
+                            <Button iconNav leftIcon={faTrashCan} onClick={handleDeleteContent} />
                         </div>
                         <textarea
                             value={formData.content}
                             onChange={handleInputChange('content')}
                             onBlur={handleBlur}
-                            className={cx('content-text')}
+                            className={cx('content-text', isBold ? 'bold' : '', isItalic ? 'italic' : '', isUnderline ? 'underline' : '')}
                             placeholder="Content Post..."
                         ></textarea>
                     </div>

@@ -37,7 +37,6 @@ function Home({ contentRef }) {
     };
 
     useEffect(() => {
-        if (!infoUser) return;
         const timeoutId = setTimeout(() => {
             const fetchData = async () => {
                 const content = getParamsFromURL();
