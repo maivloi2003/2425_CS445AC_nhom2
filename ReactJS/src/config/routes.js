@@ -10,6 +10,9 @@ const routes = {
     upload: '/upload',
     activeAccount: '/activeAccount',
     sendEmail: '/sendEmail',
+    aboutFL: '/aboutFL',
+    policy: '/policy',
+    help: '/help',
     postDetail: '/post/:id_post',
 }
 

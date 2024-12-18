@@ -17,6 +17,9 @@ import SendEmail from '~/pages/SendEmail';
 import ConfirmEmail from '~/pages/ConfirmEmail';
 import PostDetail from '~/pages/PostDetail';
 import ResetPassword from '~/pages/ResetPassword';
+import AboutFL from '~/pages/AboutFL'
+import Policy from '~/pages/Policy'
+import Help from '~/pages/Help'
 
 const publicRoutes = [
     { path: routesConfig.home, component: Home },
@@ -31,6 +34,9 @@ const privateRoutes = [
     { path: routesConfig.setting, component: Setting, layout: HeaderOnly },
     { path: routesConfig.profile, component: Profile, layout: HeaderOnly },
     { path: routesConfig.upload, component: Upload, layout: HeaderOnly },
+    { path: routesConfig.help, component: Help, layout: HeaderOnly },
+    { path: routesConfig.policy, component: Policy, layout: HeaderOnly },
+    { path: routesConfig.aboutFL, component: AboutFL, layout: HeaderOnly },
     { path: routesConfig.activeAccount, component: ActiveAccount, layout: null },
     { path: routesConfig.sendEmail, component: SendEmail, layout: null },
     { path: routesConfig.postDetail, component: PostDetail },

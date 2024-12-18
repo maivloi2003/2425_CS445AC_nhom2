@@ -33,7 +33,6 @@ function Menu({ children, items = [], hideOnClick = false, post = false }) {
     );
 
     return (
-        // <div>
         <HeadlessTippy
             trigger={post ? 'click' : 'mouseenter focus'}
             offset={[12, 8]}
@@ -52,7 +51,6 @@ function Menu({ children, items = [], hideOnClick = false, post = false }) {
         >
             {children}
         </HeadlessTippy>
-        //</div>
     );
 }
 

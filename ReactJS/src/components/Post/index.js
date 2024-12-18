@@ -12,7 +12,7 @@ import Menu from "~/components/Popper/Menu";
 
 const cx = classNames.bind(styles)
 
-function Post({ data, profile = false }) {
+function Post({ data, profile = false, language }) {
     const [showLike, setShowLike] = useState(data.user_like || false);
     const [showModal, setShowModal] = useState(false);
     const [deleteState, setDeleteState] = useState(false)
@@ -24,15 +24,15 @@ function Post({ data, profile = false }) {
 
     const getMenuItems = () => {
         const commonItems = [
-            { icon: faBookmark, title: "Save" },
-            { icon: faEyeSlash, title: "Hidden" },
+            { icon: faBookmark, title: language.homeMenuSave || "Save" },
+            { icon: faEyeSlash, title: language.homeMenuHidden || "Hidden" },
         ];
 
         if (data.user_post) {
             return [
-                { icon: faPen, title: "Edit" },
+                { icon: faPen, title: language.homeMenuEdit || "Edit" },
                 ...commonItems,
-                { icon: faTrash, title: "Delete", onClick: handleToggleModal },
+                { icon: faTrash, title: language.homeMenuDel || "Delete", onClick: handleToggleModal },
             ];
         }
         return [...commonItems, { icon: faFlag, title: "Report" }];

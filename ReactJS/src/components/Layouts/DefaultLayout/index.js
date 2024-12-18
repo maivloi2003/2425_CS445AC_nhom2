@@ -5,14 +5,14 @@ import Sidebar from './Sidebar';
 import Header from '~/components/Layouts/components/Header';
 
 const cx = classNames.bind(styles);
-
+const userCurrent = JSON.parse(localStorage.getItem('currentUser'));
 
 function DefaultLayout({ children }) {
     const contentRef = useRef();
 
     return (
         <div className={cx('wrapper')}>
-            <Header />
+            <Header userCurrent={userCurrent} />
             <div className={cx('contain')}>
                 <Sidebar />
                 <div ref={contentRef} className={cx('content')}>{children && React.cloneElement(children, { contentRef })}</div>

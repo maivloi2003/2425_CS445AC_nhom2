@@ -1,5 +1,5 @@
 import classNames from "classnames/bind";
-import styles from './Notifcations.module.scss'
+import styles from './Notifications.module.scss'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
