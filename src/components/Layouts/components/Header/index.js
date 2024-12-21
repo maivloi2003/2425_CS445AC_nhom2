@@ -240,7 +240,7 @@ function Header() {
                         value={searchValue}
                         onChange={handleChange}
                         onKeyUp={handlers.handleKeyUp}
-                        placeholder={language?.headerPlaceHolderSearch}
+                        placeholder={language?.headerPlaceHolderSearch || 'Search posts with content...'}
                     />
                     {searchValue && (
                         <button onClick={handlers.clearSearch} className={cx('clear')}>
