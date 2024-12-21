@@ -3,7 +3,7 @@ import styles from './Help.module.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Image from "~/components/Image";
 import images from "~/assets/images";
 
@@ -70,7 +70,7 @@ function Help() {
             case 'Forgot password':
                 renderContent = (
                     <Fragment>
-                        <p>{lang.helpForgotPWStep1}</p>
+                        <p>{language.helpForgotPWStep1}</p>
                         <Image className={cx('img-help')} src={images.login} />
                         <p>{language?.helpForgotPWStep2}</p>
                         <Image className={cx('img-help')} src={images.forgotPW} />

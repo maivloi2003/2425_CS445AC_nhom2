@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from './AboutFL.module.scss'
 import Image from "~/components/Image";
 import images from "~/assets/images";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const cx = classNames.bind(styles)
 

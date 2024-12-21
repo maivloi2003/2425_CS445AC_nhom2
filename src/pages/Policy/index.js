@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import styles from './Policy.module.scss'
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 const cx = classNames.bind(styles)
 
