@@ -49,7 +49,7 @@ function Home() {
                 const data = res.result.content;
                 setPosts((prev) => (page === 0 ? data : [...prev, ...data]));
             } else {
-                alert(language.notFoundPost);
+                alert(language?.notFoundPost);
             }
         } else {
             if (res.response.data.code === 40405) {

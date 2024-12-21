@@ -18,8 +18,8 @@ function Comment({ data, language }) {
             </div>
 
             <div className={cx('interact')}>
-                <Button iconText className={cx('like')} >{language.postBtnReply}</Button>
-                <Button iconText className={cx('reply')} >{language.postBtnLike}</Button>
+                <Button iconText className={cx('like')} >{language?.postBtnReply}</Button>
+                <Button iconText className={cx('reply')} >{language?.postBtnLike}</Button>
             </div>
         </div>
     );

@@ -82,10 +82,10 @@ function PostDetail() {
                     <Post data={post} />
                     <div className={cx('cmt')}>
                         <form className={cx('form')}>
-                            <textarea value={valueContent} onChange={e => setValueContent(e.target.value)} name="comment" className={cx('content')} placeholder={language.postPlaceHolderComment} id=""></textarea>
+                            <textarea value={valueContent} onChange={e => setValueContent(e.target.value)} name="comment" className={cx('content')} placeholder={language?.postPlaceHolderComment} id=""></textarea>
                             <div className={cx('btn')}>
-                                <Button onClick={handleCancel} round normal className={cx('cancel-btn')}>{language.postBtnCancel}</Button>
-                                <Button onClick={handleComment(post.id)} round primary className={cx('submit-btn')}>{language.postBtnComment}</Button>
+                                <Button onClick={handleCancel} round normal className={cx('cancel-btn')}>{language?.postBtnCancel}</Button>
+                                <Button onClick={handleComment(post.id)} round primary className={cx('submit-btn')}>{language?.postBtnComment}</Button>
                             </div>
                         </form>
 

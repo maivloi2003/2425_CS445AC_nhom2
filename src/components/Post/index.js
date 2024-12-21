@@ -24,15 +24,15 @@ function Post({ data, profile = false, language = {} }) {
 
     const getMenuItems = () => {
         const commonItems = [
-            { icon: faBookmark, title: language.homeMenuSave || "Save" },
-            { icon: faEyeSlash, title: language.homeMenuHidden || "Hidden" },
+            { icon: faBookmark, title: language?.homeMenuSave || "Save" },
+            { icon: faEyeSlash, title: language?.homeMenuHidden || "Hidden" },
         ];
 
         if (data.user_post) {
             return [
-                { icon: faPen, title: language.homeMenuEdit || "Edit" },
+                { icon: faPen, title: language?.homeMenuEdit || "Edit" },
                 ...commonItems,
-                { icon: faTrash, title: language.homeMenuDel || "Delete", onClick: handleToggleModal },
+                { icon: faTrash, title: language?.homeMenuDel || "Delete", onClick: handleToggleModal },
             ];
         }
         return [...commonItems, { icon: faFlag, title: "Report" }];
@@ -67,7 +67,7 @@ function Post({ data, profile = false, language = {} }) {
     const handleShare = () => {
         const postUrl = `https://maivloi2003.github.io/ForumLanguage/post/${data.id}`
         navigator.clipboard.writeText(postUrl);
-        alert(language.sharePost);
+        alert(language?.sharePost);
     }
 
     const renderContent = () => {
@@ -82,7 +82,7 @@ function Post({ data, profile = false, language = {} }) {
     if (deleteState) {
         return (
             <div className={cx("wrapper", { profile })}>
-                <h3>{language.delPost}</h3>
+                <h3>{language?.delPost}</h3>
             </div>
         );
     }
@@ -161,15 +161,15 @@ function Post({ data, profile = false, language = {} }) {
                     <div className={cx('modal')}>
                         <div className={cx('container')}>
                             <div className={cx('modal-header')}>
-                                <h3 className={cx('modal-heading')}>Delete post?</h3>
+                                <h3 className={cx('modal-heading')}>{language?.deletedHeading}</h3>
                                 <Button onClick={handleToggleModal} iconCircle className={cx('modal-close')} leftIcon={faClose} />
                             </div>
                             <div className={cx('modal-body')}>
-                                <p className={cx('modal-title')}>Once you delete this post, it can’t be restored.</p>
+                                <p className={cx('modal-title')}>{language?.deletedConfirm}</p>
                             </div>
                             <div className={cx('modal-footer')}>
-                                <Button onClick={handleToggleModal} round normal className={cx('btn-cancel')}>Cancel</Button>
-                                <Button onClick={handleDeletePost} round deleted className={cx('btn-confirm')}>Yes, Delete</Button>
+                                <Button onClick={handleToggleModal} round normal className={cx('btn-cancel')}>{language?.deletedBtnCancel}</Button>
+                                <Button onClick={handleDeletePost} round deleted className={cx('btn-confirm')}>{language?.deletedBtnYes}</Button>
                             </div>
                         </div>
                     </div>

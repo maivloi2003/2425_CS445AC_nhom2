@@ -173,22 +173,22 @@ function Header() {
             icon: faEarthAsia,
             title: languageCurrent,
             children: {
-                title: 'Language',
+                title: language?.homeNavLang,
                 data: [
                     {
                         type: 'language',
                         code: 'en',
-                        title: 'English',
+                        title: language?.homeLangEng,
                     },
                     {
                         type: 'language',
                         code: 'jp',
-                        title: 'Japanese',
+                        title: language?.homeLangJapan,
                     },
                     {
                         type: 'language',
                         code: 'zh',
-                        title: 'Chinese',
+                        title: language?.homeLangChina,
                     },
                 ]
             }
@@ -229,7 +229,7 @@ function Header() {
                 <div className={cx('logo')}>
                     <Link to={routesConfig.home}>
                         <img src={images.logo} alt="Forum" />
-                        <h4 className={cx('logo-title')}>Forumlanguages</h4>
+                        <h4 className={cx('logo-title')}>ForumLanguages</h4>
                     </Link>
                 </div>
 
@@ -240,7 +240,7 @@ function Header() {
                         value={searchValue}
                         onChange={handleChange}
                         onKeyUp={handlers.handleKeyUp}
-                        placeholder="Search posts with content..."
+                        placeholder={language?.headerPlaceHolderSearch}
                     />
                     {searchValue && (
                         <button onClick={handlers.clearSearch} className={cx('clear')}>
@@ -261,7 +261,7 @@ function Header() {
                                     {language?.headerCreate || 'Create'}
                                 </Button>
                             </Tippy>
-                            <History items={notifications} avatar={user.img} header title="Thông báo" textBtn="Đánh dấu đã đọc">
+                            <History items={notifications} avatar={user.img} header title={language?.headerNotifyHeading} textBtn={language?.headerNotifyReadAll}>
                                 <Button className={cx('notify-btn')} iconText leftIcon={faBell} />
                             </History>
                             <Menu items={menuItems} onChange={handleMenuChange}>

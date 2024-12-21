@@ -12,6 +12,13 @@ const cx = classNames.bind(styles);
 function Help() {
     const [typeHelp, setTypeHelp] = useState('Register an account');
     const [isSelected, setIsSelected] = useState(0);
+    const [language, setLanguage] = useState({});
+    useEffect(() => {
+        const lang = JSON.parse(localStorage.getItem('lang'));
+        if (lang) {
+            setLanguage(lang);
+        }
+    }, []);
 
     const handleSelected = (e, index) => {
         setTypeHelp(e.target.innerHTML);
@@ -24,17 +31,17 @@ function Help() {
             case 'Register an account':
                 renderContent = (
                     <Fragment>
-                        <p>To register for a Forum account, users go to the link https://forumlanguages-2fbac.web.app/register.</p>
-                        <p>Step 1: Fill in all information, includes: </p>
+                        <p>{language?.helpRegisterTitle}</p>
+                        <p>{language?.helpRegisterStep1}</p>
                         <ul>
-                            <li>UserName: Use your account name to log in</li>
-                            <li>Email: The system will send a confirmation message to this email</li>
-                            <li>Language: The system will use this to suggest articles as well as browser language.</li>
-                            <li>Password: Enter a password of more than 5 characters</li>
+                            <li>{language?.helpRegisterUsername}</li>
+                            <li>{language?.helpRegisterMail}</li>
+                            <li>{language?.helpRegisterLang}</li>
+                            <li>{language?.helpRegisterPW}</li>
                         </ul>
                         <Image className={cx('img-help')} src={images.register} />
-                        <p>Step 2: After filling in all the information, the user clicks on the register button.</p>
-                        <p>If the registration is successful, the user will receive a "Register Successful" message and be redirected to the login page.</p>
+                        <p>{language?.helpRegisterStep2}</p>
+                        <p>{language?.helpRegisterCondition}</p>
                         <Image className={cx('img-help')} src={images.registerSuccess} />
                     </Fragment>
                 )
@@ -42,36 +49,36 @@ function Help() {
             case 'Log in':
                 renderContent = (
                     <Fragment>
-                        <p>To log in to the Forum, users access the link https://forumlanguages-2fbac.web.app/login.</p>
+                        <p>{language?.helpLoginTitle}</p>
                         <Image className={cx('img-help')} src={images.login} />
-                        <p>Step 1: Fill in all information and clicks on the login button.</p>
-                        <p>The system will check the accuracy of the information the user has just entered.</p>
-                        <p>If the account and password are correct, the system will check whether the account has been activated or not.</p>
-                        <p>If activated, the system will redirect the user to the home page. If not activated, the system will redirect the user to the account activation page.</p>
+                        <p>{language?.helpLoginStep1}</p>
+                        <p>{language?.helpLoginCheckIncorrect}</p>
+                        <p>{language?.helpLoginCheckActive}</p>
+                        <p>{language?.helpLoginDirect}</p>
                         <Image className={cx('img-help')} src={images.activeAccount} />
-                        <p>Step 2: Click the send button to send the account activation link to your email.</p>
-                        <p>Step 3: After clicking the send button, the system will notify whether the sending was successful or not.</p>
+                        <p>{language?.helpLoginStep2}</p>
+                        <p>{language?.helpLoginStep3}</p>
                         <Image className={cx('img-help')} src={images.sendMailAA} />
-                        <p>Then, the user should access the email of the account that just sent the activation code and click on the link to activate the account.</p>
+                        <p>{language?.helpLoginSendMail}</p>
                         <Image className={cx('img-help')} src={images.gmailAA} />
-                        <p>Step 4: After clicking on the link, the system will lead the user to a page notifying whether the account activation was successful or not.</p>
+                        <p>{language?.helpLoginStep4}</p>
                         <Image className={cx('img-help')} src={images.activeSuccess} />
-                        <p>After successful activation, users can click on the link below "Go to the login page" to log in again.</p>
+                        <p>{language?.helpLoginActiveSuccess}</p>
                     </Fragment>
                 )
                 break;
             case 'Forgot password':
                 renderContent = (
                     <Fragment>
-                        <p>Step 1: At the login interface, select the "Forgot password" feature.</p>
+                        <p>{lang.helpForgotPWStep1}</p>
                         <Image className={cx('img-help')} src={images.login} />
-                        <p>Step 2: Enter the email address used to register your account. Then select "Send"</p>
+                        <p>{language?.helpForgotPWStep2}</p>
                         <Image className={cx('img-help')} src={images.forgotPW} />
-                        <p>The system will automatically send an email with a link for you to set a new password.</p>
+                        <p>{language?.helpForgotSendMail}</p>
                         <Image className={cx('img-help')} src={images.sendMailPW} />
-                        <p>Step 3: After receiving the email, the user clicks on the link the system sent to reset the password.</p>
+                        <p>{language?.helpForgotPWStep3}</p>
                         <Image className={cx('img-help')} src={images.gmailPW} />
-                        <p>Step 4: Enter the new password you want to set in the form below</p>
+                        <p>{language?.helpForgotPWStep4}</p>
                         <Image className={cx('img-help')} src={images.resetPW} />
                     </Fragment>
                 )
@@ -79,26 +86,26 @@ function Help() {
             case 'Post articles':
                 renderContent = (
                     <Fragment>
-                        <p>Step 1: Click the Create button on the header bar of the home page</p>
+                        <p>{language?.helpUploadStep1}</p>
                         <Image className={cx('img-help')} src={images.homeCreate} />
-                        <p>Step 2: Fill in all information, includes: </p>
+                        <p>{language?.helpUploadStep2}</p>
                         <ul>
-                            <li>Language: The language of the post.</li>
-                            <li>Title: The title of the post.</li>
-                            <li>Image: may or may not be present.</li>
-                            <li>Content: The content of the post.</li>
+                            <li>{language?.helpUploadLang}</li>
+                            <li>{language?.helpUploadTitle}</li>
+                            <li>{language?.helpUploadImage}</li>
+                            <li>{language?.helpUploadContent}</li>
                         </ul>
                         <Image className={cx('img-help')} src={images.upload} />
-                        <p>Step 3: Click the post button to post</p>
+                        <p>{language?.helpUploadStep3}</p>
                     </Fragment>
                 );
                 break;
             case 'View personal information':
                 renderContent = (
                     <Fragment>
-                        <p>Step 1: Click the Settings button in the avatar dialog box on the header bar.</p>
+                        <p>{language?.helpInfoStep1}</p>
                         <Image className={cx('img-help')} src={images.homeInfo} />
-                        <p>Step 2: Complete your real information and select "Save".</p>
+                        <p>{language?.helpInfoStep2}</p>
                         <Image className={cx('img-help')} src={images.information} />
                     </Fragment>
                 )
@@ -113,15 +120,15 @@ function Help() {
         <div className={cx('wrapper')}>
             <div className={cx('contain')}>
                 <div className={cx('header')}>
-                    <Link to='/' className={cx('home')}>Home</Link>
+                    <Link to='/' className={cx('home')}>{language?.helpHome}</Link>
                     <FontAwesomeIcon icon={faChevronRight} />
-                    <p className={cx('help')}>Help</p>
+                    <p className={cx('help')}>{language?.helpHeading}</p>
                 </div>
                 <div className={cx('body')}>
                     <ul className={cx('nav')}>
                         <li className={cx('heading')}>
                             <FontAwesomeIcon icon={faQuestionCircle} className={cx('icon-heading')} />
-                            Frequently asked questions
+                            {language?.helpQuestions}
                         </li>
                         {['Register an account', 'Log in', 'Forgot password', 'Post articles', 'View personal information'].map((item, index) => (
                             <li
