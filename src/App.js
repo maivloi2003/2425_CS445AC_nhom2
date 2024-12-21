@@ -13,7 +13,6 @@ const PrivateRoute = ({ children }) => {
 };
 
 function App() {
-
     return (
         <Router>
             <div className="App">

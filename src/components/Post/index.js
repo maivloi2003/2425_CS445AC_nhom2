@@ -12,7 +12,7 @@ import Menu from "~/components/Popper/Menu";
 
 const cx = classNames.bind(styles)
 
-function Post({ data, profile = false, language }) {
+function Post({ data, profile = false, language = {} }) {
     const [showLike, setShowLike] = useState(data.user_like || false);
     const [showModal, setShowModal] = useState(false);
     const [deleteState, setDeleteState] = useState(false)
@@ -67,7 +67,7 @@ function Post({ data, profile = false, language }) {
     const handleShare = () => {
         const postUrl = `https://maivloi2003.github.io/ForumLanguage/post/${data.id}`
         navigator.clipboard.writeText(postUrl);
-        alert(postUrl);
+        alert(language.sharePost);
     }
 
     const renderContent = () => {
@@ -82,7 +82,7 @@ function Post({ data, profile = false, language }) {
     if (deleteState) {
         return (
             <div className={cx("wrapper", { profile })}>
-                <h3>Post Deleted</h3>
+                <h3>{language.delPost}</h3>
             </div>
         );
     }

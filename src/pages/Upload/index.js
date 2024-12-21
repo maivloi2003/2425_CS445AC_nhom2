@@ -102,6 +102,7 @@ function Upload() {
         const token = localStorage.getItem('authToken')
         const res = await uploadPostService(data, token);
         if (res?.result) {
+            alert(language.uploadPost)
             navigate(`/post/${res.result.id}`);
         } else {
             console.log(res);

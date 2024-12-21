@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom';
 
 const cx = classNames.bind(styles)
 
-function PostDetail({ contentRef }) {
+function PostDetail() {
     const { id_post: idPost } = useParams();
     const [post, setPost] = useState({});
     const [comments, setComments] = useState([]);
@@ -53,7 +53,7 @@ function PostDetail({ contentRef }) {
         }
     };
 
-    useScroll(contentRef, () => setPageCurrent(prev => prev + 1))
+    useScroll(() => setPageCurrent(prev => prev + 1))
 
     const handleComment = (id) => async (e) => {
         e.preventDefault()

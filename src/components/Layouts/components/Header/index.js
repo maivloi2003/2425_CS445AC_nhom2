@@ -1,7 +1,7 @@
 import { useState, useRef, useMemo, useEffect, useContext, useCallback } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo, faUser, faGear, faPlus, faSignOut, faClose, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faUser, faGear, faPlus, faSignOut, faClose, faSearch, faEarthAsia } from '@fortawesome/free-solid-svg-icons';
 import { faBell } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -16,7 +16,7 @@ import Image from '~/components/Image';
 import Menu from '~/components/Popper/Menu';
 import History from '~/components/Popper/History';
 import routesConfig from '~/config/routes';
-import { notifyService, infoUserCurrentService } from '~/apiServices';
+import { notifyService, infoUserCurrentService, getLangService } from '~/apiServices';
 import Notifications from '~/components/Notifications';
 import { UserContext } from '~/context/UserContext';
 import { LanguageContext } from '~/context/LanguageContext';
@@ -33,6 +33,7 @@ function Header() {
     const stompClientRef = useRef(null);
     const { user, setUser } = useContext(UserContext);
     const { language, setLanguage } = useContext(LanguageContext);
+    const { languageCurrent, setLanguageCurrent } = useState(user?.language);
 
     useEffect(() => {
         const initializeUser = async () => {
@@ -162,10 +163,64 @@ function Header() {
             to: `/users/${user?.id || ''}`,
             separate: true,
         },
-        { icon: faGear, title: language?.headerSetting || 'Settings', to: '/setting' },
-        { icon: faCircleInfo, title: language?.headerSupport || 'Support' },
-        { icon: faSignOut, title: language?.headerLogout || 'Logout', to: '/login' },
-    ], [user, language]);
+        {
+            icon: faGear, title: language?.headerSetting || 'Settings', to: routesConfig.setting
+        },
+        {
+            icon: faCircleInfo, title: language?.headerSupport || 'Support', to: routesConfig.help
+        },
+        {
+            icon: faEarthAsia,
+            title: languageCurrent,
+            children: {
+                title: 'Language',
+                data: [
+                    {
+                        type: 'language',
+                        code: 'en',
+                        title: 'English',
+                    },
+                    {
+                        type: 'language',
+                        code: 'jp',
+                        title: 'Japanese',
+                    },
+                    {
+                        type: 'language',
+                        code: 'zh',
+                        title: 'Chinese',
+                    },
+                ]
+            }
+        },
+        {
+            icon: faSignOut, title: language?.headerLogout || 'Logout', to: routesConfig.login
+        },
+    ], [user, language, languageCurrent]);
+
+    const handleMenuChange = async (menuItem) => {
+        if (menuItem.type === 'language') {
+            const languageMap = {
+                en: 'English',
+                jp: 'Japan',
+                zh: 'China',
+            };
+
+            const selectedLang = languageMap[menuItem.code];
+            if (selectedLang) {
+                const langResponse = await getLangService(selectedLang);
+                if (langResponse?.result) {
+                    const resultObj = langResponse.result.reduce((acc, item) => {
+                        acc[item.keyName] = item.translated;
+                        return acc;
+                    }, {});
+                    localStorage.setItem('lang', JSON.stringify(resultObj));
+                    setLanguage(resultObj);
+                    setLanguageCurrent(languageMap[resultObj.code]);
+                }
+            }
+        }
+    };
 
     return (
         <header className={cx('wrapper')}>
@@ -209,7 +264,7 @@ function Header() {
                             <History items={notifications} avatar={user.img} header title="Thông báo" textBtn="Đánh dấu đã đọc">
                                 <Button className={cx('notify-btn')} iconText leftIcon={faBell} />
                             </History>
-                            <Menu items={menuItems}>
+                            <Menu items={menuItems} onChange={handleMenuChange}>
                                 <Image
                                     className={cx('user-avatar')}
                                     src={user?.img}

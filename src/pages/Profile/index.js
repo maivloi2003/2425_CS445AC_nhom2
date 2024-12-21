@@ -8,7 +8,7 @@ import { useScroll } from "~/hooks";
 
 const cx = classNames.bind(styles);
 
-function Profile({ contentRef }) {
+function Profile() {
     const [user, setUser] = useState({ id: '', img: '', name: '' });
     const [currentPage, setCurrentPage] = useState(0);
     const [postsUser, setPostsUser] = useState([]);
@@ -31,7 +31,9 @@ function Profile({ contentRef }) {
             const data = res.result.content;
             setPostsUser((prev) => (page === 0 ? data : [...prev, ...data]));
         } else {
-            console.log(res);
+            if (res.response.data.code === 40405) {
+                alert(res.response.data.message);
+            }
         }
     };
 
@@ -54,7 +56,7 @@ function Profile({ contentRef }) {
         // eslint-disable-next-line
     }, []);
 
-    useScroll(contentRef, () => {
+    useScroll(() => {
         setCurrentPage((prev) => prev + 1);
     });
 

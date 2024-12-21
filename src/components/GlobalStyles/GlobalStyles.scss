@@ -6,7 +6,7 @@
     --black: #000;
     --white: #fff;
     --header-height: 70px;
-    --font-family: 'ForumFont', 'san-serif';
+    --font-family: 'ForumFont', Arial, 'san-serif';
     // Default Layout
     --default-layout-header-height: 60px;
     --default-layout-width: 1150px;
@@ -20,6 +20,7 @@
 
 html {
     font-size: 62.5%;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -35,18 +36,21 @@ body {
     font-family: ForumFont;
     src: url('/assets/fonts/ForumFont-Regular.woff2') format('woff2');
     font-weight: 400;
+    font-display: swap;
 }
 
 @font-face {
     font-family: ForumFont;
     src: url('/assets/fonts/ForumFont-Semibold.woff2') format('woff2');
     font-weight: 600;
+    font-display: swap;
 }
 
 @font-face {
     font-family: ForumFont;
     src: url('/assets/fonts/ForumFont-Bold.woff2') format('woff2');
     font-weight: 700;
+    font-display: swap;
 }
 
 button,

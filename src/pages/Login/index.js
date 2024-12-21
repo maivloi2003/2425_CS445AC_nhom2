@@ -59,6 +59,7 @@ function Login() {
                             acc[item.keyName] = item.translated;
                             return acc;
                         }, {});
+                        // localStorage.setItem('code','en')
                         localStorage.setItem('lang', JSON.stringify(resultObj))
                         navigate(routesConfig.home);
                     }

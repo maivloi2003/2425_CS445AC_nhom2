@@ -14,26 +14,44 @@ import { useEffect, useState } from 'react';
 
 import styles from './Sidebar.module.scss';
 import routesConfig from '~/config/routes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
     const [language, setLanguage] = useState({});
+    const navigate = useNavigate();
+
+    const url = document.URL
+    const urlParams = url.substring(url.lastIndexOf('/') + 1);
+
     useEffect(() => {
         const lang = JSON.parse(localStorage.getItem('lang'));
         if (lang) {
             setLanguage(lang || {});
         }
-    }, []);
+    }, [language]);
+
+    const handleGetPostByLanguage = (language) => {
+        const langParam = `?language="${language}"`;
+
+        if (urlParams === '' ||
+            (urlParams.startsWith('?language') &&
+                urlParams.substring(urlParams.indexOf('%22') + 3, urlParams.lastIndexOf('%22')) !== language)) {
+            navigate(`/${langParam}`);
+        } else if (urlParams.startsWith('?content')) {
+            navigate(`${urlParams}&language="${language}"`);
+        }
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('navbar')}>
                 <ul className={cx('navList')}>
-                    <li className={cx('navItem')}>
+                    <Link to='/' className={cx('navItem')}>
                         <FontAwesomeIcon icon={faHome} />
                         <span>{language.homeNavHome || 'Home'}</span>
-                    </li>
+                    </Link>
                     <li className={cx('navItem')}>
                         <FontAwesomeIcon icon={faFire} />
                         <span>{language.homeNavPopular || 'Popular'}</span>
@@ -47,15 +65,15 @@ function Sidebar() {
             <div className={cx('languages')}>
                 <span className={cx('title')}>{language.homeNavLang || 'Language'}</span>
                 <ul className={cx('languageList')}>
-                    <li className={cx('languageItem')}>
+                    <li onClick={() => handleGetPostByLanguage('English')} className={cx('languageItem')}>
                         <FontAwesomeIcon icon={faNewspaper} />
                         <span>{language.homeLangEng || 'English'}</span>
                     </li>
-                    <li className={cx('languageItem')}>
+                    <li onClick={() => handleGetPostByLanguage('China')} className={cx('languageItem')}>
                         <FontAwesomeIcon icon={faNewspaper} />
                         <span>{language.homeLangChina || 'China'}</span>
                     </li>
-                    <li className={cx('languageItem')}>
+                    <li onClick={() => handleGetPostByLanguage('Japan')} className={cx('languageItem')}>
                         <FontAwesomeIcon icon={faNewspaper} />
                         <span>{language.homeLangJapan || 'Japan'}</span>
                     </li>
@@ -63,24 +81,24 @@ function Sidebar() {
             </div>
             <div className={cx('other')}>
                 <span className={cx('title')}>{language.homeNavOther || 'Other'}</span>
-                <ul className={cx('otherList')}>
-                    <li className={cx('otherItem')}>
+                <div className={cx('otherList')}>
+                    <Link to={routesConfig.aboutFL} className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faAddressCard} />
                         <span>{language.homeOtherAbout || 'About FL'}</span>
-                    </li>
-                    <li className={cx('otherItem')}>
+                    </Link>
+                    <Link to='' className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faFlag} />
                         <span>{language.homeOtherAdv || 'Advertise'}</span>
-                    </li>
-                    <li className={cx('otherItem')}>
+                    </Link>
+                    <Link to={routesConfig.help} className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faQuestion} />
                         <span>{language.homeOtherHelp || 'Help'}</span>
-                    </li>
-                    <li className={cx('otherItem')}>
+                    </Link>
+                    <Link to={routesConfig.policy} className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faScroll} />
-                        <Link to={routesConfig.policy}>{language.homeOtherPolicy || 'Policy'}</Link>
-                    </li>
-                </ul>
+                        <span >{language.homeOtherPolicy || 'Policy'}</span>
+                    </Link>
+                </div>
             </div>
         </div>
     );

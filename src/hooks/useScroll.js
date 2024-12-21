@@ -1,26 +1,24 @@
 import { useEffect } from 'react';
 
-const useScroll = (contentRef, callback) => {
+const useScroll = (callback) => {
     useEffect(() => {
         const handleScroll = () => {
-            if (contentRef.current) {
-                const { scrollTop, clientHeight, scrollHeight } = contentRef.current;
-                if ((scrollTop + clientHeight) >= scrollHeight) {
-                    callback()
-                }
-            }
-        }
+            const scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
-        const contentElement = contentRef.current;
-        if (contentElement) {
-            contentElement.addEventListener('scroll', handleScroll);
-        }
+            const documentHeight = document.documentElement.scrollHeight;
+            const windowHeight = window.innerHeight;
 
-        return () => {
-            if (contentElement) {
-                contentElement.removeEventListener('scroll', handleScroll);
+            if ((scrollPosition + windowHeight) >= documentHeight) {
+                callback();
             }
         };
-    }, [contentRef, callback])
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [callback]);
 }
+
 export default useScroll;

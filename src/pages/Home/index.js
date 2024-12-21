@@ -9,7 +9,7 @@ import { useScroll } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
-function Home({ contentRef }) {
+function Home() {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [currentUser, setCurrentUser] = useState({});
@@ -30,18 +30,27 @@ function Home({ contentRef }) {
             initializePosts();
         }
         // eslint-disable-next-line
-    }, [location.search, isLoadUser]);
+    }, [location.search, language, isLoadUser]);
 
     const getParamsFromURL = () => {
         const urlParams = new URLSearchParams(location.search);
-        return urlParams.get('content')?.replace(/"/g, '') || '';
+        const content = urlParams.get('content')?.replace(/"/g, '') || ''
+        const lang = urlParams.get('language')?.replace(/"/g, '') || ''
+        return {
+            content,
+            lang,
+        };
     };
 
-    const fetchPosts = async ({ page, size, content, language, token }) => {
-        const res = await searchService(page, size, content, language, token);
+    const fetchPosts = async ({ page, size, content, lang, token }) => {
+        const res = await searchService(page, size, content, lang, token);
         if (res?.result) {
-            const data = res.result.content;
-            setPosts((prev) => (page === 0 ? data : [...prev, ...data]));
+            if (res.result.content.length > 0) {
+                const data = res.result.content;
+                setPosts((prev) => (page === 0 ? data : [...prev, ...data]));
+            } else {
+                alert(language.notFoundPost);
+            }
         } else {
             if (res.response.data.code === 40405) {
                 alert(res.response.data.message);
@@ -50,7 +59,7 @@ function Home({ contentRef }) {
     };
 
     const initializePosts = async () => {
-        const content = getParamsFromURL();
+        const { content, lang } = getParamsFromURL();
         const token = currentUser ? localStorage.getItem('authToken') : undefined;
 
         setCurrentPage(0);
@@ -59,13 +68,13 @@ function Home({ contentRef }) {
             page: currentPage,
             size: 5,
             content,
-            language: '',
+            lang,
             token,
         });
     };
 
-    useScroll(contentRef, () => {
-        const content = getParamsFromURL();
+    useScroll(() => {
+        const { content, lang } = getParamsFromURL();
         const token = currentUser ? localStorage.getItem('authToken') : undefined;
 
         const nextPage = currentPage + 1;
@@ -73,7 +82,7 @@ function Home({ contentRef }) {
             page: nextPage,
             size: 5,
             content,
-            language: '',
+            lang,
             token,
         });
         setCurrentPage(nextPage);
