@@ -30,7 +30,6 @@
      CREATE DATABASE database_forum;
      ```
    - Nếu bạn sài cổng khác và mật khẩu khác hãy thay đổi ở file application.properties
-     ```properties
    # Cấu hình kết nối cơ sở dữ liệu MySQL
    spring.datasource.url=jdbc:mysql://localhost:<cổng>/<Tên Database>
    spring.datasource.username=my_user
