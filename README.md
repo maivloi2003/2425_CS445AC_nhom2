@@ -40,9 +40,9 @@
 1. ** Cài đặt Postman
    - Tải Postman và cài đặt từ [https://www.postman.com/downloads/](https://www.postman.com/downloads/)
 2. ** Import dữ liệu Postman
-   - Link file Import dữ liệu [https://www.mediafire.com/file/pbu8bzashpws9dq/api_forum.postman_collection.json/file](https://www.mediafire.com/file/pbu8bzashpws9dq/api_forum.postman_collection.json/file)
+   - Link file Import dữ liệu https://www.mediafire.com/file/pbu8bzashpws9dq/api_forum.postman_collection.json/file
      
 ### Import dữ liệu vào mysql
-- Link file import dữ liệu vào mysql [https://www.mediafire.com/file/fh3x254low4dkru/database.sql/file](https://www.mediafire.com/file/4409yennuvlywhq/database_%25281%2529.sql/file)
+- Link file import dữ liệu vào mysql https://www.mediafire.com/file/4409yennuvlywhq/database_%25281%2529.sql/file
 - Tài khoản test: tk:test1234 mk: 1234567
 - Tài khoản test: tk:vanlong mk: 1234567
