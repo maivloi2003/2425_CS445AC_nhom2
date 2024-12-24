@@ -79,8 +79,8 @@ function PostDetail() {
         <div className={cx('wrapper')}>
             {Object.keys(post).length > 0 && (
                 <>
-                    <Post data={post} />
-                    <div className={cx('cmt')}>
+                    <Post data={post} language={language} />
+                    <div div className={cx('cmt')}>
                         <form className={cx('form')}>
                             <textarea value={valueContent} onChange={e => setValueContent(e.target.value)} name="comment" className={cx('content')} placeholder={language?.postPlaceHolderComment} id=""></textarea>
                             <div className={cx('btn')}>

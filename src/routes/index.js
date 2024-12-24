@@ -28,6 +28,9 @@ const publicRoutes = [
     { path: routesConfig.forgotPassword, component: ForgotPassword, layout: null },
     { path: routesConfig.resetPassword, component: ResetPassword, layout: null },
     { path: routesConfig.confirmEmail, component: ConfirmEmail, layout: null },
+    { path: routesConfig.policy, component: Policy, layout: HeaderOnly },
+    { path: routesConfig.help, component: Help, layout: HeaderOnly },
+    { path: routesConfig.aboutFL, component: AboutFL, layout: HeaderOnly },
 ];
 
 const privateRoutes = [
@@ -37,9 +40,6 @@ const privateRoutes = [
     { path: routesConfig.activeAccount, component: ActiveAccount, layout: null },
     { path: routesConfig.sendEmail, component: SendEmail, layout: null },
     { path: routesConfig.postDetail, component: PostDetail },
-    { path: routesConfig.policy, component: Policy, layout: HeaderOnly },
-    { path: routesConfig.help, component: Help, layout: HeaderOnly },
-    { path: routesConfig.aboutFL, component: AboutFL, layout: HeaderOnly },
 ];
 
 export { publicRoutes, privateRoutes };

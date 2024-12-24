@@ -30,7 +30,7 @@ function Sidebar() {
         if (lang) {
             setLanguage(lang || {});
         }
-    }, [language]);
+    }, []);
 
     const handleGetPostByLanguage = (language) => {
         const langParam = `?language="${language}"`;

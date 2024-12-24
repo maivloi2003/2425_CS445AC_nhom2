@@ -3,6 +3,7 @@ import styles from './AboutFL.module.scss'
 import Image from "~/components/Image";
 import images from "~/assets/images";
 import { useEffect, useState } from "react";
+import { getLangService } from "~/apiServices";
 
 const cx = classNames.bind(styles)
 
@@ -12,6 +13,16 @@ function AboutFL() {
         const lang = JSON.parse(localStorage.getItem('lang'));
         if (lang) {
             setLanguage(lang);
+        } else {
+            const languageRes = getLangService('English')
+            if (languageRes?.result) {
+                const resultObj = languageRes.result.reduce((acc, item) => {
+                    acc[item.keyName] = item.translated;
+                    return acc;
+                }, {});
+                localStorage.setItem('lang', JSON.stringify(resultObj))
+                setLanguage(resultObj)
+            }
         }
     }, []);
     return (
@@ -72,7 +83,7 @@ function AboutFL() {
                 </div>
                 <div className={cx('strategy')}>
                     <div className={cx('wrapper-strategy')}>
-                        <h3></h3>
+                        <h3>{language?.strategyHeading}</h3>
                         <p><strong>{language?.strategyText1Strong}</strong></p>
                         <p>{language?.strategyText1}</p>
                         <p><strong>{language?.strategyText2Strong}</strong></p>

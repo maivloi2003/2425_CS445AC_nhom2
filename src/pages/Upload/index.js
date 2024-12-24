@@ -124,10 +124,10 @@ function Upload() {
                         onChange={handleInputChange('language')}
                         className={cx('kind-select')}
                     >
-                        <option value='' disabled>{language?.uploadBtnLang}</option>
-                        <option value='English'>English</option>
-                        <option value='China'>China</option>
-                        <option value='Japan'>Japan</option>
+                        <option value='' disabled>{language?.uploadTitleLang}</option>
+                        <option value='English'>{language?.homeLangEng}</option>
+                        <option value='China'>{language?.homeLangChina}</option>
+                        <option value='Japan'>{language?.homeLangJapan}</option>
                     </select>
                 </div>
                 <div className={cx('body')}>

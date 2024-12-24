@@ -35,7 +35,8 @@ function Post({ data, profile = false, language = {} }) {
                 { icon: faTrash, title: language?.homeMenuDel || "Delete", onClick: handleToggleModal },
             ];
         }
-        return [...commonItems, { icon: faFlag, title: "Report" }];
+        return [...commonItems, { icon: faFlag, title: language?.homeMenuReport || "Report" },
+        ];
     };
 
     const handleDeletePost = async () => {

@@ -6,29 +6,43 @@ import { Link } from "react-router-dom";
 import { Fragment, useEffect, useState } from "react";
 import Image from "~/components/Image";
 import images from "~/assets/images";
+import { getLangService } from "~/apiServices";
 
 const cx = classNames.bind(styles);
 
 function Help() {
-    const [typeHelp, setTypeHelp] = useState('Register an account');
     const [isSelected, setIsSelected] = useState(0);
     const [language, setLanguage] = useState({});
+
+    const fetchLanguage = async () => {
+        const languageRes = await getLangService('English');
+        if (languageRes?.result) {
+            const resultObj = languageRes.result.reduce((acc, item) => {
+                acc[item.keyName] = item.translated;
+                return acc;
+            }, {});
+            localStorage.setItem('lang', JSON.stringify(resultObj));
+            setLanguage(resultObj);
+        }
+    };
+
     useEffect(() => {
         const lang = JSON.parse(localStorage.getItem('lang'));
         if (lang) {
             setLanguage(lang);
+        } else {
+            fetchLanguage();
         }
     }, []);
 
-    const handleSelected = (e, index) => {
-        setTypeHelp(e.target.innerHTML);
+    const handleSelected = (index) => {
         setIsSelected(index);
     };
 
     const renderHelp = () => {
         let renderContent = ''
-        switch (typeHelp) {
-            case 'Register an account':
+        switch (isSelected) {
+            case 0:
                 renderContent = (
                     <Fragment>
                         <p>{language?.helpRegisterTitle}</p>
@@ -46,7 +60,7 @@ function Help() {
                     </Fragment>
                 )
                 break;
-            case 'Log in':
+            case 1:
                 renderContent = (
                     <Fragment>
                         <p>{language?.helpLoginTitle}</p>
@@ -67,7 +81,7 @@ function Help() {
                     </Fragment>
                 )
                 break;
-            case 'Forgot password':
+            case 2:
                 renderContent = (
                     <Fragment>
                         <p>{language.helpForgotPWStep1}</p>
@@ -83,7 +97,7 @@ function Help() {
                     </Fragment>
                 )
                 break;
-            case 'Post articles':
+            case 3:
                 renderContent = (
                     <Fragment>
                         <p>{language?.helpUploadStep1}</p>
@@ -100,7 +114,7 @@ function Help() {
                     </Fragment>
                 );
                 break;
-            case 'View personal information':
+            case 4:
                 renderContent = (
                     <Fragment>
                         <p>{language?.helpInfoStep1}</p>
@@ -130,10 +144,10 @@ function Help() {
                             <FontAwesomeIcon icon={faQuestionCircle} className={cx('icon-heading')} />
                             {language?.helpQuestions}
                         </li>
-                        {['Register an account', 'Log in', 'Forgot password', 'Post articles', 'View personal information'].map((item, index) => (
+                        {[language?.helpRegister, language?.helpLogin, language?.helpForgot, language?.helpUpload, language?.helpInfo].map((item, index) => (
                             <li
                                 key={index}
-                                onClick={(e) => handleSelected(e, index)}
+                                onClick={() => handleSelected(index)}
                                 className={cx('item', { selected: isSelected === index })}
                             >
                                 {item}

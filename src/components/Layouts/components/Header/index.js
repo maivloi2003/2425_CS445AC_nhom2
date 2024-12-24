@@ -33,7 +33,6 @@ function Header() {
     const stompClientRef = useRef(null);
     const { user, setUser } = useContext(UserContext);
     const { language, setLanguage } = useContext(LanguageContext);
-    const { languageCurrent, setLanguageCurrent } = useState(user?.language);
 
     useEffect(() => {
         const initializeUser = async () => {
@@ -171,7 +170,7 @@ function Header() {
         },
         {
             icon: faEarthAsia,
-            title: languageCurrent,
+            title: language?.language,
             children: {
                 title: language?.homeNavLang,
                 data: [
@@ -196,7 +195,7 @@ function Header() {
         {
             icon: faSignOut, title: language?.headerLogout || 'Logout', to: routesConfig.login
         },
-    ], [user, language, languageCurrent]);
+    ], [user, language]);
 
     const handleMenuChange = async (menuItem) => {
         if (menuItem.type === 'language') {
@@ -216,7 +215,7 @@ function Header() {
                     }, {});
                     localStorage.setItem('lang', JSON.stringify(resultObj));
                     setLanguage(resultObj);
-                    setLanguageCurrent(languageMap[resultObj.code]);
+                    window.location.reload();
                 }
             }
         }

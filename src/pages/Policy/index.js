@@ -1,6 +1,7 @@
 import classNames from "classnames/bind";
 import styles from './Policy.module.scss'
 import { Fragment, useEffect, useState } from "react";
+import { getLangService } from "~/apiServices";
 
 const cx = classNames.bind(styles)
 
@@ -12,13 +13,28 @@ function Policy() {
         const lang = JSON.parse(localStorage.getItem('lang'));
         if (lang) {
             setLanguage(lang);
+        } else {
+            const languageRes = getLangService('English')
+            if (languageRes?.result) {
+                const resultObj = languageRes.result.reduce((acc, item) => {
+                    acc[item.keyName] = item.translated;
+                    return acc;
+                }, {});
+                localStorage.setItem('lang', JSON.stringify(resultObj))
+                setLanguage(resultObj)
+            }
         }
     }, []);
 
-    const handleSelected = (e, index) => {
-        const targetId = e.target.innerText.toLowerCase();
-        const targetElement = document.getElementById(targetId);
+    const handleSelected = (index) => {
 
+        let idElement = '';
+        if (index === 0) {
+            idElement = 'rules';
+        } else {
+            idElement = 'enforcement';
+        }
+        const targetElement = document.getElementById(idElement);
         if (targetElement) {
             targetElement.scrollIntoView({ block: 'start' });
         }
@@ -151,10 +167,10 @@ function Policy() {
                         <option value='Privacy'>{language?.policyPrivacy}</option>
                     </select>
                     {policy === 'Content' && <div className={cx('nav')}>
-                        {["rules", "enforcement"].map((item, index) => (
+                        {[language?.contentRules, language?.contentEnforce].map((item, index) => (
                             <li
                                 key={index}
-                                onClick={(e) => handleSelected(e, index)}
+                                onClick={() => handleSelected(index)}
                                 className={cx('item', { selected: isSelected === index })}
                             >
                                 {item}

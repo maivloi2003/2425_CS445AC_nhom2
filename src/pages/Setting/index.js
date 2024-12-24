@@ -80,9 +80,9 @@ function Setting() {
                     onChange={(e) => setCurrentUser(prev => ({ ...prev, language: e.target.value }))}
                 >
                     <option value='' disabled>{language?.settingBtnLangDisplay}</option>
-                    <option value='English'>English</option>
-                    <option value='China'>China</option>
-                    <option value='Japan'>Japan</option>
+                    <option value='English'>{language?.homeLangEng}</option>
+                    <option value='China'>{language?.homeLangChina}</option>
+                    <option value='Japan'>{language?.homeLangJapan}</option>
                 </select>
             </div>
 
