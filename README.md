@@ -35,8 +35,7 @@
       spring.datasource.url=jdbc:mysql://localhost:<cổng>/<Tên Database>
       spring.datasource.username=my_user
       spring.datasource.password=my_password
-   ```
-   
+     ```
 ### Postman test Api
 1. ** Cài đặt Postman
    - Tải Postman và cài đặt từ [https://www.postman.com/downloads/](https://www.postman.com/downloads/)
