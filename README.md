@@ -14,6 +14,7 @@
 ### Đổi tên file 
 - Đường dẫn file `\2425_CS445AC_nhom2\src\main\resources\text.file.text`
 - Đổi tên thành `credentials.json`
+- Bỏ các dấu gạch `//`
 ### Cài đặt MySQL
 1. **Tải và cài đặt MySQL**:
    - Tải MySQL từ [MySQL Downloads](https://dev.mysql.com/downloads/installer/).
