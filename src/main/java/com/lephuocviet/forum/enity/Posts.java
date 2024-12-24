@@ -21,6 +21,7 @@ public class Posts {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
     String title;
+    @Column(length = 999)
     String content;
     LocalDate date_created;
     String img;

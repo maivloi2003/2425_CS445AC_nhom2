@@ -21,6 +21,7 @@ public class Translates {
 
     String keyName;
 
+    @Column(length = 999)
     String translated;
 
     @ManyToOne
