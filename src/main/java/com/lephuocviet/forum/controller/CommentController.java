@@ -1,5 +1,6 @@
 package com.lephuocviet.forum.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lephuocviet.forum.dto.requests.CommentRequest;
 import com.lephuocviet.forum.dto.responses.CommentResponse;
 import com.lephuocviet.forum.exception.ApiResponses;
@@ -18,12 +19,12 @@ import java.util.List;
 @AllArgsConstructor
 @RequestMapping("/comments")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@CrossOrigin(origins = "*")
+
 public class CommentController {
     ICommentService commentService;
 
     @PostMapping
-    ResponseEntity<ApiResponses<CommentResponse>> createComment(@RequestBody CommentRequest commentRequest) {
+    ResponseEntity<ApiResponses<CommentResponse>> createComment(@RequestBody CommentRequest commentRequest) throws JsonProcessingException {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponses.<CommentResponse>builder()
                 .result(commentService.createComment(commentRequest))
                 .build());
@@ -34,7 +35,7 @@ public class CommentController {
                                                                    @RequestParam(defaultValue = "0") Integer page ,
                                                                    @RequestParam(defaultValue = "5") Integer size ) {
         return ResponseEntity.ok(ApiResponses.<Page<CommentResponse>>builder()
-                        .result(commentService.getCommentByPostId(id_post,page,size))
+                .result(commentService.getCommentByPostId(id_post,page,size))
                 .build());
     }
 }

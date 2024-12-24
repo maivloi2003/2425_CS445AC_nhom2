@@ -32,7 +32,6 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -53,6 +52,9 @@ public class MailService implements IMailService {
     @Value("${security.jwt.signer_Key}")
     String SIGNER_KEY;
 
+    @Value("${MAIL.URL}")
+    String MAIL_URL;
+
     @Override
     public MailResponse sendMailActive() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -68,7 +70,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to verify your email.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "https://maivloi2003.github.io/ForumLanguages/pages/confirm-email.html?token=" + token);
+                MAIL_URL + "/confirmEmail?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())) {
             mailSenderRepository.deleteById(accounts.getId());
         }
@@ -109,7 +111,7 @@ public class MailService implements IMailService {
         simpleMailMessage.setFrom("vietyts2003@gmail.com");
         simpleMailMessage.setText("Please click on the following link to change your password.\n" +
                 "Link is only valid for 5 minutes \n" +
-                "https://maivloi2003.github.io/ForumLanguages/pages/reset-password.html?token=" + token);
+                MAIL_URL + "/reset-password.html?token=" + token);
         if (mailSenderRepository.existsById(accounts.getId())) {
             mailSenderRepository.deleteById(accounts.getId());
         }

@@ -1,7 +1,6 @@
 package com.lephuocviet.forum.enums;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 @AllArgsConstructor
 public enum AdsCode {

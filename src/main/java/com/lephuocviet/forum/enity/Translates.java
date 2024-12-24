@@ -1,11 +1,9 @@
 package com.lephuocviet.forum.enity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -14,20 +12,21 @@ import java.time.LocalDate;
 @Entity
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "likes")
-public class Likes {
+@Table(name = "translates")
+public class Translates {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
-    LocalDate date_created;
 
+    String keyName;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    Users users;
-
+    String translated;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
-    Posts posts;
+    @JoinColumn(name = "language_id")
+    @JsonIgnore
+    Language language;
+
+
 }

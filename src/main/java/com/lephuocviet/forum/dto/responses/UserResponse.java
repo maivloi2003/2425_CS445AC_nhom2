@@ -1,8 +1,6 @@
 package com.lephuocviet.forum.dto.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lephuocviet.forum.enity.Accounts;
-import jakarta.persistence.Lob;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

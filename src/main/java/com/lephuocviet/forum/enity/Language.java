@@ -24,5 +24,6 @@ public class Language {
 
     @OneToMany(mappedBy = "language",cascade = CascadeType.ALL, orphanRemoval = true)
     List<Posts> posts;
-
+    @OneToMany(mappedBy = "language", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Translates> translates;
 }

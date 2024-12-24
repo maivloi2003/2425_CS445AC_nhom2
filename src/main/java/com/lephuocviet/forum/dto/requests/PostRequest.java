@@ -3,8 +3,6 @@ package com.lephuocviet.forum.dto.requests;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-
 @Builder
 @Data
 @AllArgsConstructor

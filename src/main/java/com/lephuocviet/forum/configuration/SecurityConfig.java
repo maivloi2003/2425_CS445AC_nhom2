@@ -2,6 +2,7 @@ package com.lephuocviet.forum.configuration;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,8 +23,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig   {
 
+    @Value("${CROSS.URL_LOCAL}")
+    String urlLocal;
+
+    @Value("${CROSS.URL_SERVER}")
+    String urlServer;
 
     final JwtDecoderCustom jwtDecoderCustom;
     String GET_ENDPOINT = "*";
@@ -65,6 +71,11 @@ public class SecurityConfig {
                                         .jwtAuthenticationConverter(jwtAuthenticationConverter()))
                         .authenticationEntryPoint(new JwtEntryPoint()));
         httpSecurity.csrf(http -> http.disable());
+        httpSecurity.headers(headers ->
+                headers.contentSecurityPolicy(csp ->
+                        csp.policyDirectives("frame-ancestors 'self' " + urlLocal + " " + urlServer)
+                )
+        );
         return httpSecurity.build();
     }
 
@@ -77,18 +88,21 @@ public class SecurityConfig {
         return jwtAuthenticationConverter;
 
     }
-//
-//      @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**") // Cho phép tất cả endpoint
-//                        .allowedOrigins("http://127.0.0.1:5500") // Origin cho phép
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Các phương thức cho phép
-//                        .allowedHeaders("*") // Cho phép tất cả header
-//                        .allowCredentials(true); // Cho phép gửi cookie nếu cần
-//            }
-//        };
-//    }
+
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        // Chỉ định các origin cụ thể, không sử dụng '*' hoặc patterns khi allowCredentials là true
+                        .allowedOrigins(urlLocal,urlServer)
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Các phương thức HTTP được phép
+                        .allowedHeaders("*") // Cho phép tất cả headers
+                        .allowCredentials(true); // Cho phép gửi cookie nếu cần
+            }
+        };
+    }
+
 }

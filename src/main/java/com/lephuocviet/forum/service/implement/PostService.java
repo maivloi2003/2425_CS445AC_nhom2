@@ -1,14 +1,20 @@
 package com.lephuocviet.forum.service.implement;
-import java.util.Optional;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.lephuocviet.forum.dto.requests.PostRequest;
 import com.lephuocviet.forum.dto.responses.PostResponse;
 import com.lephuocviet.forum.enity.Language;
+import com.lephuocviet.forum.enity.Notices;
 import com.lephuocviet.forum.enity.Posts;
 import com.lephuocviet.forum.enity.Users;
 import com.lephuocviet.forum.enums.ErrorCode;
 import com.lephuocviet.forum.exception.WebException;
 import com.lephuocviet.forum.mapper.PostMapper;
 import com.lephuocviet.forum.repository.*;
+import com.lephuocviet.forum.service.IAIService;
 import com.lephuocviet.forum.service.IPostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +22,12 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,16 +38,39 @@ public class PostService implements IPostService {
     AccountsRepository accountsRepository;
     LanguageRepository languageRepository;
     LikesRepository likesRepository;
+    NoticesRepository noticesRepository;
     PostMapper postMapper;
-
+    IAIService iAIService;
+    SimpMessagingTemplate simpMessagingTemplate;
     @Override
-    public PostResponse createPost(PostRequest postRequest) {
+    public PostResponse createPost(PostRequest postRequest) throws JsonProcessingException {
+
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Posts posts = postMapper.toPosts(postRequest);
         Users users = usersRepository.findUserByUsername(username)
                 .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
+        if (!iAIService.checkPostIsLanguage(postRequest.getLanguage(),postRequest.getTitle(),postRequest.getContent())) {
+            System.out.println(iAIService.checkPostIsLanguage(postRequest.getLanguage(),postRequest.getTitle(),postRequest.getContent()));
+            Notices notices = Notices.builder()
+                    .message("We found that your submitted post violates our policies and has not been published. Please review our posting policies.")
+                    .users(users)
+                    .status(false)
+                    .date_created(LocalDate.now())
+                    .build();
+            Notices resultNotice;
+            resultNotice = noticesRepository.save(notices);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+            String resultNoticeJson = objectMapper.writeValueAsString(resultNotice);
+            simpMessagingTemplate.convertAndSend("/topic/user/" + users.getId(), resultNoticeJson);
+            throw new WebException(ErrorCode.POST_WRONG);
+
+        }
         posts.setUsers(users);
         posts.setDate_created(LocalDate.now());
+
         Language language = languageRepository.findByName(postRequest.getLanguage())
                         .orElseThrow(() -> new WebException(ErrorCode.LANGUAGE_NOT_FOUND));
         posts.setLanguage(language);
@@ -52,7 +83,6 @@ public class PostService implements IPostService {
         if (SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")){
             Pageable pageable =  PageRequest.of(page,size);
             Page<PostResponse> postPageResponseList = postsRepository.getPostPage(content,language,null,pageable);
-            if (postPageResponseList.isEmpty()) throw new WebException(ErrorCode.POST_NOT_FOUND);
             return postPageResponseList;
         } else {
             String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -115,13 +145,15 @@ public class PostService implements IPostService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Users users = usersRepository.findUserByUsername(username)
                 .orElseThrow(() -> new WebException(ErrorCode.USER_NOT_FOUND));
+
         Posts posts = postsRepository.findPostsById(id).orElseThrow(() -> new WebException(ErrorCode.POST_NOT_FOUND));
 
-        if (!users.getId().equals(posts.getUsers().getId()) || !accountsRepository.existsByUsernameRoleAdmin(users.getAccounts().getUsername()))
+        if (users.getId().equals(posts.getUsers().getId()) ||
+                accountsRepository.existsByUsernameRoleAdmin(users.getAccounts().getUsername())){
+            postsRepository.delete(posts);
+        } else {
             throw new WebException(ErrorCode.NOT_USER_POST);
-        postsRepository.delete(posts);
+        }
 
     }
-
-
 }

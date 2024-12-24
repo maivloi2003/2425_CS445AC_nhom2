@@ -1,6 +1,5 @@
 package com.lephuocviet.forum.service.implement;
 
-import com.lephuocviet.forum.dto.requests.IntrospectionRequest;
 import com.lephuocviet.forum.dto.responses.ActiveResponse;
 import com.lephuocviet.forum.enity.Accounts;
 import com.lephuocviet.forum.enums.ErrorCode;
@@ -33,6 +32,5 @@ public class AccountService implements IAccountService {
                 .active(false)
                 .message("Account is not active")
                 .build();
-
     }
 }

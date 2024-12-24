@@ -1,3 +1,10 @@
+handlers:
+  - url: /.*
+    script: auto
+    secure: always
+    http_headers:
+      X-Frame-Options: SAMEORIGIN
+
 security:
   jwt:
     signer_Key: "630F20D84D4187F778E537CD0AE9582D0DB5DA98057668461651A928F3E3A039477"
@@ -17,3 +24,31 @@ spring:
     password: icncudwesvprdqde
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
+  cloud:
+    gcp:
+      credentials:
+        location: src/main/resources/credentials.json
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+cloud:
+  bucketName: "forum_language"
+
+VnPay:
+  PayUrl: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+  ReturnUrl: "/vnpay-payment-return"
+  TmnCode: "WZWKQBWX"
+  HashSecret: "BKL2QUYRBNTY1MQY7XE2MTGT0KARJHT2"
+
+AI_API:
+  KEY: "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"
+  URL: "https://api-inference.huggingface.co/models/01-ai/Yi-1.5-34B-Chat"
+
+MAIL:
+  URL: "https://forumlanguages-2fbac.web.app"
+
+CROSS:
+  URL_LOCAL: "http://localhost:1407"
+  URL_SERVER: "https://forumlanguages-2fbac.web.app"

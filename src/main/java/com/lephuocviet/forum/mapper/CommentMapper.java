@@ -1,12 +1,9 @@
 package com.lephuocviet.forum.mapper;
 
-import ch.qos.logback.core.model.ComponentModel;
 import com.lephuocviet.forum.dto.responses.CommentResponse;
 import com.lephuocviet.forum.enity.Comments;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.awt.*;
 
 @Mapper(componentModel = "Spring")
 public interface CommentMapper {

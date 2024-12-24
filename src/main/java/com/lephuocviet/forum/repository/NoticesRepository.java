@@ -2,12 +2,12 @@ package com.lephuocviet.forum.repository;
 
 import com.lephuocviet.forum.dto.responses.NoticeResponse;
 import com.lephuocviet.forum.enity.Notices;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +26,8 @@ public interface NoticesRepository extends JpaRepository<Notices, String> {
             "n.id, n.message, n.date_created, n.status, n.idPost, n.idComment)" +
             "From Notices n " +
             "left Join n.users u " +
-            "WHERE :id = u.id ")
-    List<NoticeResponse> findNoticesByUsers_Id(@Param("id") String id);
+            "WHERE :id = u.id " +
+            "ORDER BY n.date_created DESC ")
+    List<NoticeResponse> findNoticesByUsers_Id(@Param("id") String id, Pageable pageable);
 }
 
