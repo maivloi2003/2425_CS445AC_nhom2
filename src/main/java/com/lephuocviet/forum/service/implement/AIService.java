@@ -32,9 +32,13 @@ public class AIService implements IAIService {
 
         // Tạo nội dung đầu vào
         String inputText = String.format(
-                "This is a forum for sharing knowledge about multilingualism. "
-                        + "Given the title \"%s\" and content \"%s\", is this article appropriate for a forum about languages "
-                        + "and is it written in %s language? Please answer true or false no explain anything, only true or false.",
+                "This is a forum for sharing knowledge about languages. "
+                        + "Given the title \"%s\" and content \"%s\", does this article meet the following criteria: "
+                        + "1) It is written in the %s language; "
+                        + "2) The title and content are appropriate for a forum about sharing knowledge of languages; "
+                        + "3) The content does not include discussions about political violence or idle chatter. "
+                        + "If any of the above conditions are false, return false. Please answer true or false, no explanation needed, only true or false. " +
+                        "Pls no explanation answer true or false.",
                 title, content, language
         );
 
@@ -58,10 +62,11 @@ public class AIService implements IAIService {
             if (response.getStatusCode() == HttpStatus.OK && response.getBody() != null) {
                 JsonNode responseBody = objectMapper.readTree(response.getBody());
                 String aiResponse = responseBody.get(0).get("generated_text").asText().split("\n")[0].trim();
+                System.out.println(aiResponse);
                 String[] words = aiResponse.split("\\s+");
                 int length = words.length;
                 String lastSixWords = "";
-                for (int i = Math.max(0, length - 6); i < length; i++) {
+                for (int i = Math.max(0, length - 4); i < length; i++) {
                     lastSixWords += words[i] + " ";
                 }
                 lastSixWords = lastSixWords.trim();
