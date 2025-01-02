@@ -101,7 +101,7 @@ function Header() {
             stompClientRef.current.deactivate();
         }
 
-        const socket = new SockJS('https://moonlit-poetry-438713-c2.uc.r.appspot.com/ws');
+        const socket = new SockJS('http://localhost:8080/ws');
         const stompClient = new Client({
             webSocketFactory: () => socket,
             reconnectDelay: 5000,
@@ -154,6 +154,8 @@ function Header() {
             setSearchValue(valueSearch);
         }
     }, []);
+
+    console.log(process.env.REACT_APP_API_BASE_URL)
 
     const menuItems = useMemo(() => [
         {

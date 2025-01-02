@@ -66,9 +66,9 @@ function Post({ data, profile = false, language = {} }) {
     }
 
     const handleShare = () => {
-        const postUrl = `https://maivloi2003.github.io/ForumLanguage/post/${data.id}`
+        const postUrl = `http://localhost:1407/post/${data.id}`
         navigator.clipboard.writeText(postUrl);
-        alert(language?.sharePost);
+        alert(language?.sharePost || postUrl);
     }
 
     const renderContent = () => {
