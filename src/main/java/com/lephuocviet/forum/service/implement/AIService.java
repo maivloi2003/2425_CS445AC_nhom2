@@ -36,11 +36,13 @@ public class AIService implements IAIService {
                         + "Given the title \"%s\" and content \"%s\", does this article meet the following criteria: "
                         + "1) It is written in the %s language; "
                         + "2) The title and content are appropriate for a forum about sharing knowledge of languages; "
-                        + "3) The content does not include discussions about political violence or idle chatter. "
-                        + "If any of the above conditions are false, return false. Please answer true or false, no explanation needed, only true or false. " +
-                        "Pls no explanation answer true or false.",
+                        + "3) The content does not include discussions about political violence or idle chatter; "
+                        + "4) It is a guide, a question, a shares knowledge, a problem about language. "
+                        + "If any of the above conditions are false, return false. Please answer true or false, no explanation needed, only true or false. "
+                        + "Pls NO EXPLANATION answer true or false.",
                 title, content, language
         );
+
 
         // Body request dưới dạng JSON
         String requestBody = String.format(
@@ -66,7 +68,7 @@ public class AIService implements IAIService {
                 String[] words = aiResponse.split("\\s+");
                 int length = words.length;
                 String lastSixWords = "";
-                for (int i = Math.max(0, length - 4); i < length; i++) {
+                for (int i = Math.max(0, length - 6); i < length; i++) {
                     lastSixWords += words[i] + " ";
                 }
                 lastSixWords = lastSixWords.trim();
