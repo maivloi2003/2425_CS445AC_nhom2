@@ -38,14 +38,19 @@ function ConfirmEmail() {
     }
 
     useEffect(() => {
-        const url = document.URL
-        const urlParam = new URLSearchParams(url.split('?')[1])
-        const token = urlParam.get('token')
+        const url = document.URL;
+        const urlParam = new URLSearchParams(url.split('?')[1]);
+        const token = urlParam.get('token');
 
         if (token) {
-            fetchApi(token);
+            setStatus((prevStatus) => {
+                if (prevStatus.token !== token) {
+                    fetchApi(token);
+                }
+                return { ...prevStatus, token };
+            });
         }
-    }, [])
+    }, []);
 
     return (
         <div className={`${cx('wrapper')} ${stylesGrid.grid}`}>
