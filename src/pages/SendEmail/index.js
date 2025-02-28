@@ -5,20 +5,26 @@ import { useLocation } from "react-router-dom";
 import styles from './SendEmail.module.scss'
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
-import images from "~/assets/images";
+import images from "assets/images";
+import routesConfig from '~/config/routes'
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Button from "~/components/Button";
+import { useTranslation } from "react-i18next";
 
 const cx = classNames.bind(styles)
 
 function SendEmail() {
     const [message, setMessage] = useState('');
+    const { t } = useTranslation();
     const location = useLocation()
     useEffect(() => {
         const pageName = location.state?.fromPage;
         if (pageName === 'activeAccount') {
-            setMessage('Please check your email to activate your account. If you do not receive the email, please check your spam folder.')
+            setMessage(t('titleSendMailActive'))
         } else if (pageName === 'forgotPassword') {
-            setMessage('Please check your email to reset your password. If you do not receive the email, please check your spam folder.')
+            setMessage(t('titleSendMailResetPW'))
         }
+        // eslint-disable-next-line
     }, [location])
 
     return (
@@ -26,10 +32,13 @@ function SendEmail() {
             <div className={`${cx('logo')} ${stylesGrid['grid__row-6']}`}>
                 <Image src={images.logo} alt='logo' className={cx('img')} />
             </div>
+            <div className={cx('nav')}>
+                <Button to={routesConfig.forgotPassword} className={cx('icon-back')} leftIcon={faArrowLeft} />
+            </div>
             <div className={`${cx('content')} ${stylesGrid['grid__row-6']}`}>
                 <div className={cx('body')}>
                     <div className={cx('heading')}>
-                        Check Email
+                        {t('checkMail')}
                     </div>
                     <div className={cx('title')}>
                         {message}

@@ -1,17 +1,20 @@
 import * as request from '~/utils/request'
 
-const getCommentByIdPost = async (id_post, page, size, token) => {
+const getCommentByIdPost = async (postId, page, size, token) => {
     try {
-        const res = await request.get('comments', {
+        const config = {
             params: {
-                id_post,
+                postId,
                 page,
                 size,
-            },
-            headers: {
+            }
+        }
+        if (token) {
+            config.headers = {
                 'Authorization': `Bearer ${token}`
             }
-        })
+        }
+        const res = await request.get('comments', config)
 
         return res
     } catch (error) {

@@ -1,8 +1,8 @@
 import * as request from '~/utils/request'
 
-const uploadPost = async (data, token) => {
+const uploadPostPoll = async (data, token) => {
     try {
-        const res = await request.post('posts', data, {
+        const res = await request.post('post-poll', data, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -14,4 +14,4 @@ const uploadPost = async (data, token) => {
     }
 }
 
-export default uploadPost;
+export default uploadPostPoll;

@@ -4,27 +4,30 @@ import { useState } from 'react';
 
 import stylesGrid from '~/styles/grid.module.scss';
 import styles from '~/styles/share.module.scss';
-import images from '~/assets/images';
+import images from 'assets/images';
 import Image from '~/components/Image';
 import { useValidator } from '~/hooks';
 import { registerService } from '~/apiServices'
 import FormGroup from '~/components/FormGroup';
 import routesConfig from '~/config/routes'
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(styles)
 
 function Register() {
-
+    const { t } = useTranslation();
     const [messageError, setMessageError] = useState({});
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         language: '',
-        sex: '',
+        gender: '',
+        img: '',
         username: '',
         password: '',
-        repassword: ''
+        re_password: ''
     });
+    const [selected, setSelected] = useState(0);
 
     const navigate = useNavigate();
 
@@ -34,19 +37,19 @@ function Register() {
             useValidator.isRequired('email', 'This field is required'),
             useValidator.isEmail('email', 'Email address is not valid'),
             useValidator.isRequired('language', 'This field is required'),
-            useValidator.isRequired('sex', 'This field is required'),
+            useValidator.isRequired('gender', 'This field is required'),
             useValidator.isRequired('username', 'This field is required'),
             useValidator.isRequired('password', 'This field is required'),
             useValidator.minLength('password', 5, 'Password must have at least 5 characters'),
-            useValidator.isRequired('repassword', 'This field is required'),
-            useValidator.isPasswordMatch('repassword', 'password', 'Passwords do not match'),
+            useValidator.isRequired('re_password', 'This field is required'),
+            useValidator.isPasswordMatch('re_password', 'password', 'Passwords do not match'),
         ]
     });
 
     const fetchApi = async (data) => {
         const res = await registerService(data);
 
-        if (res.result) {
+        if (res?.data) {
             alert('Register Success!!')
             navigate(routesConfig.login);
         } else {
@@ -83,15 +86,15 @@ function Register() {
                 </div>
                 <div className={cx(stylesGrid['grid__row-6'], 'registerContent')}>
                     <form className={cx('form')} id="form-register" onSubmit={handleSubmit}>
-                        <h3 className={cx('heading')}>Register</h3>
-                        <p className={cx('desc')}>Welcome To Forum Language</p>
+                        <h3 className={cx('heading')}>{t('register')}</h3>
+                        <p className={cx('desc')}>{t('welcome')}</p>
 
                         <div className={cx('spacer')}></div>
 
                         <FormGroup
                             name="name"
-                            text='Full Name'
-                            placeholder='Ex: Nguyen Van A'
+                            text={t('fullname')}
+                            placeholder={t('fullname')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -105,8 +108,8 @@ function Register() {
 
                         <FormGroup
                             name="email"
-                            text='Email'
-                            placeholder='Ex: outlook@domain.com'
+                            text={t('email')}
+                            placeholder={t('exEmail')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -120,7 +123,7 @@ function Register() {
                         />
 
                         <div className={`${styles.formGroup} ${errors.language ? styles.invalid : ''}`}>
-                            <label htmlFor="language" className={styles.formLabel}>Language</label>
+                            <label htmlFor="language" className={styles.formLabel}>{t('language')}</label>
                             <select
                                 className={styles.formControl}
                                 id="language"
@@ -129,36 +132,36 @@ function Register() {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             >
-                                <option value="" disabled>Select your language</option>
-                                <option value="English">English</option>
-                                <option value="China">China</option>
-                                <option value="Japan">Japan</option>
+                                <option value="" disabled>{t('placeholderLanguage')}</option>
+                                <option value="English">{t('langEnglish')}</option>
+                                <option value="China">{t('langChinese')}</option>
+                                <option value="Japan">{t('langJapanese')}</option>
                             </select>
                             {errors.language && <span className={styles.formMessage}>{errors.language}</span>}
                         </div>
 
-                        <div className={`${styles.formGroup} ${errors.sex ? styles.invalid : ''}`}>
-                            <label htmlFor="sex" className={styles.formLabel}>Gender</label>
+                        <div className={`${styles.formGroup} ${errors.gender ? styles.invalid : ''}`}>
+                            <label htmlFor="gender" className={styles.formLabel}>{t('gender')}</label>
                             <select
                                 className={styles.formControl}
-                                id="sex"
-                                name="sex"
-                                value={formData.sex}
+                                id="gender"
+                                name="gender"
+                                value={formData.gender}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             >
-                                <option value="" disabled>Select your gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+                                <option value="" disabled>{t('placeholderGender')}</option>
+                                <option value="Male">{t('male')}</option>
+                                <option value="Female">{t('female')}</option>
+                                <option value="Other">{t('other')}</option>
                             </select>
-                            {errors.sex && <span className={styles.formMessage}>{errors.sex}</span>}
+                            {errors.gender && <span className={styles.formMessage}>{errors.gender}</span>}
                         </div>
 
                         <FormGroup
                             name="username"
-                            text='Username'
-                            placeholder='Ex: maivanloi'
+                            text={t('username')}
+                            placeholder={t('exUsername')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -174,8 +177,8 @@ function Register() {
                         <FormGroup
                             name="password"
                             type='password'
-                            text='Password'
-                            placeholder='Password'
+                            text={t('password')}
+                            placeholder={t('password')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -188,10 +191,10 @@ function Register() {
                         />
 
                         <FormGroup
-                            name="repassword"
+                            name="re_password"
                             type='password'
-                            text='Password Confirm'
-                            placeholder='Password Confirm'
+                            text={t('passwordConfirm')}
+                            placeholder={t('passwordConfirm')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -199,12 +202,17 @@ function Register() {
                             classNameInvalid={cx('invalid')}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
-                            value={formData.repassword}
-                            valid={errors.repassword}
+                            value={formData.re_password}
+                            valid={errors.re_password}
                         />
-                        <div className={cx('link')}><Link className={cx('link-login')} to={routesConfig.login}>Has Account?</Link></div>
-                        <button className={cx('formSubmit')} type="submit">Register</button>
+                        <div className={cx('link')}><Link className={cx('link-login')} to={routesConfig.login}>{t('hasAccount')}</Link></div>
+                        <button className={cx('formSubmit')} type="submit">{t('register')}</button>
                     </form>
+                    <ul className={cx('language-list')}>
+                        <li className={cx('en', { active: selected === 0 })} onClick={() => setSelected(0)}>{t('langEnglish')}</li>
+                        <li className={cx('jp', { active: selected === 1 })} onClick={() => setSelected(1)}>{t('langChinese')}</li>
+                        <li className={cx('ch', { active: selected === 2 })} onClick={() => setSelected(2)}>{t('langJapanese')}</li>
+                    </ul>
                 </div>
             </div>
         </div>

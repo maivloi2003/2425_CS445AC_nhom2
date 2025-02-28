@@ -1,7 +1,16 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    padding: 12px 18px;
+    margin: 12px 18px;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
 }
 
 .user {
@@ -32,7 +41,7 @@
 
 .content {
     font-size: 1.8rem;
-    margin: 12px 50px;
+    padding: 12px 50px;
     color: var(--text-color);
     font-weight: 600;
 }
@@ -47,5 +56,86 @@
         padding: 6px;
         font-size: 1.6rem;
         font-weight: 600;
+    }
+}
+
+// Modal
+.modal {
+    display: none;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    width: 340px;
+    height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--white);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 1.6rem;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 6px;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 0 8px;
+    .modal-title {
+        font-size: 1.4rem;
+    }
+}
+
+.modal-footer {
+    padding: 8px 12px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper {
+        margin-top: 8px;
+        padding: 0;
+    }
+
+    .img {
+        width: 24px;
+        height: 24px;
+        border: none;
+    }
+
+    .username,
+    .content {
+        font-size: 1.5rem;
+    }
+
+    .datetime {
+        font-size: 1.3rem;
+    }
+
+    .content {
+        padding: 8px 38px;
+    }
+
+    .interact {
+        .like,
+        .reply {
+            font-size: 1.3rem;
+        }
     }
 }

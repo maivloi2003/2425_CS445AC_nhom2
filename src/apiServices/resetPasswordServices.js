@@ -2,7 +2,7 @@ import * as request from '~/utils/request'
 
 const resetPassword = async (data, token) => {
     try {
-        const res = await request.post('mail/change', data, {
+        const res = await request.post('mail/change-password', data, {
             params: {
                 token
             }

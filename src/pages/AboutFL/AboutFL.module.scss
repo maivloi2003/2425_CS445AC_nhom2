@@ -29,7 +29,7 @@
     }
 }
 
-.into-heading {
+.intro-heading {
     text-align: center;
     padding: 12px 0 24px;
     font-size: 1.8rem;
@@ -148,4 +148,58 @@
     font-size: 2.6rem;
     line-height: 3rem;
     text-align: center;
+}
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper-intro,
+    .wrapper-vision,
+    .wrapper-values,
+    .wrapper-benefits,
+    .wrapper-strategy,
+    .wrapper-footer {
+        width: 100%;
+    }
+
+    .intro-heading {
+        h2 {
+            font-size: 2.6rem;
+        }
+    }
+
+    .intro-header {
+        flex-direction: column;
+        max-height: none;
+    }
+
+    .intro-body {
+        p {
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+    }
+
+    .intro-context {
+        padding: 0;
+    }
+
+    .benefits {
+        height: auto;
+        margin-bottom: 0;
+    }
+
+    .wrapper-benefits {
+        position: unset;
+        background-color: transparent;
+        color: var(--white);
+        padding: 24px;
+
+        h3 {
+            color: var(--white);
+        }
+
+        .benefits-item {
+            flex-direction: column;
+        }
+    }
 }

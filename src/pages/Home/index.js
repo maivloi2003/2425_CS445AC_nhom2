@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
@@ -6,31 +6,20 @@ import { searchService } from '~/apiServices';
 import Post from '~/components/Post';
 import styles from './Home.module.scss';
 import { useScroll } from '~/hooks';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(styles);
 
 function Home() {
     const [posts, setPosts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [currentUser, setCurrentUser] = useState({});
-    const [language, setLanguage] = useState({});
     const location = useLocation();
-    const [isLoadUser, setIsLoadUser] = useState(false);
+    const { t } = useTranslation();
 
     useEffect(() => {
-        const userCurrent = JSON.parse(localStorage.getItem('currentUser'));
-        const lang = JSON.parse(localStorage.getItem('lang'));
-        setCurrentUser(userCurrent);
-        setLanguage(lang);
-        setIsLoadUser(true)
-    }, []);
-
-    useEffect(() => {
-        if (isLoadUser) {
-            initializePosts();
-        }
+        initializePosts();
         // eslint-disable-next-line
-    }, [location.search, language, isLoadUser]);
+    }, [location.search]);
 
     const getParamsFromURL = () => {
         const urlParams = new URLSearchParams(location.search);
@@ -44,12 +33,13 @@ function Home() {
 
     const fetchPosts = async ({ page, size, content, lang, token }) => {
         const res = await searchService(page, size, content, lang, token);
-        if (res?.result) {
-            if (res.result.content.length > 0) {
-                const data = res.result.content;
+        if (res?.data) {
+            if (res.data?.content.length > 0) {
+                const data = res.data.content;
+
                 setPosts((prev) => (page === 0 ? data : [...prev, ...data]));
             } else {
-                alert(language?.notFoundPost);
+                alert(t('notFoundPost'));
             }
         } else {
             if (res.response.data.code === 40405) {
@@ -60,7 +50,7 @@ function Home() {
 
     const initializePosts = async () => {
         const { content, lang } = getParamsFromURL();
-        const token = currentUser ? localStorage.getItem('authToken') : undefined;
+        const token = localStorage.getItem('authToken');
 
         setCurrentPage(0);
         setPosts([]);
@@ -75,7 +65,7 @@ function Home() {
 
     useScroll(() => {
         const { content, lang } = getParamsFromURL();
-        const token = currentUser ? localStorage.getItem('authToken') : undefined;
+        const token = localStorage.getItem('authToken');
 
         const nextPage = currentPage + 1;
         fetchPosts({
@@ -91,7 +81,10 @@ function Home() {
     return (
         <div className={cx('wrapper')}>
             {posts.map((post, index) => (
-                <Post language={language} data={post} key={post.id || index} />
+                <Fragment key={post.id || index}>
+                    <Post data={post} />
+                    <hr />
+                </Fragment>
             ))}
         </div>
     );

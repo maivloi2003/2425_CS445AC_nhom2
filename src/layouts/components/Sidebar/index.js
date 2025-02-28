@@ -4,33 +4,26 @@ import {
     faAddressCard,
     faFire,
     faFlag,
-    faHome,
     faNewspaper,
     faQuestion,
     faScroll,
     faSquareArrowUpRight,
 } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
-
+import { AiFillHome } from "react-icons/ai";
+import { IoIosHelpCircleOutline } from "react-icons/io";
 import styles from './Sidebar.module.scss';
 import routesConfig from '~/config/routes';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(styles);
 
 function Sidebar() {
-    const [language, setLanguage] = useState({});
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     const url = document.URL
     const urlParams = url.substring(url.lastIndexOf('/') + 1);
-
-    useEffect(() => {
-        const lang = JSON.parse(localStorage.getItem('lang'));
-        if (lang) {
-            setLanguage(lang || {});
-        }
-    }, []);
 
     const handleGetPostByLanguage = (language) => {
         const langParam = `?language="${language}"`;
@@ -40,7 +33,12 @@ function Sidebar() {
                 urlParams.substring(urlParams.indexOf('%22') + 3, urlParams.lastIndexOf('%22')) !== language)) {
             navigate(`/${langParam}`);
         } else if (urlParams.startsWith('?content')) {
-            navigate(`${urlParams}&language="${language}"`);
+            if (urlParams.includes('&') && (urlParams.substring(urlParams.lastIndexOf('=') + 4, urlParams.lastIndexOf('%22')) !== language)) {
+                const urlTemp = urlParams.substring(urlParams.indexOf('?'), urlParams.indexOf('&'))
+                navigate(`${urlTemp}&language="${language}"`);
+            } else {
+                navigate(`${urlParams}&language="${language}"`);
+            }
         }
     };
 
@@ -49,54 +47,54 @@ function Sidebar() {
             <div className={cx('navbar')}>
                 <ul className={cx('navList')}>
                     <Link to='/' className={cx('navItem')}>
-                        <FontAwesomeIcon icon={faHome} />
-                        <span>{language.homeNavHome || 'Home'}</span>
+                        <AiFillHome />
+                        <span>{t('home')}</span>
                     </Link>
                     <li className={cx('navItem')}>
                         <FontAwesomeIcon icon={faFire} />
-                        <span>{language.homeNavPopular || 'Popular'}</span>
+                        <span>{t('popular')}</span>
                     </li>
                     <li className={cx('navItem')}>
                         <FontAwesomeIcon icon={faSquareArrowUpRight} />
-                        <span>{language.homeNavNew || 'New'}</span>
+                        <span>{t('new')}</span>
                     </li>
                 </ul>
             </div>
             <div className={cx('languages')}>
-                <span className={cx('title')}>{language.homeNavLang || 'Language'}</span>
+                <span className={cx('title')}>{t('language')}</span>
                 <ul className={cx('languageList')}>
                     <li onClick={() => handleGetPostByLanguage('English')} className={cx('languageItem')}>
                         <FontAwesomeIcon icon={faNewspaper} />
-                        <span>{language.homeLangEng || 'English'}</span>
+                        <span>{t('langEnglish')}</span>
                     </li>
                     <li onClick={() => handleGetPostByLanguage('China')} className={cx('languageItem')}>
                         <FontAwesomeIcon icon={faNewspaper} />
-                        <span>{language.homeLangChina || 'China'}</span>
+                        <span>{t('langChinese')}</span>
                     </li>
                     <li onClick={() => handleGetPostByLanguage('Japan')} className={cx('languageItem')}>
                         <FontAwesomeIcon icon={faNewspaper} />
-                        <span>{language.homeLangJapan || 'Japan'}</span>
+                        <span>{t('langJapanese')}</span>
                     </li>
                 </ul>
             </div>
             <div className={cx('other')}>
-                <span className={cx('title')}>{language.homeNavOther || 'Other'}</span>
+                <span className={cx('title')}>{t('other')}</span>
                 <div className={cx('otherList')}>
                     <Link to={routesConfig.aboutFL} className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faAddressCard} />
-                        <span>{language.homeOtherAbout || 'About FL'}</span>
+                        <span>{t('aboutFL')}</span>
                     </Link>
                     <Link to='' className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faFlag} />
-                        <span>{language.homeOtherAdv || 'Advertise'}</span>
+                        <span>{t('advertise')}</span>
                     </Link>
                     <Link to={routesConfig.help} className={cx('otherItem')}>
-                        <FontAwesomeIcon icon={faQuestion} />
-                        <span>{language.homeOtherHelp || 'Help'}</span>
+                        <IoIosHelpCircleOutline />
+                        <span>{t('help')}</span>
                     </Link>
                     <Link to={routesConfig.policy} className={cx('otherItem')}>
                         <FontAwesomeIcon icon={faScroll} />
-                        <span >{language.homeOtherPolicy || 'Policy'}</span>
+                        <span >{t('policy')}</span>
                     </Link>
                 </div>
             </div>

@@ -14,6 +14,14 @@ const routes = {
     policy: '/policy',
     help: '/help',
     postDetail: '/post/:id_post',
+    friends: '/friends',
+
+    // Route Admin
+    dashboard: '/admin/dashboard',
+    usersManagement: '/admin/users',
+    postsManagement: '/admin/posts',
+    statistic: '/admin/statistic',
+    report: '/admin/report',
 }
 
 export default routes

@@ -43,3 +43,33 @@
         }
     }
 }
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .content {
+        width: 90%;
+    }
+
+    .body {
+        width: 100%;
+
+        .heading {
+            font-size: 3.4rem;
+        }
+
+        .title {
+            font-size: 1.6rem;
+        }
+    }
+}

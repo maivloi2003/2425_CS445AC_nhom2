@@ -2,7 +2,7 @@ import * as request from '~/utils/request'
 
 const sendEmail = async(token) => {
     try {
-        const res = await request.post('/mail/send', {}, {
+        const res = await request.get('/mail/send-mail/active', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

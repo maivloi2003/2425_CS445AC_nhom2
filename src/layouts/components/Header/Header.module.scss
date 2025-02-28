@@ -17,6 +17,12 @@
     justify-content: space-between;
 }
 
+// Navbar
+.bars {
+    display: none;
+}
+
+// Logo
 .logo {
     height: 100%;
 
@@ -102,6 +108,10 @@
     }
 }
 
+.btn-search__mobile {
+    display: none;
+}
+
 // Action
 .action {
     display: flex;
@@ -121,4 +131,67 @@
     border-radius: 50%;
     cursor: pointer;
     object-fit: cover;
+}
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper {
+        width: 100%;
+    }
+
+    .bars {
+        display: block;
+        padding: 8px 12px;
+        border-radius: 50%;
+        svg {
+            font-size: 2.6rem;
+        }
+
+        &:active {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    .logo-title {
+        display: none;
+    }
+
+    .search {
+        display: none;
+    }
+
+    .btn-search__mobile {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+        svg {
+            padding: 10px 12px;
+            font-size: 2.2rem;
+        }
+    }
+
+    .action {
+        .btn-login {
+            margin-left: 12px;
+        }
+        .btn-register {
+            display: none;
+        }
+
+        .create {
+            border: none;
+            span {
+                display: none;
+            }
+        }
+
+        .notify-btn,
+        .create + .chat {
+            margin-left: 0;
+        }
+    }
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+    }
 }

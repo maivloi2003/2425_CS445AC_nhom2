@@ -1,19 +1,23 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import stylesGrid from '~/styles/grid.module.scss'
 import styles from '~/styles/share.module.scss'
-import images from "~/assets/images";
+import images from "assets/images";
 import Image from "~/components/Image";
 import { useValidator } from '~/hooks';
 import FormGroup from '~/components/FormGroup';
-import { loginService, checkActiveService, infoUserCurrentService, getLangService } from '~/apiServices'
+import { loginService, checkActiveService, infoUserCurrentService, logoutService } from '~/apiServices'
 import routesConfig from '~/config/routes'
+import { ChatContext } from '~/context/ChatContext';
+import { useTranslation } from 'react-i18next';
 
 const cx = classNames.bind(styles)
 
 function Login() {
+    const { t, i18n } = useTranslation();
+    const { setIsOpenChat } = useContext(ChatContext);
     const navigate = useNavigate()
     const [messageError, setMessageError] = useState({});
     const [formData, setFormData] = useState({
@@ -21,8 +25,20 @@ function Login() {
         password: '',
     });
 
-    useEffect(() => {
+    const [selected, setSelected] = useState(0);
+
+    const handleLogout = async () => {
+        setIsOpenChat(false);
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            await logoutService(token);
+        }
         localStorage.clear()
+    }
+
+    useEffect(() => {
+        handleLogout();
+        // eslint-disable-next-line
     }, [])
 
     const { errors, validateField, clearError, validateAll } = useValidator({
@@ -34,7 +50,7 @@ function Login() {
 
     const fetchApiLogin = async (data) => {
         const res = await loginService(data);
-        if (!res.result) {
+        if (!res.data) {
             const { code, message } = res.response.data;
             setMessageError((prev) => ({
                 ...prev,
@@ -43,25 +59,25 @@ function Login() {
             return;
         }
 
-        const token = res.result.token;
+        const token = res.data.token;
         localStorage.setItem('authToken', token);
 
         if (token) {
             const activeRes = await checkActiveService(token);
-            if (activeRes.result?.active) {
+            if (activeRes?.data.authorized) {
                 const userInfoRes = await infoUserCurrentService(token);
-                const userResponse = userInfoRes.result
+                const userResponse = userInfoRes?.data
                 if (userResponse) {
                     localStorage.setItem('currentUser', JSON.stringify(userResponse))
-                    const languageRes = await getLangService(userResponse.language)
-                    if (languageRes?.result) {
-                        const resultObj = languageRes.result.reduce((acc, item) => {
-                            acc[item.keyName] = item.translated;
-                            return acc;
-                        }, {});
-                        localStorage.setItem('lang', JSON.stringify(resultObj))
-                        navigate(routesConfig.home);
-                    }
+                    // const languageRes = await getLangService(userResponse.language)
+                    // if (languageRes?.data) {
+                    // const resultObj = languageRes.result.reduce((acc, item) => {
+                    // acc[item.keyName] = item.translated;
+                    // return acc;
+                    // }, {});
+                    // localStorage.setItem('lang', JSON.stringify(resultObj))
+                    navigate(routesConfig.home);
+                    // }
                 }
             } else {
                 navigate(routesConfig.activeAccount);
@@ -98,15 +114,15 @@ function Login() {
                 </div>
                 <div className={cx(stylesGrid['grid__row-6'], 'loginContent')}>
                     <form className={cx('form')} id="form-login" onSubmit={handleSubmit}>
-                        <h3 className={cx('heading')}>Login</h3>
-                        <p className={cx('desc')}>Welcome To Forum Language</p>
+                        <h3 className={cx('heading')}>{t('login')}</h3>
+                        <p className={cx('desc')}>{t('welcome')}</p>
 
                         <div className={cx('spacer')}></div>
 
                         <FormGroup
                             name="username"
-                            text="Username"
-                            placeholder="Ex: maivanloi"
+                            text={t('username')}
+                            placeholder={t('exUsername')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -121,9 +137,9 @@ function Login() {
 
                         <FormGroup
                             name="password"
-                            text="Password"
+                            text={t('password')}
                             type="password"
-                            placeholder="Password"
+                            placeholder={t('password')}
                             classNameFormGroup={cx('formGroup')}
                             classNameLabel={cx('formLabel')}
                             classNameInput={cx('formControl')}
@@ -136,11 +152,26 @@ function Login() {
                             error={messageError.password}
                         />
                         <div className={cx('link')}>
-                            <Link className={cx('link-forgot')} to={routesConfig.forgotPassword} >Forgot Password ?</Link>
-                            <Link className={cx('link-register')} to={routesConfig.register} >Register</Link>
+                            <Link className={cx('link-forgot')} to={routesConfig.forgotPassword} >{t('forgotPassword')}</Link>
+                            <Link className={cx('link-register')} to={routesConfig.register} >{t('register')}</Link>
                         </div>
-                        <button className={cx('formSubmit')} type="submit">Login</button>
+                        <button className={cx('formSubmit')} type="submit">{t('login')}</button>
                     </form>
+
+                    <ul className={cx('language-list')}>
+                        <li className={cx('en', { active: selected === 0 })} onClick={() => {
+                            setSelected(0);
+                            i18n.changeLanguage('en')
+                        }}>{t('langEnglish')}</li>
+                        <li className={cx('jp', { active: selected === 1 })} onClick={() => {
+                            setSelected(1);
+                            i18n.changeLanguage('jp')
+                        }}>{t('langJapanese')}</li>
+                        <li className={cx('cn', { active: selected === 2 })} onClick={() => {
+                            setSelected(2);
+                            i18n.changeLanguage('cn')
+                        }}>{t('langChinese')}</li>
+                    </ul>
                 </div>
             </div>
         </div>

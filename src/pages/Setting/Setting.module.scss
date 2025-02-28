@@ -23,9 +23,9 @@
 
 .item {
     flex: 1;
-    margin: 0 30px;
+    margin: 0 20px;
     padding: 12px 0 0;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 700;
     text-align: center;
     cursor: pointer;
@@ -103,7 +103,6 @@
     padding: 12px 24px;
     font-size: 1.6rem;
     font-weight: 700;
-    border-width: 2px;
     margin-right: 32px;
 
     &:hover {
@@ -119,5 +118,65 @@
     .save-btn {
         padding: 12px 24px;
         font-weight: 600;
+    }
+}
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper {
+        width: 90%;
+        margin-top: 0;
+        background-color: transparent;
+        box-shadow: none;
+    }
+
+    .heading {
+        font-size: 3rem;
+        margin: 32px 12px 0;
+    }
+
+    .category {
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        justify-content: space-evenly;
+    }
+
+    .item {
+        font-size: 1.8rem;
+    }
+
+    .email-heading,
+    .gender-heading,
+    .language-heading,
+    .delete-heading {
+        font-size: 1.5rem;
+    }
+
+    .email-content,
+    .gender-content,
+    .language-content,
+    .delete-content {
+        font-size: 1.4rem;
+    }
+
+    .gender-btn,
+    .language-btn {
+        width: 150px;
+        font-size: 1.4rem;
+        margin-left: 12px;
+        margin-right: 0;
+    }
+
+    .delete-btn {
+        margin-right: 0;
+        padding: 6px;
+        font-size: 1.4rem;
+    }
+
+    .save {
+        .save-btn {
+            padding: 12px 20px;
+        }
     }
 }

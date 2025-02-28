@@ -2,7 +2,7 @@ import * as request from '~/utils/request'
 
 const infoUserCurrent = async (token) => {
     try {
-        const res = await request.get('users/my-infor', {
+        const res = await request.get('users/my-info', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

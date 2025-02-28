@@ -1,10 +1,10 @@
 import * as request from '~/utils/request'
 
-const comment = async (id_post, content, token) => {
+const comment = async (postId, content, token) => {
     try {
 
         const data = {
-            id_post,
+            postId,
             content,
         }
         const res = await request.post('comments', data, {

@@ -10,6 +10,8 @@
     display: flex;
     border-radius: 8px;
     overflow: hidden;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .registerLogo,
@@ -145,6 +147,26 @@
 
 .spacer {
     margin-top: 36px;
+}
+
+.language-list {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+
+    li {
+        padding: 8px 10px;
+        cursor: pointer;
+        // border-radius: 10px;
+        &:active {
+            background-color: rgba(0, 0, 0, 0.08);
+        }
+    }
+    .active {
+        color: var(--primary);
+        font-weight: 600;
+        border-bottom: 3px solid var(--primary);
+    }
 }
 
 // Mobile

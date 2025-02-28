@@ -7,36 +7,37 @@ import stylesShare from '~/styles/share.module.scss';
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
 import { useValidator } from '~/hooks';
-import images from "~/assets/images";
+import images from "assets/images";
 import FormGroup from "~/components/FormGroup";
 import { resetPasswordService } from "~/apiServices";
 import routesConfig from '~/config/routes'
+import { useTranslation } from "react-i18next";
 
 
 const cx = classNames.bind(styles)
 
 function ResetPassword() {
-
+    const { t } = useTranslation();
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
         password: '',
-        repassword: '',
+        rePassword: '',
     });
 
     const { errors, validateField, clearError, validateAll } = useValidator({
         rules: [
             useValidator.isRequired('password', 'This field is required'),
             useValidator.minLength('password', 5, 'Password must have at least 5 characters'),
-            useValidator.isRequired('repassword', 'This field is required'),
-            useValidator.isPasswordMatch('repassword', 'password', 'Passwords do not match'),
+            useValidator.isRequired('rePassword', 'This field is required'),
+            useValidator.isPasswordMatch('rePassword', 'password', 'Passwords do not match'),
         ]
     });
 
     const fetchApi = async (data, token) => {
         const res = await resetPasswordService(data, token);
 
-        if (res.result?.success) {
+        if (res?.data) {
             alert('Change Password Success')
             navigate(routesConfig.login)
         } else {
@@ -81,8 +82,8 @@ function ResetPassword() {
                         <FormGroup
                             name="password"
                             type='password'
-                            text='Password'
-                            placeholder='Password'
+                            text={t('password')}
+                            placeholder={t('password')}
                             classNameFormGroup={stylesShare.formGroup}
                             classNameLabel={stylesShare.formLabel}
                             classNameInput={stylesShare.formControl}
@@ -94,10 +95,10 @@ function ResetPassword() {
                             valid={errors.password}
                         />
                         <FormGroup
-                            name="repassword"
+                            name="rePassword"
                             type='password'
-                            text='Password Confirm'
-                            placeholder='Password Confirm'
+                            text={t('passwordConfirm')}
+                            placeholder={t('passwordConfirm')}
                             classNameFormGroup={stylesShare.formGroup}
                             classNameLabel={stylesShare.formLabel}
                             classNameInput={stylesShare.formControl}
@@ -105,8 +106,8 @@ function ResetPassword() {
                             classNameInvalid={stylesShare.invalid}
                             handleBlur={handleBlur}
                             handleChange={handleChange}
-                            value={formData.repassword}
-                            valid={errors.repassword}
+                            value={formData.rePassword}
+                            valid={errors.rePassword}
                         />
                         <button onClick={handleSubmit} className={stylesShare.formSubmit}>Reset Password</button>
                     </form>

@@ -1,12 +1,11 @@
 import * as request from '~/utils/request'
 
-const like = async (id_post, liked, token) => {
+const like = async (postId, token) => {
     try {
         const res = await request.post(
-            'likes',
+            'likes/action',
             {
-                id_post,
-                liked
+                postId
             },
             {
                 headers: {

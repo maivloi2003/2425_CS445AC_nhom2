@@ -4,4 +4,20 @@
     align-items: center;
     width: 100%;
     margin-top: 20px;
+
+    hr {
+        display: none;
+    }
+}
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper {
+        hr {
+            width: 100%;
+            display: block;
+            border-bottom-width: 1px;
+            border-bottom-color: #00000019;
+        }
+    }
 }

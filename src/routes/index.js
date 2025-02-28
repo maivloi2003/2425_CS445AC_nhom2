@@ -2,7 +2,7 @@
 import routesConfig from '~/config/routes'
 
 // Layouts
-import HeaderOnly from '~/components/Layouts/HeaderOnly';
+import { HeaderOnly } from '~/layouts';
 
 // Pages
 import Home from '~/pages/Home';
@@ -20,6 +20,13 @@ import ResetPassword from '~/pages/ResetPassword';
 import AboutFL from '~/pages/AboutFL'
 import Policy from '~/pages/Policy'
 import Help from '~/pages/Help'
+import Friends from '~/pages/Friends';
+import Dashboard from '~/pages/admin/Dashboard';
+import UsersManagement from '~/pages/admin/UsersManagement';
+import PostsManagement from '~/pages/admin/PostsManagement';
+import Statistic from '~/pages/admin/Statistic';
+import Report from '~/pages/admin/Report';
+import AdminLayout from '~/layouts/AdminLayout';
 
 const publicRoutes = [
     { path: routesConfig.home, component: Home },
@@ -31,15 +38,24 @@ const publicRoutes = [
     { path: routesConfig.policy, component: Policy, layout: HeaderOnly },
     { path: routesConfig.help, component: Help, layout: HeaderOnly },
     { path: routesConfig.aboutFL, component: AboutFL, layout: HeaderOnly },
+    { path: routesConfig.postDetail, component: PostDetail },
+    { path: routesConfig.dashboard, component: Dashboard, layout: AdminLayout },
+    { path: routesConfig.usersManagement, component: UsersManagement, layout: AdminLayout },
+    { path: routesConfig.postsManagement, component: PostsManagement, layout: AdminLayout },
+    { path: routesConfig.statistic, component: Statistic, layout: AdminLayout },
+    { path: routesConfig.report, component: Report, layout: AdminLayout },
 ];
 
 const privateRoutes = [
     { path: routesConfig.setting, component: Setting, layout: HeaderOnly },
+    { path: routesConfig.friends, component: Friends, layout: HeaderOnly },
     { path: routesConfig.profile, component: Profile, layout: HeaderOnly },
     { path: routesConfig.upload, component: Upload, layout: HeaderOnly },
     { path: routesConfig.activeAccount, component: ActiveAccount, layout: null },
     { path: routesConfig.sendEmail, component: SendEmail, layout: null },
-    { path: routesConfig.postDetail, component: PostDetail },
 ];
 
-export { publicRoutes, privateRoutes };
+const adminRoutes = [
+]
+
+export { publicRoutes, privateRoutes, adminRoutes };

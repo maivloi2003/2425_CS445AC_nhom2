@@ -4,18 +4,22 @@ import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from '~/components/GlobalStyles';
 import { UserProvider } from '~/context/UserContext';
-import { LanguageProvider } from '~/context/LanguageContext';
+import { ChatProvider } from './context/ChatContext';
+import { NavBarsProvider } from './context/NavBarsContext';
+import './utils/i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <UserProvider>
-            <LanguageProvider>
-                <GlobalStyles>
-                    <App />
-                </GlobalStyles>
-            </LanguageProvider>
-        </UserProvider>
+        <ChatProvider>
+            <UserProvider>
+                <NavBarsProvider>
+                    <GlobalStyles>
+                        <App />
+                    </GlobalStyles>
+                </NavBarsProvider>
+            </UserProvider>
+        </ChatProvider>
     </React.StrictMode >,
 );
 

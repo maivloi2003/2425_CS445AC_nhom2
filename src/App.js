@@ -1,8 +1,10 @@
-import { Fragment } from 'react';
+import { Fragment, useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '~/routes';
-import { DefaultLayout } from '~/components/Layouts';
+import { DefaultLayout } from '~/layouts';
 import routesConfig from '~/config/routes'
+import { ChatContext } from './context/ChatContext';
+import ChatPopup from '~/components/ChatPopup';
 
 const isAuthenticated = () => {
     return !!localStorage.getItem('authToken');
@@ -13,6 +15,8 @@ const PrivateRoute = ({ children }) => {
 };
 
 function App() {
+    const { isOpenChat } = useContext(ChatContext);
+
     return (
         <Router>
             <div className="App">
@@ -59,7 +63,7 @@ function App() {
                                 path={route.path}
                                 element={
                                     <PrivateRoute>
-                                        <Layout>
+                                        <Layout >
                                             <Page />
                                         </Layout>
                                     </PrivateRoute>
@@ -68,6 +72,7 @@ function App() {
                         );
                     })}
                 </Routes>
+                {isOpenChat && <ChatPopup />}
             </div>
         </Router>
     );

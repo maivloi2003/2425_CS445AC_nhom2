@@ -5,12 +5,15 @@ import classNames from "classnames/bind";
 import styles from './ForgotPassword.module.scss'
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
-import images from "~/assets/images";
+import images from "assets/images";
 import { useValidator } from '~/hooks';
 import FormGroup from "~/components/FormGroup";
 import stylesShare from '~/styles/share.module.scss';
 import { forgotPasswordService } from '~/apiServices'
 import routesConfig from '~/config/routes'
+import Button from "~/components/Button";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useTranslation } from "react-i18next";
 
 
 const cx = classNames.bind(styles)
@@ -20,7 +23,7 @@ function ForgotPassword() {
     const [formData, setFormData] = useState({
         email: '',
     });
-
+    const { t } = useTranslation();
     const navigate = useNavigate()
 
     const { errors, validateField, clearError, validateAll } = useValidator({
@@ -33,17 +36,16 @@ function ForgotPassword() {
     const fetchApi = async (email) => {
         const res = await forgotPasswordService(email);
 
-        if (res.result?.success) {
-            const token = res.result.token
+        if (res?.data) {
+            const token = res.data.token
             localStorage.setItem('authToken', token)
             if (localStorage.getItem('authToken')) {
                 navigate(routesConfig.sendEmail, { state: { fromPage: 'forgotPassword' } })
             }
         } else {
-            const { code, message } = res.response.data
-            if (code === 40413) {
-                setError(message)
-            }
+            const { message } = res.response.data
+            setError(message)
+
         }
     }
 
@@ -67,19 +69,22 @@ function ForgotPassword() {
             <div className={`${cx('logo')} ${stylesGrid['grid__row-6']}`}>
                 <Image src={images.logo} alt='logo' className={cx('img')} />
             </div>
+            <div className={cx('nav')}>
+                <Button to={routesConfig.login} className={cx('icon-back')} leftIcon={faArrowLeft} />
+            </div>
             <div className={`${cx('content')} ${stylesGrid['grid__row-6']}`}>
                 <div className={cx('body')}>
                     <div className={cx('heading')}>
-                        Forgot Password
+                        {t('forgotPassword')}
                     </div>
                     <div className={cx('title')}>
-                        To reset your password, we need to verify your email address. Please enter your email to proceed.
+                        {t('forgotPasswordTitle')}
                     </div>
                     <form className={`${stylesShare.form} ${cx('form-forgot')}`} id="form-forgot">
                         <FormGroup
                             name="email"
-                            text='Email'
-                            placeholder='Ex: outlook@domain.com'
+                            text={t('email')}
+                            placeholder={t('exEmail')}
                             classNameFormGroup={stylesShare.formGroup}
                             classNameLabel={stylesShare.formLabel}
                             classNameInput={stylesShare.formControl}
@@ -91,7 +96,7 @@ function ForgotPassword() {
                             valid={errors.email}
                             error={error}
                         />
-                        <button onClick={handleSubmit} className={stylesShare.formSubmit}>Send</button>
+                        <button onClick={handleSubmit} className={stylesShare.formSubmit}>{t('sendBtn')}</button>
                     </form>
                 </div>
             </div>

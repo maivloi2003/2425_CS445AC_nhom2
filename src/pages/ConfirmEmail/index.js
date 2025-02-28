@@ -5,13 +5,15 @@ import classNames from "classnames/bind";
 import styles from './ConfirmEmail.module.scss'
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
-import images from "~/assets/images";
+import images from "assets/images";
 import { verifyAccountService } from "~/apiServices";
 import routesConfig from '~/config/routes'
+import { useTranslation } from "react-i18next";
 
 const cx = classNames.bind(styles)
 
 function ConfirmEmail() {
+    const { t } = useTranslation();
     const [status, setStatus] = useState({
         heading: '',
         title: '',
@@ -20,10 +22,10 @@ function ConfirmEmail() {
 
     const fetchApi = async (token) => {
         const res = await verifyAccountService(token)
-        if (res.result?.success) {
+        if (res?.data) {
             setStatus({
-                heading: 'Active Success',
-                title: 'You have successfully activated your account. Please log in to your account and experience it.',
+                heading: t('activeSuccessHeading'),
+                title: t('activeSuccessTitle'),
                 showLink: true,
             })
 
@@ -50,6 +52,7 @@ function ConfirmEmail() {
                 return { ...prevStatus, token };
             });
         }
+        // eslint-disable-next-line
     }, []);
 
     return (

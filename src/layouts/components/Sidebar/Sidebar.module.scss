@@ -7,6 +7,7 @@
     flex-direction: column;
     width: 350px;
     z-index: 2;
+    background-color: var(--white);
 }
 
 .navbar,
@@ -51,4 +52,11 @@
     text-transform: uppercase;
     margin: 16px 0 0 12px;
     color: var(--text-color);
+}
+
+// Mobile
+@media (max-width: 767px) {
+    .wrapper {
+        display: none;
+    }
 }

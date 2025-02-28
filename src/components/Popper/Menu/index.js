@@ -14,10 +14,17 @@ function Menu({ children, items = [], hideOnClick = false, post = false, onChang
     const current = history[history.length - 1];
 
     const handleItemClick = (item) => {
+        if (item.onClick) {
+            item.onClick();
+        }
+
         if (item.children) {
             setHistory((prev) => [...prev, item.children]);
         } else {
             onChange(item);
+            if (hideOnClick) {
+                setHistory([{ data: items }]);
+            }
         }
     };
 
