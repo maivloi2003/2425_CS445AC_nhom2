@@ -1,17 +1,17 @@
 import * as request from '~/utils/request'
 
-const notify = async (token) => {
+const replyComment = async (formData, token) => {
     try {
-        const res = await request.get('notices', {
+        const res = await request.post('comment-reply', formData, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         })
 
-        return res
+        return res;
     } catch (error) {
         return error
     }
 }
 
-export default notify;
+export default replyComment;

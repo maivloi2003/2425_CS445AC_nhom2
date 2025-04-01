@@ -7,9 +7,9 @@ import stylesShare from '~/styles/share.module.scss';
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
 import { useValidator } from '~/hooks';
-import images from "assets/images";
+import images from "~/assets/images";
 import FormGroup from "~/components/FormGroup";
-import { resetPasswordService } from "~/apiServices";
+import { resetPasswordServices } from "~/apiServices";
 import routesConfig from '~/config/routes'
 import { useTranslation } from "react-i18next";
 
@@ -35,7 +35,7 @@ function ResetPassword() {
     });
 
     const fetchApi = async (data, token) => {
-        const res = await resetPasswordService(data, token);
+        const res = await resetPasswordServices(data, token);
 
         if (res?.data) {
             alert('Change Password Success')

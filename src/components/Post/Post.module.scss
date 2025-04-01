@@ -1,5 +1,5 @@
 .wrapper {
-    width: 66%;
+    width: 52%;
     background-color: var(--white);
     padding: 20px 40px;
     border-radius: 14px;
@@ -11,6 +11,13 @@
 
     &:hover {
         background-color: #f4f4f4;
+    }
+
+    &.inactive {
+        opacity: 0.6;
+        filter: blur(2px);
+        pointer-events: none;
+        user-select: none;
     }
 }
 
@@ -81,20 +88,41 @@
     padding: 24px;
     display: flex;
     flex-direction: column;
+    margin-top: 24px;
+}
+.vote-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    padding: 12px 18px;
+    border: 1px solid var(--text-color);
+    border-radius: 16px;
+    margin-bottom: 24px;
+    font-size: 1.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
 
-    label {
-        cursor: pointer;
-        padding: 12px;
-        border: 1px solid var(--text-color);
-        border-radius: 24px;
-        margin-bottom: 24px;
-        font-size: 1.9rem;
-        width: 500px;
-
-        &:checked {
-            border-color: var(--primary);
-        }
+    &:hover {
+        background-color: rgba(29, 191, 175, 0.2);
     }
+
+    &:has(input:checked) {
+        border: 1.5px solid var(--primary);
+    }
+}
+
+.option-text,
+.option-progress {
+    z-index: 3;
+    font-weight: 600;
+    position: relative;
+}
+
+.option-text {
+    color: var(--text-color);
 
     input {
         margin-right: 8px;
@@ -103,12 +131,46 @@
     }
 }
 
+.option-progress {
+    font-size: 1.6rem;
+    color: var(--primary);
+}
+
+.progress-bar {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.progress-fill {
+    border-radius: 16px;
+    height: 100%;
+    background: rgba(27, 230, 209, 0.3);
+    transition: width 0.5s ease-in-out;
+}
+
+.vote {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+}
+
 .vote-btn {
     width: 100px;
     padding: 8px 0;
     display: flex;
     border-radius: 40px;
     justify-content: center;
+
+    &:hover {
+        opacity: 0.7;
+    }
 }
 
 .text-content {
@@ -142,7 +204,7 @@
     .like-btn,
     .comment-btn,
     .share-btn {
-        padding: 10px 12px;
+        padding: 5px 9px;
     }
 
     span {
@@ -219,6 +281,10 @@
         border-radius: 0;
         padding: 12px;
         margin: 0;
+        &.inactive {
+            opacity: 0.5;
+            filter: blur(1.5px);
+        }
     }
 
     .user {

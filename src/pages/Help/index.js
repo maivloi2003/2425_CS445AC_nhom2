@@ -1,12 +1,11 @@
 import classNames from "classnames/bind";
 import styles from './Help.module.scss';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronRight, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { Fragment, useState } from "react";
 import Image from "~/components/Image";
-import images from "assets/images";
+import images from "~/assets/images";
 import { useTranslation } from "react-i18next";
+import { HelpIcon, RightIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles);
 
@@ -115,13 +114,13 @@ function Help() {
             <div className={cx('contain')}>
                 <div className={cx('header')}>
                     <Link to='/' className={cx('home')}>{t('home')}</Link>
-                    <FontAwesomeIcon icon={faChevronRight} />
+                    <RightIcon />
                     <p className={cx('help')}>{t('help')}</p>
                 </div>
                 <div className={cx('body')}>
                     <ul className={cx('nav')}>
                         <li className={cx('heading')}>
-                            <FontAwesomeIcon icon={faQuestionCircle} className={cx('icon-heading')} />
+                            <HelpIcon width="3rem" height="3rem" className={cx('icon-heading')} />
                             {t('faq')}
                         </li>
                         {[t('register'), t('login'), t('helpForgot'), t('postGuide'), t('helpInfo')].map((item, index) => (

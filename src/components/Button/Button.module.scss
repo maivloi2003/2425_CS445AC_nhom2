@@ -20,12 +20,8 @@
     }
 }
 
-.icon {
-    width: 20px;
-}
-
-.icon + .title,
-.title + .icon {
+svg + .title,
+.title + svg {
     margin-left: 8px;
 }
 

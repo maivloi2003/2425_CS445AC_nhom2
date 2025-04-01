@@ -1,43 +1,45 @@
-import { useEffect, useState } from "react";
-import { Client } from "@stomp/stompjs";
+import { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
-const useWebSocket = (userId, token) => {
-  const [notifications, setNotifications] = useState([]);
-  const [client, setClient] = useState(null);
+const useWebSocket = () => {
+  const [notification, setNotification] = useState([]);
+  const stompClientRef = useRef(null);
 
   useEffect(() => {
-    if (!userId || !token) return;
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      return;
+    }
 
-    const stompClient = new Client({
-      webSocketFactory: () => new SockJS("http://localhost:8080/ws"), 
-      connectHeaders: {
-        Authorization: `Bearer ${token}`, // Token để xác thực
-      },
-      onConnect: () => {
-        console.log("✅ WebSocket Connected");
+    const socketUrl = `http://localhost:8080/ws?token=${encodeURIComponent(token)}`;
+    const socket = new SockJS(socketUrl);
+    const stompClient = Stomp.over(() => socket);
 
-        // Subscribe đến kênh thông báo của user
-        const destination = `/user/${userId}/queue/notifications`;
-        stompClient.subscribe(destination, (message) => {
-          const newNotification = message.body;
-          setNotifications((prev) => [...prev, newNotification]);
-        });
-      },
-      onDisconnect: () => {
-        console.log("❌ WebSocket Disconnected");
-      },
+    stompClient.debug = () => { };
+    stompClientRef.current = stompClient;
+
+    stompClient.connect({}, () => {
+
+      stompClient.subscribe("/user/queue/notifications", (message) => {
+        console.log(message.body);
+
+        const notify = JSON.parse(message.body)
+
+        setNotification((prev) => [...prev, notify.message]);
+      });
+    }, (error) => {
+      console.error("WebSocket connection error:", error);
     });
 
-    stompClient.activate();
-    setClient(stompClient);
-
     return () => {
-      stompClient.deactivate();
+      if (stompClientRef.current) {
+        stompClientRef.current.disconnect();
+      }
     };
-  }, [userId, token]);
+  }, []);
 
-  return { notifications, client };
+  return { notification };
 };
 
 export default useWebSocket;

@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import stylesGrid from '~/styles/grid.module.scss';
 import styles from '~/styles/share.module.scss';
-import images from 'assets/images';
+import images from '~/assets/images';
 import Image from '~/components/Image';
 import { useValidator } from '~/hooks';
-import { registerService } from '~/apiServices'
+import { registerServices } from '~/apiServices'
 import FormGroup from '~/components/FormGroup';
 import routesConfig from '~/config/routes'
 import { useTranslation } from 'react-i18next';
@@ -47,7 +47,7 @@ function Register() {
     });
 
     const fetchApi = async (data) => {
-        const res = await registerService(data);
+        const res = await registerServices(data);
 
         if (res?.data) {
             alert('Register Success!!')

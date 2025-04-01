@@ -1,20 +1,9 @@
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faAddressCard,
-    faFire,
-    faFlag,
-    faNewspaper,
-    faQuestion,
-    faScroll,
-    faSquareArrowUpRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { AiFillHome } from "react-icons/ai";
-import { IoIosHelpCircleOutline } from "react-icons/io";
 import styles from './Sidebar.module.scss';
 import routesConfig from '~/config/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { AboutIcon, AdvertiseIcon, HelpIcon, HomeIcon, LanguagesIcon, NewsIcon, PolicyIcon, PopularIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -44,58 +33,62 @@ function Sidebar() {
 
     return (
         <div className={cx('wrapper')}>
-            <div className={cx('navbar')}>
-                <ul className={cx('navList')}>
-                    <Link to='/' className={cx('navItem')}>
-                        <AiFillHome />
-                        <span>{t('home')}</span>
-                    </Link>
-                    <li className={cx('navItem')}>
-                        <FontAwesomeIcon icon={faFire} />
-                        <span>{t('popular')}</span>
-                    </li>
-                    <li className={cx('navItem')}>
-                        <FontAwesomeIcon icon={faSquareArrowUpRight} />
-                        <span>{t('new')}</span>
-                    </li>
-                </ul>
-            </div>
-            <div className={cx('languages')}>
-                <span className={cx('title')}>{t('language')}</span>
-                <ul className={cx('languageList')}>
-                    <li onClick={() => handleGetPostByLanguage('English')} className={cx('languageItem')}>
-                        <FontAwesomeIcon icon={faNewspaper} />
-                        <span>{t('langEnglish')}</span>
-                    </li>
-                    <li onClick={() => handleGetPostByLanguage('China')} className={cx('languageItem')}>
-                        <FontAwesomeIcon icon={faNewspaper} />
-                        <span>{t('langChinese')}</span>
-                    </li>
-                    <li onClick={() => handleGetPostByLanguage('Japan')} className={cx('languageItem')}>
-                        <FontAwesomeIcon icon={faNewspaper} />
-                        <span>{t('langJapanese')}</span>
-                    </li>
-                </ul>
-            </div>
-            <div className={cx('other')}>
-                <span className={cx('title')}>{t('other')}</span>
-                <div className={cx('otherList')}>
-                    <Link to={routesConfig.aboutFL} className={cx('otherItem')}>
-                        <FontAwesomeIcon icon={faAddressCard} />
-                        <span>{t('aboutFL')}</span>
-                    </Link>
-                    <Link to='' className={cx('otherItem')}>
-                        <FontAwesomeIcon icon={faFlag} />
-                        <span>{t('advertise')}</span>
-                    </Link>
-                    <Link to={routesConfig.help} className={cx('otherItem')}>
-                        <IoIosHelpCircleOutline />
-                        <span>{t('help')}</span>
-                    </Link>
-                    <Link to={routesConfig.policy} className={cx('otherItem')}>
-                        <FontAwesomeIcon icon={faScroll} />
-                        <span >{t('policy')}</span>
-                    </Link>
+            <div className={cx('sidebar')}>
+                <div className={cx('navbar')}>
+
+                    <span className={cx('title')}>main</span>
+                    <ul className={cx('navList')}>
+                        <Link to='/' className={cx('navItem', 'active')}>
+                            <HomeIcon />
+                            <span>{t('home')}</span>
+                        </Link>
+                        <li className={cx('navItem')}>
+                            <PopularIcon />
+                            <span>{t('popular')}</span>
+                        </li>
+                        <li className={cx('navItem')}>
+                            <NewsIcon />
+                            <span>{t('new')}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div className={cx('languages')}>
+                    <span className={cx('title')}>{t('language')}</span>
+                    <ul className={cx('languageList')}>
+                        <li onClick={() => handleGetPostByLanguage('English')} className={cx('languageItem')}>
+                            <LanguagesIcon />
+                            <span>{t('langEnglish')}</span>
+                        </li>
+                        <li onClick={() => handleGetPostByLanguage('China')} className={cx('languageItem')}>
+                            <LanguagesIcon />
+                            <span>{t('langChinese')}</span>
+                        </li>
+                        <li onClick={() => handleGetPostByLanguage('Japan')} className={cx('languageItem')}>
+                            <LanguagesIcon />
+                            <span>{t('langJapanese')}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div className={cx('other')}>
+                    <span className={cx('title')}>{t('other')}</span>
+                    <div className={cx('otherList')}>
+                        <Link to={routesConfig.aboutFL} className={cx('otherItem')}>
+                            <AboutIcon />
+                            <span>{t('aboutFL')}</span>
+                        </Link>
+                        <Link to='' className={cx('otherItem')}>
+                            <AdvertiseIcon />
+                            <span>{t('advertise')}</span>
+                        </Link>
+                        <Link to={routesConfig.help} className={cx('otherItem')}>
+                            <HelpIcon />
+                            <span>{t('help')}</span>
+                        </Link>
+                        <Link to={routesConfig.policy} className={cx('otherItem')}>
+                            <PolicyIcon />
+                            <span >{t('policy')}</span>
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

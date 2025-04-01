@@ -4,20 +4,22 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import stylesGrid from '~/styles/grid.module.scss'
 import styles from '~/styles/share.module.scss'
-import images from "assets/images";
+import images from "~/assets/images";
 import Image from "~/components/Image";
 import { useValidator } from '~/hooks';
 import FormGroup from '~/components/FormGroup';
-import { loginService, checkActiveService, infoUserCurrentService, logoutService } from '~/apiServices'
+import { loginServices, checkActiveServices, infoUserCurrentServices, logoutServices } from '~/apiServices'
 import routesConfig from '~/config/routes'
 import { ChatContext } from '~/context/ChatContext';
 import { useTranslation } from 'react-i18next';
+import { UserContext } from '~/context/UserContext';
 
 const cx = classNames.bind(styles)
 
 function Login() {
     const { t, i18n } = useTranslation();
     const { setIsOpenChat } = useContext(ChatContext);
+    const { setUser } = useContext(UserContext);
     const navigate = useNavigate()
     const [messageError, setMessageError] = useState({});
     const [formData, setFormData] = useState({
@@ -31,7 +33,8 @@ function Login() {
         setIsOpenChat(false);
         const token = localStorage.getItem('authToken');
         if (token) {
-            await logoutService(token);
+            await logoutServices(token);
+            setUser(null);
         }
         localStorage.clear()
     }
@@ -49,7 +52,7 @@ function Login() {
     });
 
     const fetchApiLogin = async (data) => {
-        const res = await loginService(data);
+        const res = await loginServices(data);
         if (!res.data) {
             const { code, message } = res.response.data;
             setMessageError((prev) => ({
@@ -63,21 +66,13 @@ function Login() {
         localStorage.setItem('authToken', token);
 
         if (token) {
-            const activeRes = await checkActiveService(token);
+            const activeRes = await checkActiveServices(token);
             if (activeRes?.data.authorized) {
-                const userInfoRes = await infoUserCurrentService(token);
+                const userInfoRes = await infoUserCurrentServices(token);
                 const userResponse = userInfoRes?.data
                 if (userResponse) {
                     localStorage.setItem('currentUser', JSON.stringify(userResponse))
-                    // const languageRes = await getLangService(userResponse.language)
-                    // if (languageRes?.data) {
-                    // const resultObj = languageRes.result.reduce((acc, item) => {
-                    // acc[item.keyName] = item.translated;
-                    // return acc;
-                    // }, {});
-                    // localStorage.setItem('lang', JSON.stringify(resultObj))
                     navigate(routesConfig.home);
-                    // }
                 }
             } else {
                 navigate(routesConfig.activeAccount);

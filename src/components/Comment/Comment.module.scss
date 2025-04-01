@@ -59,6 +59,19 @@
     }
 }
 
+.more-reply {
+    font-size: 1.3rem;
+    color: var(--black);
+    font-weight: 500;
+    cursor: pointer;
+    margin: 12px 0 0 32px;
+    max-width: fit-content;
+    border-radius: 20px;
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+}
+
 // Modal
 .modal {
     display: none;
@@ -104,6 +117,27 @@
     padding: 8px 12px;
     display: flex;
     justify-content: flex-end;
+}
+
+.form-reply {
+    padding: 6px 32px;
+    display: flex;
+    align-items: center;
+    // position: relative;
+}
+
+.reply-input {
+    flex: 1;
+    font-size: 1.6rem;
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.reply-icon {
+    &:hover {
+        color: var(--primary);
+    }
 }
 
 // Mobile

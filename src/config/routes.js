@@ -6,7 +6,7 @@ const routes = {
     resetPassword: '/resetPassword',
     confirmEmail: '/confirmEmail',
     setting: '/setting',
-    profile: '/users/:id_user',
+    profile: '/user/:user_id',
     upload: '/upload',
     activeAccount: '/activeAccount',
     sendEmail: '/sendEmail',

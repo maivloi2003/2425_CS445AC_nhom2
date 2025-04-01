@@ -1,9 +1,8 @@
 import classNames from "classnames/bind"
-import { forwardRef } from "react"
+import React, { forwardRef } from "react"
 import { Link } from "react-router-dom"
 
 import styles from "./Button.module.scss"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 
 const cx = classNames.bind(styles)
@@ -66,9 +65,9 @@ function Button(
 
     return (
         <Comp ref={ref} className={classes} {...props}>
-            {leftIcon && <FontAwesomeIcon className={cx('icon')} icon={leftIcon} />}
+            {leftIcon && React.isValidElement(leftIcon) && leftIcon}
             {children && <span className={cx('title')}>{children}</span>}
-            {rightIcon && <FontAwesomeIcon className={cx('icon')} icon={rightIcon} />}
+            {rightIcon && React.isValidElement(rightIcon) && rightIcon}
         </Comp>
     );
 }

@@ -1,152 +1,142 @@
 import classNames from "classnames/bind";
-import styles from './Profile.module.scss';
+import styles from "./Profile.module.scss";
 import Image from "~/components/Image";
-import { useContext, useEffect, useState } from "react";
-import { getUserByIdService, getPostByIdUserService } from "~/apiServices";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+    getUserByIdServices,
+    getPostByIdUserServices,
+    addFriendServices,
+    getStatusFriendServices,
+    getFriendsServices
+} from "~/apiServices";
 import Post from "~/components/Post";
 import { useScroll } from "~/hooks";
 import Button from "~/components/Button";
 import { ChatContext } from "~/context/ChatContext";
 import { useLocation } from "react-router-dom";
-import images from "assets/images";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import images from "~/assets/images";
+import { DownIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles);
 
 function Profile() {
-    const [user, setUser] = useState({ id: '', img: '', name: '' });
-    const [currentPage, setCurrentPage] = useState(0);
+    const [user, setUser] = useState(null);
     const [postsUser, setPostsUser] = useState([]);
-    const [option, setOption] = useState('Post');
-    const [userPrimary, setUserPrimary] = useState(false)
+    const [option, setOption] = useState("Post");
+    const [userPrimary, setUserPrimary] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [friends, setFriends] = useState([]);
+    const [statusFriend, setStatusFriend] = useState('');
+
     const { toggleChat } = useContext(ChatContext);
-    const idUserPrimary = JSON.parse(localStorage.currentUser);
     const location = useLocation();
     const token = localStorage.getItem("authToken");
+    const idUserPrimary = JSON.parse(localStorage.getItem("currentUser"));
+    const userId = location.pathname.split("/").pop();
 
-    const getUserIdFromURL = () => {
-        const url = window.location.pathname;
-        return url.substring(url.lastIndexOf("/") + 1);
-    };
+    const fetchPosts = useCallback(async (id, page) => {
+        const res = await getPostByIdUserServices(id, page, 5, token);
+        if (res?.data?.content.length > 0) {
+            setPostsUser(prev => (page === 0 ? res.data.content : [...prev, ...res.data.content]));
+        }
+    }, [token]);
 
-    const handleGetPost = async (id, page) => {
-        const res = await getPostByIdUserService(id, page, 5, token);
-        if (res?.data) {
-            const data = res.data.content;
-            setPostsUser((prev) => (page === 0 ? data : [...prev, ...data]));
-        } else {
-            if (res.response.data.code === 40405) {
-                alert(res.response.data.message);
-            }
+    const handleAddFriend = async () => {
+        const res = await addFriendServices(user.id, token);
+        if (res?.data?.receiver === user.name) {
+            setStatusFriend('Sent');
         }
     };
 
-    const handleGetUser = async (id) => {
-        const res = await getUserByIdService(id);
-        if (res?.data) {
-            const tempUser = res.data;
-            if (tempUser.id === idUserPrimary.id) {
-                setUserPrimary(true);
-                console.log(userPrimary);
-
-            }
-            setUser({ id: tempUser.id, img: tempUser.img, name: tempUser.name });
-            if (token) handleGetPost(tempUser.id, 0);
+    const handleOptionChange = (newOption) => {
+        if (option !== newOption) {
+            setOption(newOption);
+            setCurrentPage(0);
         }
     };
+
+    const fetchUser = useCallback(async (id) => {
+        const res = await getUserByIdServices(id);
+        if (res?.data) {
+            setUser(res.data);
+            setUserPrimary(res.data?.id === idUserPrimary.id);
+            fetchPosts(res.data?.id, 0);
+            if (token && res.data.id !== idUserPrimary.id) {
+                const resFriend = await getStatusFriendServices(res.data.id, token);
+                setStatusFriend(resFriend?.data?.status === "friends" ? "Friend" : "Add Friend");
+            }
+        }
+    }, [idUserPrimary.id, token, fetchPosts]);
+
+    const fetchFriend = useCallback(async (page) => {
+        const res = await getFriendsServices(page, 5, token);
+        if (res?.data?.content.length > 0) {
+            setFriends(prev => (page === 0 ? res.data.content : [...prev, ...res.data.content]));
+        }
+    }, [token]);
 
     useEffect(() => {
-        const userId = getUserIdFromURL();
-        if (userId) {
-            setUserPrimary(false)
-            setPostsUser([]);
-            setCurrentPage(0);
-            handleGetUser(userId);
-        }
-        // eslint-disable-next-line
-    }, [location.pathname]);
+        if (!userId) return;
+        setUser(null);
+        setPostsUser([]);
+        setFriends([]);
+        setCurrentPage(0);
+        fetchUser(userId);
+    }, [userId, fetchUser]);
 
     useScroll(() => {
-        setCurrentPage((prev) => prev + 1);
+        setCurrentPage(prev => prev + 1);
     });
 
     useEffect(() => {
-        if (user.id) {
-            handleGetPost(user.id, currentPage);
+        if (option === "Post") {
+            fetchPosts(userId, currentPage);
+        } else if (option === "Friends") {
+            fetchFriend(currentPage);
         }
-        // eslint-disable-next-line
-    }, [currentPage]);
+    }, [currentPage, option, userId, fetchPosts, fetchFriend]);
+
+    const friendList = useMemo(() => (
+        friends.map((friend, index) => (
+            <div key={index} className={cx("item")}>
+                <div className={cx("box-left")}>
+                    <Image src={friend.img || images.avatar} className={cx("avatar-friends")} />
+                    <h3 className={cx("name-friends")}>{friend.name}</h3>
+                </div>
+                <div className={cx("box-right")}>
+                    <Button className={cx("chat-friends")} normal>Chat</Button>
+                    <DownIcon className={cx("btn-more")} />
+                </div>
+            </div>
+        ))
+    ), [friends]);
 
     return (
-        <div className={cx('wrapper')}>
-            <div className={cx('header')}>
-                <Image src={user.img || images.avatar} className={cx('avatar')} alt='' />
-                <div className={cx('fullname')}>{user.name}</div>
-                {userPrimary ?
-                    <div className={cx('action')}>
-                        <Button onClick={() => setOption('Post')} primary={option === 'Post'} normal>Post</Button>
-                        <Button onClick={() => setOption('Friends')} primary={option === 'Friends'} normal>Friends</Button>
-                    </div> :
-                    <div className={cx('action')}>
-                        <Button primary>Add Friend</Button>
+        <div className={cx("wrapper")}>
+            <div className={cx("header")}>
+                <Image src={user?.img || images.avatar} className={cx("avatar")} alt="" />
+                <div className={cx("fullname")}>{user?.name}</div>
+                {userPrimary ? (
+                    <div className={cx("action")}>
+                        <Button onClick={() => handleOptionChange("Post")} primary={option === "Post"}>Post</Button>
+                        <Button onClick={() => handleOptionChange("Friends")} primary={option === "Friends"}>Friends</Button>
+                    </div>
+                ) : (
+                    <div className={cx("action")}>
+                        <Button onClick={handleAddFriend} primary>{statusFriend}</Button>
                         <Button onClick={toggleChat} normal>Chat</Button>
                     </div>
-                }
+                )}
             </div>
-
-            {option === 'Post' ?
-                <div className={cx('body')}>
-                    {postsUser.map((post, index) => (
-                        <Post profile key={post.id || index} data={post} />
-                    ))}
-                </div>
-                :
-                <div className={cx('body')}>
-                    <div className={cx('list')}>
-                        <div className={cx('item')}>
-                            <div className={cx('box-left')}>
-                                <Image src={images.avatar} className={cx('avatar-friends')} />
-                                <h3 className={cx('name-friends')}>Van Loi</h3>
-                            </div>
-                            <div className={cx('box-right')}>
-                                <Button className={cx('chat-friends')} normal>Chat</Button>
-                                <FontAwesomeIcon className={cx('btn-more')} icon={faChevronDown} />
-                            </div>
-                        </div>
-                        <div className={cx('item')}>
-                            <div className={cx('box-left')}>
-                                <Image src={images.avatar} className={cx('avatar-friends')} />
-                                <h3 className={cx('name-friends')}>Van Loi</h3>
-                            </div>
-                            <div className={cx('box-right')}>
-                                <Button className={cx('chat-friends')} normal>Chat</Button>
-                                <FontAwesomeIcon className={cx('btn-more')} icon={faChevronDown} />
-                            </div>
-                        </div>
-                        <div className={cx('item')}>
-                            <div className={cx('box-left')}>
-                                <Image src={images.avatar} className={cx('avatar-friends')} />
-                                <h3 className={cx('name-friends')}>Van Loi</h3>
-                            </div>
-                            <div className={cx('box-right')}>
-                                <Button className={cx('chat-friends')} normal>Chat</Button>
-                                <FontAwesomeIcon className={cx('btn-more')} icon={faChevronDown} />
-                            </div>
-                        </div>
-                        <div className={cx('item')}>
-                            <div className={cx('box-left')}>
-                                <Image src={images.avatar} className={cx('avatar-friends')} />
-                                <h3 className={cx('name-friends')}>Van Loi</h3>
-                            </div>
-                            <div className={cx('box-right')}>
-                                <Button className={cx('chat-friends')} normal>Chat</Button>
-                                <FontAwesomeIcon className={cx('btn-more')} icon={faChevronDown} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
+            <div className={cx("body")}>
+                {option === "Post" ? (
+                    postsUser.map((post) => (
+                        <Post show={post.show} profile key={post.id} data={post} />
+                    ))
+                ) : (
+                    <div className={cx("list")}>{friendList}</div>
+                )}
+            </div>
         </div>
     );
 }

@@ -1,37 +1,46 @@
 import { useState, useRef, useMemo, useEffect, useContext, useCallback } from 'react';
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleInfo, faUser, faGear, faPlus, faSignOut, faClose, faSearch, faEarthAsia, faMagnifyingGlass, faBars } from '@fortawesome/free-solid-svg-icons';
-import { faBell, faCommentDots } from '@fortawesome/free-regular-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './Header.module.scss';
-import images from 'assets/images';
+import images from '~/assets/images';
 import Button from '~/components/Button';
 import Image from '~/components/Image';
 import Menu from '~/components/Popper/Menu';
 import History from '~/components/Popper/History';
 import routesConfig from '~/config/routes';
-import { infoUserCurrentService } from '~/apiServices';
+import { infoUserCurrentServices, notifyServices } from '~/apiServices';
 import Notifications from '~/components/Notifications';
 import { UserContext } from '~/context/UserContext';
 import { ChatContext } from '~/context/ChatContext';
 import { NavBarsContext } from '~/context/NavBarsContext';
 import { useTranslation } from 'react-i18next';
+import { BarsIcon, ClearSearchIcon, HelpIcon, LanguagesIcon, LogoutIcon, MessageIcon, NotifyIcon, SearchIcon, SettingIcon, UploadIcon, UserIcon } from '~/components/Icons';
+import { useWebSocket } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
 function Header() {
     const { t, i18n } = useTranslation();
     const [searchValue, setSearchValue] = useState('');
+    const [notifications, setNotifications] = useState([]);
     const [notify, setNotify] = useState({});
     const navigate = useNavigate();
     const inputRef = useRef();
     const { user, setUser } = useContext(UserContext);
     const { setShowNav } = useContext(NavBarsContext);
     const { toggleChat } = useContext(ChatContext);
+    const { notification } = useWebSocket();
+    useEffect(() => {
+        if (notification.length > 0) {
+            setNotify({
+                display: true,
+                message: notification[notification.length - 1],
+            });
+        }
+    }, [notification]);
 
     useEffect(() => {
         const initializeUser = async () => {
@@ -42,7 +51,9 @@ function Header() {
                 const token = localStorage.getItem('authToken');
                 if (token) {
                     const isValid = await fetchInfoUser();
-                    if (!isValid) {
+                    if (isValid) {
+                        fetchNotifications(token);
+                    } else {
                         localStorage.clear();
                         setUser(null);
                     }
@@ -58,22 +69,32 @@ function Header() {
     const fetchInfoUser = useCallback(async () => {
         try {
             const token = localStorage.getItem('authToken');
-            if (!token) {
-                return false;
-            }
+            if (!token) return false;
 
-            const res = await infoUserCurrentService(token);
+            const res = await infoUserCurrentServices(token);
             if (!res?.data) {
                 localStorage.clear();
+                setUser(null);
                 return false;
             }
             return true;
         } catch (error) {
             console.log(error);
+            setUser(null);
             return false;
         }
-    }, []);
+    }, [setUser]);
 
+    const fetchNotifications = async (token) => {
+        try {
+            const res = await notifyServices(token);
+            if (res?.data) {
+                setNotifications(res.data.content);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handlers = useMemo(() => ({
         clearSearch: () => {
@@ -97,21 +118,21 @@ function Header() {
         }
     }, []);
 
-    const menuItems = useMemo(() => [
+    const menuItems = [
         {
-            icon: faUser,
+            icon: <UserIcon />,
             title: user?.name || '',
-            to: `/users/${user?.id || ''}`,
+            to: `/user/${user?.id || ''}`,
             separate: true,
         },
         {
-            icon: faGear, title: t('setting'), to: routesConfig.setting
+            icon: <SettingIcon />, title: t('setting'), to: routesConfig.setting
         },
         {
-            icon: faCircleInfo, title: t('support'), to: routesConfig.help
+            icon: <HelpIcon />, title: t('support'), to: routesConfig.help
         },
         {
-            icon: faEarthAsia,
+            icon: <LanguagesIcon />,
             title: t('language'),
             children: {
                 title: t('language'),
@@ -135,10 +156,9 @@ function Header() {
             }
         },
         {
-            icon: faSignOut, title: t('logout'), to: routesConfig.login
+            icon: <LogoutIcon />, title: t('logout'), to: routesConfig.login
         },
-        // eslint-disable-next-line
-    ], [user]);
+    ]
 
     const handleMenuChange = async (menuItem) => {
         if (menuItem.type === 'language') {
@@ -151,7 +171,7 @@ function Header() {
             <div className={cx('inner')}>
                 {/* Navbar Mobile */}
                 <div onClick={() => setShowNav(prev => !prev)} className={cx('bars')}>
-                    <FontAwesomeIcon icon={faBars} />
+                    <BarsIcon />
                 </div>
                 {/* Logo */}
                 <div className={cx('logo')}>
@@ -172,16 +192,16 @@ function Header() {
                     />
                     {searchValue && (
                         <button onClick={handlers.clearSearch} className={cx('clear')}>
-                            <FontAwesomeIcon icon={faClose} />
+                            <ClearSearchIcon />
                         </button>
                     )}
                     <button onMouseDown={(e) => e.preventDefault()} onClick={handlers.search} className={cx('search-btn')}>
-                        <FontAwesomeIcon icon={faSearch} />
+                        <SearchIcon />
                     </button>
                 </div>
 
                 <div className={cx('btn-search__mobile')}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    <SearchIcon />
                 </div>
 
                 {/* Actions */}
@@ -189,18 +209,18 @@ function Header() {
                     {user?.name ? (
                         <>
                             <Tippy content={t('createTooltip')} placement="bottom">
-                                <Button className={cx('create')} to={routesConfig.upload} normal round leftIcon={faPlus}>
+                                <Button className={cx('create')} to={routesConfig.upload} normal round leftIcon={<UploadIcon />}>
                                     {t('create')}
                                 </Button>
                             </Tippy>
-                            <Button className={cx('chat')} onClick={toggleChat} iconText leftIcon={faCommentDots} />
+                            <Button className={cx('chat')} onClick={toggleChat} iconText leftIcon={<MessageIcon />} />
                             <History
-                                // items={notifications}
+                                items={notifications}
                                 avatar={user.img}
                                 header
                                 title={t('notifications')}
                                 textBtn={t('markRead')}>
-                                <Button className={cx('notify-btn')} iconText leftIcon={faBell} />
+                                <Button className={cx('notify-btn')} iconText leftIcon={<NotifyIcon />} />
                             </History>
                             <Menu items={menuItems} onChange={handleMenuChange}>
                                 <Image
@@ -222,7 +242,6 @@ function Header() {
                     )}
                 </div>
             </div>
-
             {notify.display && <Notifications message={notify.message} onClose={() => setNotify({})} />}
         </header>
     );

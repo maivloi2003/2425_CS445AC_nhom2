@@ -1,23 +1,14 @@
 import classNames from 'classnames/bind';
-import {
-    faBold,
-    faImage,
-    faItalic,
-    faListUl,
-    faPlus,
-    faSquarePollVertical,
-    faTrashCan,
-    faUnderline,
-    faXmarkCircle
-} from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback, useContext } from 'react';
 
 import styles from './Upload.module.scss';
 import Button from '~/components/Button';
 import Image from '~/components/Image';
-import { upImagePostService, uploadPostContentServices, uploadPostPollServices } from '~/apiServices';
+import { upImagePostServices, uploadPostContentServices, uploadPostPollServices } from '~/apiServices';
 import { useTranslation } from 'react-i18next';
+import { BoldIcon, ClearSearchIcon, ContentIcon, ImageIcon, ItalicIcon, PlusIcon, PollIcon, TrashIcon, UnderlineIcon } from '~/components/Icons';
+import { UserContext } from '~/context/UserContext';
 
 const cx = classNames.bind(styles);
 
@@ -28,6 +19,7 @@ function Upload() {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [textFormat, setTextFormat] = useState({ bold: false, italic: false, underline: false });
     const [languagePost, setLanguagePost] = useState('');
+    const { user } = useContext(UserContext);
 
     const [contentForm, setContentForm] = useState({
         title: '',
@@ -120,22 +112,26 @@ function Upload() {
         e.preventDefault();
         const token = localStorage.getItem('authToken')
         if (typePost === 'Content') {
-            let imgLink = contentForm.img_url;
+            let imgLink = '';
             if (fileInputRef.current.files[0]) {
-                imgLink = await upImagePostService(fileInputRef.current.files[0]);
-                imgLink = imgLink?.result?.valid ? imgLink.result.link : '';
+                imgLink = await upImagePostServices(fileInputRef.current.files[0]);
             }
-            const data = { ...contentForm, img_url: imgLink || contentForm.img, language: languagePost };
+            const data = { ...contentForm, img_url: imgLink?.data?.url, language: languagePost };
             const res = await uploadPostContentServices(data, token);
             if (res?.data) {
-                alert(t('uploadSuccess'))
-                navigate(`/post/${res.data.id}`);
+                if (res.data?.show) {
+                    alert(t('uploadSuccess'))
+                    navigate(`/post/${res.data.id}`);
+                } else {
+                    navigate(`/user/${user.id}`);
+                }
             } else {
                 console.log(res);
             }
 
-        } else if (typePost === 'Poll') {
+        } else {
             const data = { ...pollForm, language: languagePost };
+            console.log(data)
             const res = await uploadPostPollServices(data, token);
             if (res?.data) {
                 alert(t('uploadSuccess'))
@@ -155,7 +151,7 @@ function Upload() {
             <div className={cx('type')}>
                 <Button
                     primary={isSelected === 0}
-                    leftIcon={faListUl}
+                    leftIcon={<ContentIcon />}
                     normal
                     onClick={() => {
                         setIsSelected(0);
@@ -164,7 +160,7 @@ function Upload() {
                     }>Content</Button>
                 <Button
                     primary={isSelected === 1}
-                    leftIcon={faSquarePollVertical}
+                    leftIcon={<PollIcon />}
                     normal
                     onClick={() => {
                         setIsSelected(1);
@@ -201,13 +197,13 @@ function Upload() {
                                 </div>
                                 <div className={cx('content')}>
                                     <div className={cx('content-header')}>
-                                        <Button iconNav leftIcon={faBold} onClick={() => handleToggleFormat('bold')} />
-                                        <Button iconNav leftIcon={faItalic} onClick={() => handleToggleFormat('italic')} />
-                                        <Button iconNav leftIcon={faUnderline} onClick={() => handleToggleFormat('underline')} />
-                                        <Button type='button' iconNav leftIcon={faImage} onClick={handleImageUpload}>
+                                        <Button iconNav leftIcon={<BoldIcon />} onClick={() => handleToggleFormat('bold')} />
+                                        <Button iconNav leftIcon={<ItalicIcon />} onClick={() => handleToggleFormat('italic')} />
+                                        <Button iconNav leftIcon={<UnderlineIcon />} onClick={() => handleToggleFormat('underline')} />
+                                        <Button type='button' iconNav leftIcon={<ImageIcon />} onClick={handleImageUpload}>
                                             <input type='file' accept='image/*' hidden ref={fileInputRef} onChange={handleFileChange} />
                                         </Button>
-                                        <Button iconNav leftIcon={faTrashCan} onClick={() => setContentForm((prev) => ({ ...prev, content: '' }))} />
+                                        <Button iconNav leftIcon={<TrashIcon />} onClick={() => setContentForm((prev) => ({ ...prev, content: '' }))} />
                                     </div>
                                     <textarea
                                         className={cx('content-text', { bold: textFormat.bold, italic: textFormat.italic, underline: textFormat.underline })}
@@ -218,7 +214,7 @@ function Upload() {
                                 </div>
                                 {showImg && contentForm.img_url && (
                                     <div className={cx('file')}>
-                                        <Image className={cx('file-img')} src={contentForm.img} alt='Uploaded' />
+                                        <Image className={cx('file-img')} src={contentForm.img_url} alt='Uploaded' />
                                     </div>
                                 )}
                                 <div className={cx('upload')}>
@@ -261,11 +257,11 @@ function Upload() {
                                                 placeholder={`Option ${index + 1}`}
                                             />
                                             {pollForm.createOptionDtoList.length > 2 && (
-                                                <Button className={cx('remove-btn')} onClick={() => removeOption(index)} leftIcon={faXmarkCircle} />
+                                                <Button className={cx('remove-btn')} onClick={() => removeOption(index)} leftIcon={<ClearSearchIcon width='3.2rem' height='3.2rem' />} />
                                             )}
                                         </div>
                                     ))}
-                                    <Button className={cx('option-btn')} leftIcon={faPlus} normal onClick={addOption}>Add Option</Button>
+                                    <Button className={cx('option-btn')} leftIcon={<PlusIcon />} normal onClick={addOption}>Add Option</Button>
                                 </div>
                                 <div className={cx('upload')}>
                                     <Button type='submit' round normal={!isButtonDisabled} disabled={isButtonDisabled} className={cx('upload-btn')}>

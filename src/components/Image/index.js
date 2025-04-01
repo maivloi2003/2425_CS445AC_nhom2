@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Image.module.scss'
-import images from 'assets/images'
+import images from '~/assets/images'
 import { forwardRef } from 'react';
 
 const cx = classNames.bind(styles)

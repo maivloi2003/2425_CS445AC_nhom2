@@ -5,11 +5,11 @@ import { useLocation } from "react-router-dom";
 import styles from './SendEmail.module.scss'
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
-import images from "assets/images";
+import images from "~/assets/images";
 import routesConfig from '~/config/routes'
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Button from "~/components/Button";
 import { useTranslation } from "react-i18next";
+import { LeftIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles)
 
@@ -33,7 +33,7 @@ function SendEmail() {
                 <Image src={images.logo} alt='logo' className={cx('img')} />
             </div>
             <div className={cx('nav')}>
-                <Button to={routesConfig.forgotPassword} className={cx('icon-back')} leftIcon={faArrowLeft} />
+                <Button to={routesConfig.forgotPassword} className={cx('icon-back')} leftIcon={<LeftIcon />} />
             </div>
             <div className={`${cx('content')} ${stylesGrid['grid__row-6']}`}>
                 <div className={cx('body')}>

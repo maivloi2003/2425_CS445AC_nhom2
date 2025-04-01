@@ -5,8 +5,8 @@ import classNames from "classnames/bind";
 import styles from './ConfirmEmail.module.scss'
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
-import images from "assets/images";
-import { verifyAccountService } from "~/apiServices";
+import images from "~/assets/images";
+import { verifyAccountServices } from "~/apiServices";
 import routesConfig from '~/config/routes'
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +21,7 @@ function ConfirmEmail() {
     })
 
     const fetchApi = async (token) => {
-        const res = await verifyAccountService(token)
+        const res = await verifyAccountServices(token)
         if (res?.data) {
             setStatus({
                 heading: t('activeSuccessHeading'),

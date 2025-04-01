@@ -5,15 +5,15 @@ import classNames from "classnames/bind";
 import styles from './ForgotPassword.module.scss'
 import stylesGrid from '~/styles/grid.module.scss'
 import Image from "~/components/Image";
-import images from "assets/images";
+import images from "~/assets/images";
 import { useValidator } from '~/hooks';
 import FormGroup from "~/components/FormGroup";
 import stylesShare from '~/styles/share.module.scss';
-import { forgotPasswordService } from '~/apiServices'
+import { forgotPasswordServices } from '~/apiServices'
 import routesConfig from '~/config/routes'
 import Button from "~/components/Button";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { useTranslation } from "react-i18next";
+import { BackIcon } from "~/components/Icons";
 
 
 const cx = classNames.bind(styles)
@@ -34,7 +34,7 @@ function ForgotPassword() {
     });
 
     const fetchApi = async (email) => {
-        const res = await forgotPasswordService(email);
+        const res = await forgotPasswordServices(email);
 
         if (res?.data) {
             const token = res.data.token
@@ -70,7 +70,7 @@ function ForgotPassword() {
                 <Image src={images.logo} alt='logo' className={cx('img')} />
             </div>
             <div className={cx('nav')}>
-                <Button to={routesConfig.login} className={cx('icon-back')} leftIcon={faArrowLeft} />
+                <Button to={routesConfig.login} className={cx('icon-back')} leftIcon={<BackIcon />} />
             </div>
             <div className={`${cx('content')} ${stylesGrid['grid__row-6']}`}>
                 <div className={cx('body')}>

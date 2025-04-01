@@ -26,3 +26,8 @@ export const deleted = async (path, options = {}) => {
 
     return response;
 }
+
+export const patch = async (path, data, options = {}) => {
+    const response = await request.patch(path, data, options);
+    return response;
+}

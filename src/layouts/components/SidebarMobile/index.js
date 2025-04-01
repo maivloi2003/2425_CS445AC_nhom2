@@ -2,17 +2,7 @@ import { useContext } from 'react';
 import classNames from 'classnames/bind';
 import styles from './SidebarMobile.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faAddressCard,
-    faFire,
-    faFlag,
-    faHome,
-    faNewspaper,
-    faQuestion,
-    faScroll,
-    faSquareArrowUpRight,
-} from '@fortawesome/free-solid-svg-icons';
+import { AboutIcon, AdvertiseIcon, HelpIcon, HomeIcon, LanguagesIcon, NewsIcon, PolicyIcon, PopularIcon } from '~/components/Icons';
 import routesConfig from '~/config/routes';
 import { NavBarsContext } from '~/context/NavBarsContext';
 import { useTranslation } from 'react-i18next';
@@ -51,15 +41,15 @@ function SidebarMobile() {
                 <div className={cx('navbar')}>
                     <ul className={cx('navList')}>
                         <Link to='/' className={cx('navItem')}>
-                            <FontAwesomeIcon icon={faHome} />
+                            <HomeIcon />
                             <span>{t('home')}</span>
                         </Link>
                         <li className={cx('navItem')}>
-                            <FontAwesomeIcon icon={faFire} />
+                            <PopularIcon />
                             <span>{t('popular')}</span>
                         </li>
                         <li className={cx('navItem')}>
-                            <FontAwesomeIcon icon={faSquareArrowUpRight} />
+                            <NewsIcon />
                             <span>{t('new')}</span>
                         </li>
                     </ul>
@@ -67,15 +57,15 @@ function SidebarMobile() {
                 <div className={cx('languages')}>
                     <ul className={cx('languageList')}>
                         <li onClick={() => handleGetPostByLanguage('English')} className={cx('languageItem')}>
-                            <FontAwesomeIcon icon={faNewspaper} />
+                            <LanguagesIcon />
                             <span>{t('langEnglish')}</span>
                         </li>
                         <li onClick={() => handleGetPostByLanguage('China')} className={cx('languageItem')}>
-                            <FontAwesomeIcon icon={faNewspaper} />
+                            <LanguagesIcon />
                             <span>{t('langChinese')}</span>
                         </li>
                         <li onClick={() => handleGetPostByLanguage('Japan')} className={cx('languageItem')}>
-                            <FontAwesomeIcon icon={faNewspaper} />
+                            <LanguagesIcon />
                             <span>{t('langJapanese')}</span>
                         </li>
                     </ul>
@@ -83,19 +73,19 @@ function SidebarMobile() {
                 <div className={cx('other')}>
                     <div className={cx('otherList')}>
                         <Link to={routesConfig.aboutFL} className={cx('otherItem')}>
-                            <FontAwesomeIcon icon={faAddressCard} />
+                            <AboutIcon />
                             <span>{t('aboutFL')}</span>
                         </Link>
                         <Link to='' className={cx('otherItem')}>
-                            <FontAwesomeIcon icon={faFlag} />
+                            <AdvertiseIcon />
                             <span>{t('advertise')}</span>
                         </Link>
                         <Link to={routesConfig.help} className={cx('otherItem')}>
-                            <FontAwesomeIcon icon={faQuestion} />
+                            <HelpIcon />
                             <span>{t('help')}</span>
                         </Link>
                         <Link to={routesConfig.policy} className={cx('otherItem')}>
-                            <FontAwesomeIcon icon={faScroll} />
+                            <PolicyIcon />
                             <span >{t('policy')}</span>
                         </Link>
                     </div>

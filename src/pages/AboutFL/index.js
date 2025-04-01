@@ -1,7 +1,7 @@
 import classNames from "classnames/bind";
 import styles from './AboutFL.module.scss'
 import Image from "~/components/Image";
-import images from "assets/images";
+import images from "~/assets/images";
 import { useTranslation } from "react-i18next";
 
 const cx = classNames.bind(styles)

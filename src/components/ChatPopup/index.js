@@ -1,11 +1,11 @@
 import classNames from "classnames/bind";
 import styles from './ChatPopup.module.scss';
-import Button from "../Button";
-import Image from "../Image";
-import images from "assets/images";
-import { faChevronDown, faClose, faCommentMedical, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import Button from "~/components/Button";
+import Image from "~/components/Image";
+import images from "~/assets/images";
 import { useContext } from "react";
 import { ChatContext } from "~/context/ChatContext";
+import { AddChatIcon, CloseIcon, DownIcon, SendIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles)
 
@@ -20,7 +20,7 @@ function ChatPopup() {
                         <div className={cx('nav-header')}>
                             <Image src={images.logo} className={cx('logo-chat')} />
                             <h3 className={cx('title-chat')}>Chats</h3>
-                            <Button leftIcon={faCommentMedical} />
+                            <Button leftIcon={<AddChatIcon />} />
                         </div>
                         <div className={cx('nav-body')}></div>
                     </div>
@@ -30,15 +30,15 @@ function ChatPopup() {
                                 <h4 className={cx('fullname-chat')}>vanloi2003</h4>
                             </div>
                             <div>
-                                <Button leftIcon={faChevronDown} />
-                                <Button onClick={toggleChat} leftIcon={faClose} />
+                                <Button leftIcon={<DownIcon />} />
+                                <Button onClick={toggleChat} leftIcon={<CloseIcon />} />
                             </div>
                         </div>
                         <div className={cx('content-body')}>
                             <div className={cx('view-chat')}></div>
                             <div className={cx('box-chat')}>
                                 <input type="text" placeholder="Message" />
-                                <Button leftIcon={faPaperPlane} />
+                                <Button leftIcon={<SendIcon />} />
                             </div>
                         </div>
                     </div>

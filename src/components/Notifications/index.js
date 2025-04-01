@@ -1,7 +1,6 @@
 import classNames from "classnames/bind";
 import styles from './Notifications.module.scss'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { CloseIcon } from "~/components/Icons";
 
 const cx = classNames.bind(styles)
 
@@ -11,7 +10,7 @@ function Notifications({ message, onClose }) {
             <div className={cx('notify')}>
                 <span className={cx('message')}>{message}</span>
                 <div className={cx('close-btn')} onClick={onClose}>
-                    <FontAwesomeIcon icon={faTimes} />
+                    <CloseIcon />
                 </div>
             </div>
         </div>

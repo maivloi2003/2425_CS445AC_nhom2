@@ -2,7 +2,7 @@
 import routesConfig from '~/config/routes'
 
 // Layouts
-import { HeaderOnly } from '~/layouts';
+import { DefaultLayout, HeaderOnly } from '~/layouts';
 
 // Pages
 import Home from '~/pages/Home';
@@ -27,35 +27,36 @@ import PostsManagement from '~/pages/admin/PostsManagement';
 import Statistic from '~/pages/admin/Statistic';
 import Report from '~/pages/admin/Report';
 import AdminLayout from '~/layouts/AdminLayout';
+import { Fragment } from 'react';
 
 const publicRoutes = [
-    { path: routesConfig.home, component: Home },
-    { path: routesConfig.login, component: Login, layout: null },
-    { path: routesConfig.register, component: Register, layout: null },
-    { path: routesConfig.forgotPassword, component: ForgotPassword, layout: null },
-    { path: routesConfig.resetPassword, component: ResetPassword, layout: null },
-    { path: routesConfig.confirmEmail, component: ConfirmEmail, layout: null },
+    { path: routesConfig.home, component: Home, layout: DefaultLayout },
+    { path: routesConfig.login, component: Login, layout: Fragment },
+    { path: routesConfig.register, component: Register, layout: Fragment },
+    { path: routesConfig.forgotPassword, component: ForgotPassword, layout: Fragment },
+    { path: routesConfig.resetPassword, component: ResetPassword, layout: Fragment },
+    { path: routesConfig.confirmEmail, component: ConfirmEmail, layout: Fragment },
     { path: routesConfig.policy, component: Policy, layout: HeaderOnly },
     { path: routesConfig.help, component: Help, layout: HeaderOnly },
     { path: routesConfig.aboutFL, component: AboutFL, layout: HeaderOnly },
-    { path: routesConfig.postDetail, component: PostDetail },
+    { path: routesConfig.postDetail, component: PostDetail, layout: DefaultLayout },
+];
+
+const privateRoutes = [
+    { path: routesConfig.upload, component: Upload, layout: HeaderOnly },
+    { path: routesConfig.setting, component: Setting, layout: HeaderOnly },
+    { path: routesConfig.friends, component: Friends, layout: HeaderOnly },
+    { path: routesConfig.profile, component: Profile, layout: HeaderOnly },
+    { path: routesConfig.activeAccount, component: ActiveAccount, layout: Fragment },
+    { path: routesConfig.sendEmail, component: SendEmail, layout: Fragment },
+];
+
+const adminRoutes = [
     { path: routesConfig.dashboard, component: Dashboard, layout: AdminLayout },
     { path: routesConfig.usersManagement, component: UsersManagement, layout: AdminLayout },
     { path: routesConfig.postsManagement, component: PostsManagement, layout: AdminLayout },
     { path: routesConfig.statistic, component: Statistic, layout: AdminLayout },
     { path: routesConfig.report, component: Report, layout: AdminLayout },
-];
-
-const privateRoutes = [
-    { path: routesConfig.setting, component: Setting, layout: HeaderOnly },
-    { path: routesConfig.friends, component: Friends, layout: HeaderOnly },
-    { path: routesConfig.profile, component: Profile, layout: HeaderOnly },
-    { path: routesConfig.upload, component: Upload, layout: HeaderOnly },
-    { path: routesConfig.activeAccount, component: ActiveAccount, layout: null },
-    { path: routesConfig.sendEmail, component: SendEmail, layout: null },
-];
-
-const adminRoutes = [
 ]
 
 export { publicRoutes, privateRoutes, adminRoutes };

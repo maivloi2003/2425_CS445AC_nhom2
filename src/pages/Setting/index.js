@@ -23,7 +23,6 @@ function Setting() {
 
             <ul className={cx('category')}>
                 <li className={cx('item')} >{t('account')}</li>
-                <li className={cx('item')} >{t('profile')}</li>
                 <li className={cx('item')} >{t('privacy')}</li>
                 <li className={cx('item')} >{t('preferences')}</li>
                 <li className={cx('item')} >{t('notifications')}</li>
@@ -94,7 +93,7 @@ function Setting() {
                         {t('deleteWarning')}
                     </span>
                 </div>
-                <Button deleted round className={cx('delete-btn')}>{t('deleteWarning')}</Button>
+                <Button deleted round className={cx('delete-btn')}>{t('deletedAccount')}</Button>
             </div>
 
             <div className={cx('save')}>

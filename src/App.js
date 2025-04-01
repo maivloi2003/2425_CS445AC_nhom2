@@ -1,17 +1,53 @@
-import { Fragment, useContext } from 'react';
+import { useContext } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { publicRoutes, privateRoutes } from '~/routes';
-import { DefaultLayout } from '~/layouts';
+import { publicRoutes, privateRoutes, adminRoutes } from '~/routes';
 import routesConfig from '~/config/routes'
 import { ChatContext } from './context/ChatContext';
 import ChatPopup from '~/components/ChatPopup';
+import { UserContext } from '~/context/UserContext'
 
-const isAuthenticated = () => {
-    return !!localStorage.getItem('authToken');
+const isAuthenticated = () => !!localStorage.getItem('authToken');
+
+const PrivateRoute = ({ children, requiredRole }) => {
+    const { user } = useContext(UserContext);
+
+    if (!isAuthenticated()) {
+        return <Navigate to={routesConfig.login} />;
+    }
+
+    if (!user || !user.roles) {
+        return <Navigate to={routesConfig.home} />;
+    }
+
+    const userRole = user.roles.substring(1, user.roles.length - 1);
+
+    if (userRole === 'ADMIN' || userRole === requiredRole) {
+        return children;
+    }
+
+    return <Navigate to={routesConfig.home} />;
 };
 
-const PrivateRoute = ({ children }) => {
-    return isAuthenticated() ? children : <Navigate to={routesConfig.login} />;
+const renderRoutes = (routes, requiredRole = null) => {
+    return routes.map(({ path, component: Page, layout: Layout }, index) => (
+        <Route
+            key={index}
+            path={path}
+            element={
+                requiredRole ? (
+                    <PrivateRoute requiredRole={requiredRole}>
+                        <Layout>
+                            <Page />
+                        </Layout>
+                    </PrivateRoute>
+                ) : (
+                    <Layout>
+                        <Page />
+                    </Layout>
+                )
+            }
+        />
+    ));
 };
 
 function App() {
@@ -22,55 +58,13 @@ function App() {
             <div className="App">
                 <Routes>
                     {/* Public Routes */}
-                    {publicRoutes.map((route, index) => {
-                        const Page = route.component;
+                    {renderRoutes(publicRoutes)}
 
-                        let Layout = DefaultLayout;
+                    {/* Private Routes (User) */}
+                    {renderRoutes(privateRoutes, 'USER')}
 
-                        if (route.layout) {
-                            Layout = route.layout;
-                        } else if (route.layout === null) {
-                            Layout = Fragment;
-                        }
-
-                        return (
-                            <Route
-                                key={index}
-                                path={route.path}
-                                element={
-                                    <Layout>
-                                        <Page />
-                                    </Layout>
-                                }
-                            />
-                        );
-                    })}
-
-                    {/* Private Routes */}
-                    {privateRoutes.map((route, index) => {
-                        const Page = route.component;
-
-                        let Layout = DefaultLayout;
-                        if (route.layout) {
-                            Layout = route.layout;
-                        } else if (route.layout === null) {
-                            Layout = Fragment;
-                        }
-
-                        return (
-                            <Route
-                                key={index}
-                                path={route.path}
-                                element={
-                                    <PrivateRoute>
-                                        <Layout >
-                                            <Page />
-                                        </Layout>
-                                    </PrivateRoute>
-                                }
-                            />
-                        );
-                    })}
+                    {/* Admin Routes */}
+                    {renderRoutes(adminRoutes, 'ADMIN')}
                 </Routes>
                 {isOpenChat && <ChatPopup />}
             </div>

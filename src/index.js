@@ -10,17 +10,17 @@ import './utils/i18n';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <ChatProvider>
-            <UserProvider>
-                <NavBarsProvider>
-                    <GlobalStyles>
-                        <App />
-                    </GlobalStyles>
-                </NavBarsProvider>
-            </UserProvider>
-        </ChatProvider>
-    </React.StrictMode >,
+    // <React.StrictMode>
+    <ChatProvider>
+        <UserProvider>
+            <NavBarsProvider>
+                <GlobalStyles>
+                    <App />
+                </GlobalStyles>
+            </NavBarsProvider>
+        </UserProvider>
+    </ChatProvider>
+    // </React.StrictMode >, 
 );
 
 // If you want to start measuring performance in your app, pass a function

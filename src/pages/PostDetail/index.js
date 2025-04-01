@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import styles from './PostDetail.module.scss'
 import Post from '~/components/Post';
-import { getPostByIdPostService, getCommentByIdPostService, commentService } from '~/apiServices';
+import { getPostByIdPostServices, getCommentByIdPostServices, commentServices } from '~/apiServices';
 import { useEffect, useRef, useState } from 'react';
 import Button from '~/components/Button';
 import Comment from '~/components/Comment';
@@ -35,7 +35,7 @@ function PostDetail() {
         const token = localStorage.getItem('authToken');
         if (!token || !valueContent.trim()) return;
 
-        const res = await commentService(idPost, valueContent, token);
+        const res = await commentServices(idPost, valueContent, token);
         if (res?.data) {
             setComments((prev) => [res.data, ...prev]);
             setValueContent('');
@@ -44,7 +44,7 @@ function PostDetail() {
 
     useEffect(() => {
         const fetchApiPost = async (id, token) => {
-            const res = await getPostByIdPostService(id, token)
+            const res = await getPostByIdPostServices(id, token)
             if (res?.data) {
                 setPost(res.data);
             }
@@ -59,7 +59,8 @@ function PostDetail() {
         isFetching.current = true;
         const token = localStorage.getItem('authToken');
         const fetchComments = async () => {
-            const res = await getCommentByIdPostService(idPost, pageCurrent, 5, token);
+            const res = await getCommentByIdPostServices(idPost, pageCurrent, 5, token);
+
             if (res?.data?.content) {
                 setComments((prev) => {
                     const uniqueComments = new Map([...prev, ...res.data.content].map((c) => [c.id, c]));
