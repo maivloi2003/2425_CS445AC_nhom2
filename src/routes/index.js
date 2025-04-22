@@ -24,11 +24,13 @@ import Friends from '~/pages/Friends';
 import Dashboard from '~/pages/admin/Dashboard';
 import UsersManagement from '~/pages/admin/UsersManagement';
 import PostsManagement from '~/pages/admin/PostsManagement';
+import AdvManagement from '~/pages/admin/AdvManagement';
 import Statistic from '~/pages/admin/Statistic';
 import Report from '~/pages/admin/Report';
 import AdminLayout from '~/layouts/AdminLayout';
 import { Fragment } from 'react';
 import PostAds from '~/pages/PostAds';
+import PostAdsId from '~/pages/PostAds/PostAdsDetails';
 import ResultPayment from '~/pages/ResultPayment';
 import Search from '~/pages/Search';
 
@@ -43,7 +45,12 @@ const publicRoutes = [
     { path: routesConfig.help, component: Help, layout: HeaderOnly },
     { path: routesConfig.aboutFL, component: AboutFL, layout: HeaderOnly },
     { path: routesConfig.postDetail, component: PostDetail, layout: DefaultLayout },
-    { path: routesConfig.search, component: Search, layout: DefaultLayout },
+    { path: routesConfig.postAds, component: PostAds, layout: HeaderOnly },
+    { path: routesConfig.postAdsId, component: PostAdsId, layout: HeaderOnly },
+    { path: routesConfig.paymentResult, component: ResultPayment, layout: HeaderOnly },
+    { path: routesConfig.search, component: Search, layout: HeaderOnly },
+    { path: routesConfig.activeAccount, component: ActiveAccount, layout: Fragment },
+    { path: routesConfig.sendEmail, component: SendEmail, layout: Fragment },
 ];
 
 const privateRoutes = [
@@ -51,16 +58,13 @@ const privateRoutes = [
     { path: routesConfig.setting, component: Setting, layout: HeaderOnly },
     { path: routesConfig.friends, component: Friends, layout: HeaderOnly },
     { path: routesConfig.profile, component: Profile, layout: HeaderOnly },
-    { path: routesConfig.activeAccount, component: ActiveAccount, layout: Fragment },
-    { path: routesConfig.sendEmail, component: SendEmail, layout: Fragment },
-    { path: routesConfig.postAds, component: PostAds, layout: DefaultLayout },
-    { path: routesConfig.paymentResult, component: ResultPayment, layout: HeaderOnly },
 ];
 
 const adminRoutes = [
     { path: routesConfig.dashboard, component: Dashboard, layout: AdminLayout },
     { path: routesConfig.usersManagement, component: UsersManagement, layout: AdminLayout },
     { path: routesConfig.postsManagement, component: PostsManagement, layout: AdminLayout },
+    { path: routesConfig.advManagement, component: AdvManagement, layout: AdminLayout },
     { path: routesConfig.statistic, component: Statistic, layout: AdminLayout },
     { path: routesConfig.report, component: Report, layout: AdminLayout },
 ]
