@@ -1,7 +1,7 @@
 .wrapper {
     padding: 34px;
     background-color: #f5f5f5;
-    width: 56%;
+    width: 80%;
 }
 .title {
     font-size: 3rem;
@@ -51,18 +51,6 @@
         display: flex;
         justify-content: center;
         color: #333;
-    }
-
-    .footer-figures {
-        display: flex;
-        align-items: center;
-        font-size: 1.4rem;
-        color: #888;
-
-        svg {
-            margin-right: 6px;
-            color: #22c55e;
-        }
     }
 
     &.total-ads .footer-figures svg {

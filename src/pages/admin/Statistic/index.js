@@ -1,50 +1,220 @@
-import classNames from "classnames/bind";
-import styles from "./Statistic.module.scss";
+import classNames from 'classnames/bind';
+import styles from './Statistic.module.scss';
+import {
+    getAdsTotalTopSpendersServices, getAdsTotalRecentPostsServices, getAdsTotalTopPostsServices, getAdsTotalTopInteractsServices
+} from '~/apiServices';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { format } from 'date-fns';
 
 const cx = classNames.bind(styles);
 
-const data = [
-    { month: "Jan", revenue: 80, profit: 50 },
-    { month: "Feb", revenue: 120, profit: 70 },
-    { month: "Mar", revenue: 90, profit: 60 },
-    { month: "Apr", revenue: 150, profit: 90 },
-    { month: "May", revenue: 130, profit: 75 },
-    { month: "Jun", revenue: 170, profit: 100 },
-    { month: "Jul", revenue: 140, profit: 85 },
-    { month: "Aug", revenue: 160, profit: 95 },
-    { month: "Sep", revenue: 100, profit: 65 },
-    { month: "Oct", revenue: 180, profit: 110 },
-    { month: "Nov", revenue: 120, profit: 80 },
-    { month: "Dec", revenue: 190, profit: 120 },
-];
+const formatDateOnly = (date) => {
+    return date.toISOString().split('T')[0];
+};
 
 function Statistic() {
+    const [endDate, setEndDate] = useState(formatDateOnly(new Date()));
+    const [startDate, setStartDate] = useState(formatDateOnly(new Date()));
+    const [typeStatic, setTypeStatic] = useState('mostMoneyUser');
+    const [listTop, setListTop] = useState([]);
+    const token = localStorage.getItem('authToken');
+
+    const { t } = useTranslation();
+
+
+    const handleChangeType = (e) => {
+        setTypeStatic(e.target.value);
+        setListTop([]);
+    };
+
+    const handleApply = async () => {
+        if (!token) return;
+        switch (typeStatic) {
+            case 'mostInteraction':
+                const resTopPosts = await getAdsTotalTopInteractsServices(startDate, endDate, token);
+                setListTop(resTopPosts?.data);
+                break;
+            case 'mostAdsSpend':
+                const resTopSpenders = await getAdsTotalTopPostsServices(startDate, endDate, token);
+                setListTop(resTopSpenders?.data);
+                break;
+            case 'mostMoneyUser':
+                const resMoneyUsers = await getAdsTotalTopSpendersServices(startDate, endDate, token);
+                setListTop(resMoneyUsers?.data);
+                break;
+            case 'mostPostAdsRecent':
+                const resRecentPosts = await getAdsTotalRecentPostsServices(startDate, endDate, token);
+                setListTop(resRecentPosts?.data);
+                break;
+            default:
+                console.log('Unknown typeStatic');
+        }
+
+    };
+
+    const renderTable = () => {
+        switch (typeStatic) {
+            case 'mostInteraction':
+                return (
+                    <table className={cx('table')}>
+                        <thead>
+                            <tr>
+                                <th>{t('stt')}</th>
+                                <th>{t('typePost')}</th>
+                                <th>{t('language')}</th>
+                                <th>{t('published')}</th>
+                                <th>{t('like')}</th>
+                                <th>{t('comment')}</th>
+                                <th>{t('totalInteract')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listTop.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.type_post}</td>
+                                    <td>{item.language}</td>
+                                    <td>{format(new Date(item.created_at), 'dd/MM/yyyy HH:mm')}</td>
+                                    <td>{item.total_likes}</td>
+                                    <td>{item.total_comments}</td>
+                                    <td>{item.total_interactions}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )
+            case 'mostAdsSpend':
+                return (
+                    <table className={cx('table')}>
+                        <thead>
+                            <tr>
+                                <th>{t('stt')}</th>
+                                <th>{t('typePost')}</th>
+                                <th>{t('language')}</th>
+                                <th>{t('published')}</th>
+                                <th>{t('price')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listTop.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.type_post}</td>
+                                    <td>{item.language}</td>
+                                    <td>{format(new Date(item.created_at), 'dd/MM/yyyy HH:mm')}</td>
+                                    <td>{item.totalAmount}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                );
+            case 'mostMoneyUser':
+                return (
+                    <table className={cx('table')}>
+                        <thead>
+                            <tr>
+                                <th>{t('stt')}</th>
+                                <th>{t('name')}</th>
+                                <th>{t('email')}</th>
+                                <th>{t('totalSpent')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listTop.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.name}</td>
+                                    <td>{item.email}</td>
+                                    <td>{item.totalSpent}$</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                );
+            case 'mostPostAdsRecent':
+                return (
+                    <table className={cx('table')}>
+                        <thead>
+                            <tr>
+                                <th>{t('stt')}</th>
+                                <th>{t('typePost')}</th>
+                                <th>{t('language')}</th>
+                                <th>{t('published')}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {listTop.map((item, index) => (
+                                <tr key={index}>
+                                    <td>{index + 1}</td>
+                                    <td>{item.type_post}</td>
+                                    <td>{item.language}</td>
+                                    <td>{format(new Date(item.created_at), 'dd/MM/yyyy HH:mm')}</td>
+                                    <td>{item.totalAmount}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                );
+            default:
+                return <p>{t('noData')}</p>;
+        }
+    };
+
     return (
-        <div className={cx("wrapper")}>
-            <div className={cx("statistic")}>
-                <h3 className={cx("statistic-heading")}>Monthly Performance</h3>
-                <div className={cx("chart-container")}>
-                    {data.map((item, index) => (
-                        <div key={index} className={cx("bar-group")}>
-                            <div
-                                className={cx("bar", "bar-revenue")}
-                                style={{ height: `${item.revenue}px` }}
-                            ></div>
-                            <div
-                                className={cx("bar", "bar-profit")}
-                                style={{ height: `${item.profit}px` }}
-                            ></div>
-                            <span className={cx("month-label")}>{item.month}</span>
-                        </div>
-                    ))}
+        <div className={cx('wrapper')}>
+            <div className={cx('statistic')}>
+                <h3 className={cx('statistic-heading')}>{t('statistic')}</h3>
+
+                {/* Date Filter */}
+                <div className={cx('filter-container')}>
+                    <div className={cx('filter-item')}>
+                        <label htmlFor="start-date">{t('startDate')}</label>
+                        <input
+                            id="start-date"
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className={cx('datepicker-input')}
+                        />
+                    </div>
+                    <div className={cx('filter-item')}>
+                        <label htmlFor="end-date">{t('endDate')}</label>
+                        <input
+                            id="end-date"
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className={cx('datepicker-input')}
+                        />
+                    </div>
+                    <div className={cx('filter-item')}>
+                        <label htmlFor="type">{t('typeStatic')}</label>
+                        <select
+                            id="type"
+                            className={cx('select-type')}
+                            value={typeStatic}
+                            onChange={handleChangeType}
+                        >
+                            <option value="mostMoneyUser">{t('userMostMoney')}</option>
+                            <option value="mostInteraction">{t('highestInteraction')}</option>
+                            <option value="mostAdsSpend">{t('mostAdsSpend')}</option>
+                            <option value="mostPostAdsRecent">{t('recentAdsPosts')}</option>
+                        </select>
+                    </div>
+                    <button
+                        className={cx('apply-btn')}
+                        onClick={handleApply}
+                    >
+                        {t('apply')}
+                    </button>
                 </div>
-                <div className={cx("legend")}>
-                    <div className={cx("legend-item")}>
-                        <div className={cx("legend-box", "legend-revenue")}></div> Revenue
-                    </div>
-                    <div className={cx("legend-item")}>
-                        <div className={cx("legend-box", "legend-profit")}></div> Profit
-                    </div>
+                {/* Top Spenders */}
+                <div className={cx('top-users')}>
+                    <h3 className={cx('top-users-title')}>
+                        {t('top5Spending')}
+                    </h3>
+                    {renderTable()}
                 </div>
             </div>
         </div>
